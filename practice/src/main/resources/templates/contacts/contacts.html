@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<h1>주소록</h1>
+
+<form id = "contactForm">
+    <p> 이름 : <input type="text" id="inputName" required> 
+    <p> 나이 : <input type="number" id="inputAge" min = "1" default = "1">
+    <p> 전화번호 : <input type="text" id="inputTel" >
+    <p> 주소 : <input type="text" id="inputAddr" >
+    <button type="button" onclick = checkPassword() >저장</button>
+   
+</form>  
+
+<br/>
+<button type="button" onclick = updateContacts() >업데이트</button>
+
+	
+
+<script th:inline="javascript">
+function checkPassword(){
+    const inputName = document.getElementById("inputName").value;
+    const inputAge = document.getElementById("inputAge").value;
+    const inputTel = document.getElementById("inputTel").value;
+    const inputAddr = document.getElementById("inputAddr").value;
+    
+    const contacts = /*[[${contacts}]]*/[]; 
+    //TODO const contacts = windw.dataArray; 뷰에서 받은 데이터를 전역으로 선언하고 그것을 가져올 수도 있다.
+    
+    //console.log("확인 : ", contacts);
+
+    if(inputName == "" || inputAge=="" || inputTel=="" || inputAddr==""){
+    	alert("모든 항목을 작성해주세요");
+    	return;
+    }
+    
+    //if( !(inputName in contacts) ){//} //여기서 1차적으로 거르는 게 나을지도
+    sendToBackend({
+    	name : inputName, 
+    	age : inputAge, 
+    	tel : inputTel, 
+    	addr : inputAddr
+    });
+    
+
+    
+    
+}
+function sendToBackend(data) {
+	//https://developer.mozilla.org/ko/docs/Web/API/Fetch_API/Using_Fetch
+    console.log(data);
+    fetch("/contacts/add", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+    	
+    	if(!response.ok){
+    		response.text().then(text => {alert(text)});
+    		
+    	
+    	}else{//ok
+    		response.text().then(text => {alert(text)}); //
+    		clearForm();
+    	}
+
+    })
+    .catch(error => {
+        console.error("오류", error);
+    });
+}
+function clearForm(){
+	 document.getElementById("inputName").value = "";
+    document.getElementById("inputAge").value = "";
+    document.getElementById("inputTel").value = "";
+    document.getElementById("inputAddr").value = "";
+}
+
+function updateContacts(){
+	fetch("/contacts/api/update")
+	.then(response => {
+	  // 응답이 성공적인지 확인
+	  if (!response.ok) {
+	    throw new Error('Network response was not ok ' + response.statusText);
+	  }
+	  return response.json(); // JSON 형태로 변환
+	})
+	.then(data => {
+	  console.log(data); // 받아온 데이터 처리
+	  return data;
+	})
+	.catch(error => {
+	  console.error('There has been a problem with your fetch operation:', error);
+	});
+	
+}
+
+
+</script>
+
+
+</body>
+</html>
