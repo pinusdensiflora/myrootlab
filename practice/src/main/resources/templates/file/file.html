@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+    <h1>파일 업로드</h1>
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <label for="fileInput1">파일 선택 1:</label>
+        <input type="file" id="fileInput1" name="files1[]" multiple><br><br>
+
+        <label for="fileInput2">파일 선택 2:</label>
+        <input type="file" id="fileInput2" name="files2[]" multiple><br><br>
+
+        <input type="submit" value="업로드">
+    </form>
+    <!-- <input type="file"> 태그는 파일 선택을 위한 입력 필드입니다.
+multiple 속성을 추가하면 사용자가 여러 파일을 선택할 수 있습니다.
+name 속성에 []를 추가하면 서버에서 여러 파일을 배열 형태로 받을 수 있습니다.
+enctype="multipart/form-data"는 파일 업로드를 위해 반드시 설정해야 하는 속성입니다. -->
+</body>
+</html>
