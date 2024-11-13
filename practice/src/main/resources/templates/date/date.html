@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
+<!-- 데이트 피커 -->
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
   <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -47,15 +48,92 @@
     }
   } );
   </script>
+  
+  <!-- full calendar -->
+	<script src="
+		https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js">
+	</script>
+	<script>
+	 let eventList = [
+ 	    {
+  	      id: 'a',
+  	      title: 'my event',
+  	      start: '2024-11-20'+"T00:00",
+  	      end : '2024-11-23'+"T23:59"
+  	    	
+  	    }
+  	  ];
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',
+          locale: 'ko',
+          aspectRatio: 3,
+          events: eventList,
+          displayEventTime: false 
+        });
+        calendar.render();
+      });
 
+    </script>
 </head>
 <body>
-<input type="date" >
 
+<form id="eventForm">
+<label for="title">일정:</label>
+<input type="text" id="title" name="title">
+<br/>
 <label for="from">시작일:</label>
 <input type="text" id="from" name="from">
 <label for="to">종료일:</label>
 <input type="text" id="to" name="to">
+<button type = "button" onclick = addRange() >등록</button>
+</form>
+
+<div id='calendar' ></div>
+
+<script>
+function rend() {
+	//이거 처리를 좀 하고싶은데,,,
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      locale: 'ko',
+      aspectRatio: 3,
+      events: eventList,
+      displayEventTime: false
+      
+    });
+    calendar.render();
+ }
+
+function addRange(){
+	
+	var event = {};
+	
+	const title = document.getElementById("title").value;
+	const from = document.getElementById("from").value;
+    const to = document.getElementById("to").value;
+	if(title === "" || from === "" || to === ""){
+		alert("일정을 입력하세요");
+		return;
+	}
+  
+    event["id"] = eventList.length; 
+    event["title"] = title;
+    event["start"] = from + "T00:00";
+    event["end"] = to + "T23:59";
+	
+	eventList.push(event);
+    
+	console.log(event);
+	
+	rend();
+	
+	document.getElementById("eventForm").reset();
+	
+}
+</script>
 
 </body>
 </html>

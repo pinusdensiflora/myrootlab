@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rootlab.practice.date.EventMapper">
+
+<resultMap id="EventResultMap" type="com.rootlab.practice.date.Event">
+    <id property="id" column="id" />
+    <result property="title" column="title" />
+    <result property="start" column="start" />
+    <result property="end" column="end" />
+</resultMap>
+
+	<select id="selectAllEvents" resultMap="EventResultMap">
+		SELECT * FROM event;
+	</select>
+
+
+</mapper>
