@@ -7,5 +7,51 @@
 <body>
 
 <h1>recommend</h1>
+ 
+ <input type="text" id="new_id">
+ <button type = "button" onclick = recommend()>go</button>
+ <div id="idSection"></div>
+
+<script>
+
+function recommend() {
+	var text = document.getElementById("new_id").value;
+	text = "z-+.^.".toLowerCase();
+	//"z-+.^."
+	const reg1 =/[\w-\.]+/g; //1. 특정 문자를 제외하여 진행 (배열로 반환되므로. join 이 필요함)
+	
+	 /*//연속된 O 하나로 만들기
+	 text = "OOOOabcㅕbOOba";
+	 const reg = /(?<!O)O|([abcㅕ]+)/g;
+	 //결과 : ['O', 'abcㅕb', 'O', 'ba']
+	 */
+	text2 = text.match(reg1).join("");
+	const reg2 = /(?<!\.)\.|([\w-]+)/g; // 2. 연속된 점을 .으로 치환, 즉 뒤에 . 을 가지는 .을, 그리고 나머지 문자들을 배열로만듦 (이 과정에서 1도 진행되네.. 하..)
+	//이 정규표현식은 중간에 공백이 들어가면 또다시 연속된 .이 생기므로 공백처리를 우선하여 진행해주어야한다..
+	
+	
+	text3 = text2.match(reg2).join("");
+	 //const reg3 =/^\.*(+*)\.*$/; //3. 양 옆에 0-n개의 점을 가지는 어떠한 문자열인지를 판별하고, 그 문자열을 캡쳐링한다.
+	//const reg3= /^\.*([\w-\.]*)\.$|^\.*([\w-\.]*)[^\.]$ /; 
+	 console.log("text3 :", text3)
+	 const reg4= /^\.?(.)*/g;// 앞의 . 떼기
+	 // .만 남은경우는 ?
+	 // 3. 양 옆에 0-1개의 점을 가지는 문자열. 끝 문자가 .인 경우에 중간 문자열과 마지막 .에 혼동을 줌으로. 마지막이 .인 경우, 아닌경우 두가지로 비교
+	 // 아니 앞에서 차례차례 순서대로 보는데... 앞에서 .을 허락 안할 순 없잖아. 근데 허락해뒀더니만 뒤에 *이라 없어가지고 마지막 되면 그냥 해결이 안되는디.. 뒤에가 없을지도 모르는데 그냥 이건 if 써
+			 
+	 
+	//text4 = text3.match(reg3)[1];// 인덱스 1에 있음
+	 
+	 
+
+	console.log(text.match(reg1));
+	console.log(text2.match(reg2));
+	console.log(text3.match(reg3));
+	//console.log("text4(양옆 점 떼기) : ", text4);
+}
+
+
+
+</script>
 </body>
 </html>
