@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+<h1>recommend</h1>
+ 
+ <input type="text" id="new_id">
+ <button type = "button" onclick = recommend()>go</button>
+ <div id="idSection"></div>
+
+<script>
+
+function recommend() {
+	var text = document.getElementById("new_id").value;
+	text = text.toLowerCase();
+	//"z-+.^."
+	const reg1 =/[\w-\.]+/g; //1. 특정 문자를 제외하여 진행 (배열로 반환되므로. join 이 필요함)
+	
+	 
+	text = text.match(reg1).join("");
+	console.log("특정문자 제거 ", text);
+	 
+	 /*//연속된 O 하나로 만들기
+	 text = "OOOOabcㅕbOOba";
+	 const reg = /(?<!O)O|([abcㅕ]+)/g;
+	 //결과 : ['O', 'abcㅕb', 'O', 'ba']
+	 */
+	 
+	const reg2 = /(?<!\.)\.|([\w-]+)/g; // 2. 연속된 점을 .으로 치환, 즉 뒤에 . 을 가지는 .을, 그리고 나머지 문자들을 배열로만듦 (이 과정에서 1도 진행되네.. 하..)
+	//이 정규표현식은 중간에 공백이 들어가면 또다시 연속된 .이 생기므로 공백조건이 있다면 공백처리를 우선하여 진행해주어야한다..
+	text = text.match(reg2).join("");
+	console.log("연속 점 처리 ", text);
+   
+	text = text.replace(/^(\.)|(\.)$/g, "");//앞에 점이 있는 경우 . or 뒤에 점이 있는 경우 점을 캡쳐링후 공백으로 치환
+	console.log("앞뒤 점 제거 ", text);
+	
+	text = text ? text : "a" ;
+	console.log("공백인 경우 a로 치환 ", text);
+	
+	text = text.match(/^.{1,15}/)[0]; //앞 15글자만 가져오기
+	console.log("15글자 끊기 ", text);
+	text = text.replace(/(\.)$/g, "");
+	console.log("15번째 글자가 .이면 없애기 ", text);
+	
+	/* while(text.length > 2){
+		
+	} */
+	
+	console.log("마지막글자 : ", text.match(/.$/)[0]);
+	while(text.match(/^[\w-\.]{0,2}$/g)){
+		console.log("텍스트 길이 늘리기 ", text);
+		text = text + text.match(/.$/)[0];
+	}
+	console.log("결과 ", text);
+	
+	
+	return text;
+}
+
+
+
+</script>
+</body>
+</html>
