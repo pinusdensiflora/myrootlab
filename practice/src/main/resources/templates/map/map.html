@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+
+</head>
+<body>
+<h1>지도</h1>
+
+
+
+	<div id="map" style="width:750px;height:350px;"></div>
+
+	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4744c6a0f40964abe0bca6e6b7db639e"></script>
+	<script>
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		    mapOption = {
+		        center: new kakao.maps.LatLng(35.8535979, 128.5797492), // 지도의 중심좌표
+		        level: 3, // 지도의 확대 레벨
+		        mapTypeId : kakao.maps.MapTypeId.ROADMAP // 지도종류
+		    }; 
+
+		// 지도를 생성한다 
+		var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+		// 지도에 마커를 생성하고 표시한다
+		var marker = new kakao.maps.Marker({
+		    position: new kakao.maps.LatLng(35.8535979,128.5797492), // 마커의 좌표
+		    map: map // 마커를 표시할 지도 객체
+		});
+		
+		
+
+		// 마커에 클릭 이벤트를 등록한다 (우클릭 : rightclick)
+		kakao.maps.event.addListener(marker, 'click', function() {
+		    alert('마커를 클릭했습니다!');
+		    
+		    
+				mapOption = {
+				        center: new kakao.maps.LatLng(35.8632376,128.5801206), // 지도의 중심좌표
+				        level: 3, // 지도의 확대 레벨
+				        mapTypeId : kakao.maps.MapTypeId.ROADMAP // 지도종류
+				}; 
+				var map = new kakao.maps.Map(mapContainer, mapOption); 
+			
+				var marker2 = new kakao.maps.Marker({
+				    position: new kakao.maps.LatLng(35.8632376,128.5801206), // 마커의 좌표
+				    map: map // 마커를 표시할 지도 객체
+				});
+		    
+		    
+		    
+
+				var polygon = new kakao.maps.Polygon({
+					map : map, // 다각형을 표시할 지도 객체
+					path : [ // 다각형을 구성하는 좌표 배열
+						new kakao.maps.LatLng(37.56782, 126.97865),
+						new kakao.maps.LatLng(37.56782, 126.97665),
+						new kakao.maps.LatLng(37.56682, 126.97665)
+					],
+					
+					
+					
+					
+					fillColor: '#FF0000', // 채움 색
+					fillOpacity: 0.5, // 채움 불투명도
+					strokeWeight: 3, // 선의 두께 
+					strokeColor: '#FF0000', // 선 색
+					strokeOpacity: 0.9, // 선 투명도
+					strokeStyle: 'solid' // 선 스타일
+				});
+
+		});
+
+		
+		
+	</script>
+
+
+</body>
+</html>
