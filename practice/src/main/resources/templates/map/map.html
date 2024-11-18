@@ -13,7 +13,7 @@
 
 	<div id="map" style="width:750px;height:350px;"></div>
 
-	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4744c6a0f40964abe0bca6e6b7db639e"></script>
+	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4744c6a0f40964abe0bca6e6b7db639e&autoload=true&libraries=services"></script>
 	<script>
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		    mapOption = {
@@ -32,7 +32,23 @@
 		});
 		
 		
-
+		var namsan4 = [//남산 4동의 폴리곤 좌표
+		    [128.5824900877616, 35.86220635712659],
+		    [128.58285924279392, 35.856328027503956],
+		    [128.5745839364292, 35.860057988189446],
+		    [128.57420447635695, 35.862684185324916],
+		    [128.58172166692066, 35.86476194105173],
+		    [128.5824900877616, 35.86220635712659]  
+		];
+		var latLngArray = namsan4.map(function(coord) {
+		    return new kakao.maps.LatLng(coord[1], coord[0]);  // LatLng(위도, 경도) 순서 
+		});
+		
+		var namsan4Paths = [];
+		for (let i = 0; i < namsan4.length; i++) {
+		    var point = namsan4[i];
+		    namsan4Paths.push(new kakao.maps.LatLng(point[1], point[0])); //kakao.maps.LatLng 객체로 만들어야함
+		}
 		// 마커에 클릭 이벤트를 등록한다 (우클릭 : rightclick)
 		kakao.maps.event.addListener(marker, 'click', function() {
 		    alert('마커를 클릭했습니다!');
@@ -49,31 +65,29 @@
 				    position: new kakao.maps.LatLng(35.8632376,128.5801206), // 마커의 좌표
 				    map: map // 마커를 표시할 지도 객체
 				});
-		    
+		    	
+				
+				
+			
+				
+				var polyline = new kakao.maps.Polygon({
+					map: map, // 선을 표시할 지도 객체 
+					path: namsan4Paths,
+					fillColor: '#5af36e', // 채움 색
+					fillOpacity: 0.5, // 채움 불투명도
+					strokeWeight: 3, // 선의 두께 
+					strokeColor: '#0067ff', // 선 색
+					strokeOpacity: 0.9, // 선 투명도
+					strokeStyle: 'solid' // 선 스타일
+				});	
 		    
 		    
 
-				var polygon = new kakao.maps.Polygon({
-					map : map, // 다각형을 표시할 지도 객체
-					path : [ // 다각형을 구성하는 좌표 배열
-						new kakao.maps.LatLng(37.56782, 126.97865),
-						new kakao.maps.LatLng(37.56782, 126.97665),
-						new kakao.maps.LatLng(37.56682, 126.97665)
-					],
-					
-					
-					
-					
-					fillColor: '#FF0000', // 채움 색
-					fillOpacity: 0.5, // 채움 불투명도
-					strokeWeight: 3, // 선의 두께 
-					strokeColor: '#FF0000', // 선 색
-					strokeOpacity: 0.9, // 선 투명도
-					strokeStyle: 'solid' // 선 스타일
-				});
+				
 
 		});
 
+	
 		
 		
 	</script>

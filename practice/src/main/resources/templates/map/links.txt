@@ -1,0 +1,11 @@
+https://github.com/raqoon886/Local_HangJeongDong
+대한민국 행정구역 geojson 파일
+
+
+https://jsonformatter.org/json-pretty-print
+다운받은 geojson 파일을 프리티프린터로 변환해주는 사이트
+
+https://github.com/raqoon886/Local_HangJeongDong/blob/master/hangjeongdong_%EB%8C%80%EA%B5%AC%EA%B4%91%EC%97%AD%EC%8B%9C.geojson?short_path=d517fb5
+의 데이터를 위 링크이 입력하고 아래 파일을 얻음
+
+(jsonformatter.txt)

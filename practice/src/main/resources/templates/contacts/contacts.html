@@ -5,24 +5,27 @@
 <title>주소록</title>
 </head>
 <body>
-<h1>주소록</h1>
+	<h1>주소록</h1>
 
-<form id = "contactForm">
-    <p> 이름 : <input type="text" id="inputName" required> 
-    <p> 나이 : <input type="number" id="inputAge" min = "1" required>
-    <p> 전화번호 : <input type="text" id="inputTel" required>
-    <p> 주소 : <input type="text" id="inputAddr" required>
-    <button type="button" onclick = checkPassword() >저장</button>
-   
-</form>  
+	<form id="contactForm">
+		<p>
+			이름 : <input type="text" id="inputName" required>
+		<p>
+			나이 : <input type="number" id="inputAge" min="1" required>
+		<p>
+			전화번호 : <input type="text" id="inputTel" required>
+		<p>
+			주소 : <input type="text" id="inputAddr" required>
+			<button type="button" onclick=checkPassword()>저장</button>
+	</form>
 
-<br/>
-<button type="button" onclick = updateContacts() >업데이트</button>
-<br/>
-<ul id = "renderSection">
-</ul>
+	<br />
+	<button type="button" onclick=updateContacts()>업데이트</button>
+	<br />
+	<ul id="renderSection">
+	</ul>
 
-<script th:inline="javascript">
+	<script th:inline="javascript">
 function checkPassword(){
     const inputName = document.getElementById("inputName").value;
     const inputAge = document.getElementById("inputAge").value;
@@ -75,7 +78,7 @@ function sendToBackend(data) {
 }
 function clearForm(){
     
-	document.getElementById("inputName").value = "";
+    document.getElementById("inputName").value = "";
     document.getElementById("inputAge").value = "";
     document.getElementById("inputTel").value = "";
     document.getElementById("inputAddr").value = "";
