@@ -1,6 +1,7 @@
 package com.rootlab.practice.search;
 
-import javax.naming.spi.DirStateFactory.Result;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 
 
@@ -29,21 +31,44 @@ public class SearchController {
 	
 	@GetMapping("")
 	public String search() {
+		
+		
+		
 		return "/search/search";
 	}
 	
 	@PostMapping("")
 	@ResponseBody
-	public String search(@RequestParam("keyword") String keyword) {
+	public Map<String, Object> search(@RequestParam("keyword") String keyword,
+										   @RequestParam("page") Integer page)  {
 		
 		System.out.println(keyword);
-		String resultString = kakaoSearch.searchResult(keyword);
+		String resultString = kakaoSearch.searchResult(keyword, page);
 		String prettyJson = gson.toJson(gson.fromJson(resultString, Object.class));
+//		prettyJson = prettyJson.replaceAll("\\\\u003cb\\\\u003e", "");//<b>
+//		prettyJson = prettyJson.replaceAll("\\\\u003c/b\\\\u003e", "");//</b>
+//		prettyJson = prettyJson.replaceAll("\\\\u0026", "&");//
+//		prettyJson = prettyJson.replaceAll("\\\\u003d", "=");//
+		
 		prettyJson = prettyJson.replaceAll("\\\\u003cb\\\\u003e", "");//<b>
 		prettyJson = prettyJson.replaceAll("\\\\u003c/b\\\\u003e", "");//</b>
-		//다른 것도 정리를 할 수 있는 ... 정규식을 마련해야겠음..
-       System.out.println("최종 : "+prettyJson);
-		return prettyJson;
+		
+		Map<String, Object> mapData = gson.fromJson(prettyJson, new TypeToken<Map<String, Object>>(){}.getType());
+       //System.out.println("map 형식 : " + mapData);
+		//System.out.println("map에서 json다시 변환 : "+ gson.toJson(mapData));
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("documents", mapData.get("documents"));
+		System.out.println("resultMap : " + resultMap);
+		
+		
+		return resultMap;
 		
 	}
+	
+
+	
+	
+
+
 }

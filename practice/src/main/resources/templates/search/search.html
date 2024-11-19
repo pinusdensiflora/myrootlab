@@ -6,12 +6,174 @@
 </head>
 <body>
 <h1>웹 문서 검색하기</h1>
-<form action="/search" method = "post">
-	<input type="text" name = "keyword">
-	<button type = "submit">검색</button>
-</form>
+
+<input type="text" name = "keyword" id="keyword">
+<button type="button" id = "resultfunction" onclick=search()>결과보기</button>
+<div id = "tableSection"></div>
+<button type="button" id = "next" onclick=next()>후</button>
+<button type="button" id = "before" onclick=before()>전</button>
+
+<script>
+var page = 1;
+var maxpage=1;
+function next(){
+	page = page+1;
+	getresult();
+}
+function before(){
+	if(page == 1){
+		return;
+	}
+	page = page-1;
+	getresult();
+}
+function search(){
+	page = 1;
+	getresult();
+}
+function ajax() {
+	
+	return new Promise((resolve, reject) => {
+	const keyword = document.getElementById("keyword").value;
+	
+	if(!keyword){
+		alert("검색어를 입력하세요.");
+		return;
+	}
+	
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', `http://localhost:8080/search?keyword=${keyword}&page=${page}`, true);
+	xhr.responseType = 'json';
+
+	xhr.onload = function() {
+    	if (xhr.status >= 200 && xhr.status < 300) {
+        // 요청이 성공했을 때
+        	//result = xhr.response["documents"];
+        	//console.log(xhr.response);
+    		resolve(xhr.response["documents"]); //promise 로 반환해줄때는 resolve, reject이용하면됨
+    		
+    	} else {
+        // 요청이 실패했을 때
+        console.error('Request failed with status: ' + xhr.status);
+        reject('Request failed with status: ' + xhr.status);//promise
+    	}
+	};
+
+	xhr.onerror = function() {
+    // 네트워크 오류가 발생했을 때
+    	console.error('Network error');
+    	reject('Network error');
+	};
+
+	xhr.send();
+	});
+
+}
+
+async function getresult(){
+	
+try {		
+	const result = await ajax();
+	const tableSection = document.getElementById('tableSection');
+	if(tableSection.firstChild){
+		//firstChild 가 table. table이 존재할 시, 제거하고 새로운 테이블로 교체
+		tableSection.removeChild(tableSection.firstChild);
+	}
+	
+
+	console.log("result : " , result);
+	let table = document.createElement('table'); //후에 재할당 필요
+	const thead = document.createElement('thead'); //<tr> <th></th><th></th> </tr>
+	const tbody = document.createElement('tbody'); //<tr> <th></th><th></th> </tr> <tr>...
+	
+	const headrow = document.createElement('tr');
+	
+	
+	for(let i = 0 ; i < 4 ; i ++){
+		var list = ["title", "content", "date", "url"]
+		const th = document.createElement('th');
+		th.textContent = list[i];
+		th.style.border= '1px solid #000';
+		headrow.appendChild(th);
+	}
+	
+	thead.appendChild(headrow);
+	
+	
+	result.forEach(function(data){
+		console.log(data.title);
+		const datarow = document.createElement('tr');
+		
+		const title = document.createElement('th');
+		const content = document.createElement('th');
+		const date = document.createElement('th');
+		const url = document.createElement('th');
+		
+		title.textContent = data.title;
+		title.style.border= '1px solid #000';
+		content.textContent = data.contents;
+		content.style.border= '1px solid #000';
+		date.textContent = data.datetime;
+		date.style.border= '1px solid #000';
+		url.textContent = data.url;
+		url.style.border= '1px solid #000';
+		
+		datarow.appendChild(title);
+		datarow.appendChild(content);
+		datarow.appendChild(date);
+		datarow.appendChild(url);
+		
+		tbody.appendChild(datarow);
+		
+	});
+	
+	
+	
+	// 테이블에 <thead>와 <tbody> 추가
+	table.appendChild(thead);
+	table.appendChild(tbody);
 
 
+
+
+	
+	table.style.border= '1px solid #000';
+	table.style.borderCollapse = 'collapse'; //2중 테두리 제거
+	table.style.fontSize = '10px';
+	
+	
+    // 테이블을 DOM에 추가
+	tableSection.appendChild(table);
+	
+} catch (error) {
+    console.error("Error: ", error);  // 오류 처리
+}
+	
+	
+}
+
+function design(table){
+
+	table.style.border= '1px solid #000';
+
+	
+
+	const tds = table.querySelectorAll('td');
+	tds.forEach(function(td) {
+	    td.style.border = '1px solid #ddd';
+	    td.style.padding = '8px';
+	    td.style.textAlign = 'left';
+	});
+
+	// 짝수 행의 배경색 설정
+	const rows = table.querySelectorAll('tr:nth-child(even)');
+	rows.forEach(function(row) {
+	    row.style.backgroundColor = '#f9f9f9';
+
+	});
+	
+	return table;
+}
 </script>
 </body>
 </html>

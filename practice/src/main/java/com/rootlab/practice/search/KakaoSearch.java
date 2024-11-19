@@ -13,9 +13,9 @@ import org.springframework.web.client.RestTemplate;
 public class KakaoSearch {
 
 
-	public String searchResult(String keyword) {
+	public String searchResult(String keyword, Integer page) {
 
-		String url = "https://dapi.kakao.com/v2/search/web" + "?query=" + keyword;
+		String url = "https://dapi.kakao.com/v2/search/web" + "?query=" + keyword + "&page=" + page;
 		
 		
 
@@ -27,7 +27,8 @@ public class KakaoSearch {
 
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-		System.out.println(response.getBody());
+//		System.out.println(response.getBody());
+		System.out.println("완료");
 		return response.getBody();
 	}
 
