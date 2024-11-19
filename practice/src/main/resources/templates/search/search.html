@@ -9,14 +9,30 @@
 
 <input type="text" name = "keyword" id="keyword">
 <button type="button" id = "resultfunction" onclick=search()>결과보기</button>
-<div id = "tableSection"></div>
+<div id = "secretSection">
 <button type="button" id = "next" onclick=next()>후</button>
 <button type="button" id = "before" onclick=before()>전</button>
 
+<!-- <input type="number" id="page" min = '1'>
+<button type="button" id = "goPage" onclick=goPage()>페이지로 이동</button> -->
+</div>
+<div id = "tableSection"></div>
+
 <script>
 var page = 1;
-var maxpage=1;
+var maxpage=0;
+
+function search(){
+	page = 1;
+	getresult();
+}
+
 function next(){
+	if(page==maxpage){
+		//console.log(page, maxpage);
+		return;
+	}
+		
 	page = page+1;
 	getresult();
 }
@@ -27,10 +43,22 @@ function before(){
 	page = page-1;
 	getresult();
 }
-function search(){
-	page = 1;
+
+/* function goPage(){
+	//숨김처리 영역이기 때문에 maxpage가 0이 아님
+	page = document.getElementById("keyword").value;
+	if(page < 1){
+		alert("1쪽으로 이동합니다.");
+		page = 1;
+	}
+	else if(page > maxpage){
+		alert(`${maxpage}쪽이 최대입니다.`);
+		page = maxpage;
+	}
+	
 	getresult();
-}
+} */
+
 function ajax() {
 	
 	return new Promise((resolve, reject) => {
@@ -50,7 +78,7 @@ function ajax() {
         // 요청이 성공했을 때
         	//result = xhr.response["documents"];
         	//console.log(xhr.response);
-    		resolve(xhr.response["documents"]); //promise 로 반환해줄때는 resolve, reject이용하면됨
+    		resolve(xhr.response); //promise 로 반환해줄때는 resolve, reject이용하면됨
     		
     	} else {
         // 요청이 실패했을 때
@@ -73,7 +101,13 @@ function ajax() {
 async function getresult(){
 	
 try {		
-	const result = await ajax();
+	
+	const ajaxResult = await ajax();
+	const meta = ajaxResult["meta"];
+	const result = ajaxResult["documents"];
+	//console.log("maxpage : ",meta.pageable_count);
+	maxpage=meta.pageable_count
+	
 	const tableSection = document.getElementById('tableSection');
 	if(tableSection.firstChild){
 		//firstChild 가 table. table이 존재할 시, 제거하고 새로운 테이블로 교체
@@ -81,7 +115,6 @@ try {
 	}
 	
 
-	console.log("result : " , result);
 	let table = document.createElement('table'); //후에 재할당 필요
 	const thead = document.createElement('thead'); //<tr> <th></th><th></th> </tr>
 	const tbody = document.createElement('tbody'); //<tr> <th></th><th></th> </tr> <tr>...
@@ -101,7 +134,7 @@ try {
 	
 	
 	result.forEach(function(data){
-		console.log(data.title);
+		//console.log(data.title);
 		const datarow = document.createElement('tr');
 		
 		const title = document.createElement('th');
@@ -152,28 +185,7 @@ try {
 	
 }
 
-function design(table){
 
-	table.style.border= '1px solid #000';
-
-	
-
-	const tds = table.querySelectorAll('td');
-	tds.forEach(function(td) {
-	    td.style.border = '1px solid #ddd';
-	    td.style.padding = '8px';
-	    td.style.textAlign = 'left';
-	});
-
-	// 짝수 행의 배경색 설정
-	const rows = table.querySelectorAll('tr:nth-child(even)');
-	rows.forEach(function(row) {
-	    row.style.backgroundColor = '#f9f9f9';
-
-	});
-	
-	return table;
-}
 </script>
 </body>
 </html>

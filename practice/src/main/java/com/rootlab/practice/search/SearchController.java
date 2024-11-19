@@ -42,7 +42,10 @@ public class SearchController {
 	public Map<String, Object> search(@RequestParam("keyword") String keyword,
 										   @RequestParam("page") Integer page)  {
 		
-		System.out.println(keyword);
+		System.out.println(keyword + " " + page);
+
+				
+				
 		String resultString = kakaoSearch.searchResult(keyword, page);
 		String prettyJson = gson.toJson(gson.fromJson(resultString, Object.class));
 //		prettyJson = prettyJson.replaceAll("\\\\u003cb\\\\u003e", "");//<b>
@@ -59,6 +62,7 @@ public class SearchController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("documents", mapData.get("documents"));
+		resultMap.put("meta", mapData.get("meta"));//최종페이지 값을 이렇게 넣기엔 좀...음...
 		System.out.println("resultMap : " + resultMap);
 		
 		
