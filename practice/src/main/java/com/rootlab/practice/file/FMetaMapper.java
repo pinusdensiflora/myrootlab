@@ -1,0 +1,8 @@
+package com.rootlab.practice.file;
+
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface FMetaMapper {
+
+}
