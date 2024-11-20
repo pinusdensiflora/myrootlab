@@ -9,7 +9,7 @@
 
     <form action="/file/upload" method="post" enctype="multipart/form-data">
         <label for="fileInput1">파일 선택 1:</label>
-        <input type="file" id="fileInput1" name="files1[]" multiple accept=".jpg, .png, .pdf .pptx"><br><br>
+        <input type="file" id="fileInput1" name="files1[]" multiple accept=".png, .pdf .pptx"><br><br>
 
         <label for="fileInput2">파일 선택 2:</label>
         <input type="file" id="fileInput2" name="files2[]" multiple><br><br>
@@ -42,17 +42,47 @@ const fileInput1 = document.getElementById("fileInput1");
 fileInput1.addEventListener('change',function(){//<input type="file">에 변화가 생길 시.
     let files = fileInput1.files;//files 로 <input type="file"> 에 담긴 파일을 볼 수 있다.
     console.log(files);
+    
+    files = Array.from(files); //배열로 변환 
+    
     //용량이 초과되면 용량 초과안내 5mb = 5,242,880 byte
     //console.log(files.length);
-    for (let i=0; i< files.length; i++){ //파일의 key 값은 정수로 들어감
+    /*for (let i=0; i< files.length; i++){ //파일의 key 값은 정수로 들어감
     	 if(files[i].size > 5242880){
     		 alert(`file${i+1}의 용량이 큽니다. (최대5mb)`);
-    		 //delete files[i];//.files는 읽기 전용 데이터라 이런식의 삭제가 불가능함
+     		 //delete files[i];//Input.files는 읽기 전용 데이터라 배열화 시켜주지 않으면 이런식의 삭제가 불가능함
     		 fileInput1.value = ""; // 따라서 파일 선택 초기화
-    		 console.log(files);
+    		 console.log(files); 
+    		 
     	 }
     	
-    }
+    }*/
+    
+    
+    
+    files.forEach((file, index)=>{//foreach의 콜백함수(item(명명됨), index 이용), array
+    	if(file.size > 5242880){
+    		alert(`파일 ${file.name} 의 용량이 너무 커 업로드 할 수 없습니다. (최대 5mb)`);
+    		files.splice(index,1);//files[index]부터 1개 삭제
+    		console.log(files);
+    		updateFileList(files);
+    	}
+    });
+    
+    
+   //인풋에 들어온 데이터 fileList를 덮어씌우는 방법 DataTransfer을 사용한다.
+   //fileList 는 읽기전용 객체이기 때문에 직접적인 삭제가 불가하기 때문
+   function updateFileList(updatedFiles){
+	   const dataTransfer = new DataTransfer();//해당 객체를 사용해서 덮어씌울 수 있다.
+	   updatedFiles.forEach((file) => dataTransfer.items.add(file));//
+       fileInput1.files = dataTransfer.files;//덮어쓰기
+       
+	   
+   }
+   
+    
+    
+    
     
 });
 </script>
