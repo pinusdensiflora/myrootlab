@@ -51,7 +51,7 @@ public class FileController {
 			}
 		}
 
-		return "/file/file";
+		return "redirect:/file";
 	}
 
 }
