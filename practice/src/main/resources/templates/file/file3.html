@@ -18,11 +18,6 @@
         <label for="fileInput2">파일 선택 2:</label>
         <input type="file" id="fileInput2" name="files2[]" multiple><br><br>
 
-
-		<ul id = "section1"></ul>
-    	<ul id = "section2"></ul>
-
-
         <input type="submit" value="업로드">
     </form>
     
@@ -42,28 +37,27 @@
     </span>
     
     
-    
+    <ul id = "section1"></ul>
+    <ul id = "section2"></ul>
 
 <script>
 
 let lastFiles1 = [];
+const fileInput1 = document.getElementById("fileInput1");
 let lastFiles2 = [];
+const fileInput2 = document.getElementById("fileInput2");
+
+const section1 = document.getElementById("section1");
+const section2 = document.getElementById("section2");
+
 //핸들러 설정, 렌더링 시 정해짐
 fileInput1.addEventListener('change', function(){
-	
-	const fileInput = document.getElementById("fileInput1");
-	const section = document.getElementById("section1");
-	fileupload(fileInput,lastFiles1);
-	rend(lastFiles1, section, fileInput);
-
+	fileupload(fileInput1,lastFiles1);
+	rend(lastFiles1, section1);
 });
 fileInput2.addEventListener('change', function(){
-
-	const fileInput = document.getElementById("fileInput2");
-	const section = document.getElementById("section2");
-	fileupload(fileInput,lastFiles2);
-	rend(lastFiles2, section, fileInput);
-	
+	fileupload(fileInput2,lastFiles2);
+	rend(lastFiles2, section2);
 });
 
 function fileupload(fileInput, lastFiles){//<input type="file">에 변화가 생길 시.
@@ -141,8 +135,21 @@ function updateFileList(fileInput, updatedFiles){
 }
 
 
+function rend(lastFiles){
+	section1.innerHTML = '';
+	lastFiles.forEach((item) =>{
+		
+		const file = document.createElement('li');
+		file.textContent = item.name;
+		
+		section1.appendChild(file);
+	});
+	
+	
+	
+}
 
-function rend(lastFiles, inputsection, fileInput){
+function rend(lastFiles, inputsection){
 	inputsection.innerHTML = '';
 	for(let i = lastFiles.length-1; i>=0; i--){
 		
@@ -151,20 +158,24 @@ function rend(lastFiles, inputsection, fileInput){
 		const delBtn = document.createElement('button');
 		delBtn.textContent = "삭제";
 		delBtn.addEventListener('click', function() {
-	        delFile(lastFiles, i, fileInput);
-	        rend(lastFiles, inputsection, fileInput); //갱신
+	        delFile(lastFiles, i);
+	        rend(lastFiles, inputsection);
 	        return;
 	    });
 		file.appendChild(delBtn);
 		
 		inputsection.appendChild(file);
+		
 	}
 
 }
 
-function delFile(lastFiles, index, fileInput){
+function delFile(lastFiles, index){
 	lastFiles.splice(index,1);
-	updateFileList(fileInput,lastFiles);
+	updateFileList(fileInput1,lastFiles); //일단,, 1로
+	
+
+	
 }
 
 
