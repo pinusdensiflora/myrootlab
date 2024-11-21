@@ -21,54 +21,22 @@
         <input type="submit" value="업로드">
     </form>
     
-    <span>
-   	데이터 입력을 취소할 시,
-   	이전의 데이터를 남긴다.
-   	<br/>
-   	input accept는 4가지 형식을 정해두었으나,
-   	데이터 선택 창에서 모든 파일보기를 통해
-   	이외의 확장자를 가진 파일을 택한 경우
-   	스크립트를 통해 한번 더 검증한다. <br/>
-   (데이터 크기도 함께 검증한다.)
-   	<br/>
-   	이전의 데이터가 존재하고 <br/>새로운 데이터를 입력했으나, 입력된 모든 데이터가 적합하지 않은 경우 입력을 취소시킨다 
-    <br/>
-    강제적인 파일타입변환을 캐치하기 위해 파일의 헤더를 읽는 작업은 이행중에 있다.
-    </span>
-    
-    
-    <ul id = "section1"></ul>
-    <ul id = "section2"></ul>
+    <div id = "section"></div>
 
 <script>
 
 let lastFiles1 = [];
 const fileInput1 = document.getElementById("fileInput1");
-let lastFiles2 = [];
-const fileInput2 = document.getElementById("fileInput2");
 
-const section1 = document.getElementById("section1");
-const section2 = document.getElementById("section2");
-
-//핸들러 설정, 렌더링 시 정해짐
-fileInput1.addEventListener('change', function(){
-	fileupload(fileInput1,lastFiles1);
-	rend(lastFiles1, section1);
-});
-fileInput2.addEventListener('change', function(){
-	fileupload(fileInput2,lastFiles2);
-	rend(lastFiles2, section2);
-});
-
-function fileupload(fileInput, lastFiles){//<input type="file">에 변화가 생길 시.
-    let files = fileInput.files;//files 로 <input type="file"> 에 담긴 파일을 볼 수 있다.
+fileInput1.addEventListener('change',function(){//<input type="file">에 변화가 생길 시.
+    let files = fileInput1.files;//files 로 <input type="file"> 에 담긴 파일을 볼 수 있다.
     
     console.log(files);
     
     if(files.length == 0){// 선택하지 않고 취소
     	alert("취소하셨습니다.");
-    	console.log("last : ",lastFiles);
-    	updateFileList(fileInput,lastFiles);
+    	console.log("last : ",lastFiles1);
+    	updateFileList(lastFiles1);
     	return;
     }
     
@@ -106,59 +74,28 @@ function fileupload(fileInput, lastFiles){//<input type="file">에 변화가 생
     
     if(files.length == 0){
     	alert("저장할 파일이 없어 파일입력이 취소되었습니다.");
-    	updateFileList(fileInput, lastFiles);
+    	updateFileList(lastFiles1);
     	return;
     	
     }
-    updateFileList(fileInput, files);
-    //lastFiles = files.slice(); //최종 배열복제 
-    //여기서 새로운 객체가 들어가게 되면서 핸들러(이건 렌더링할때 이미 정해졌음)가 다시 lastFiles1 을 호출할 때는 과거의 [] 만 남게됨
-    
-    //따라서 lastFiles를 주소가 바뀌지 않게 직접적으로 그 내용을 변경하여야한다.
-    lastFiles.length = 0; // 기존 내용을 비운다
-    lastFiles.push(...files); // 새로운 파일 목록을 추가한다
-    console.log("last : ",lastFiles);
+    updateFileList(files);
+    lastFiles1 = files.slice(); //최종 배열복제
     console.log("갱신성공");
 
-}
+
+    
+});
 
 //인풋에 들어온 데이터 fileList를 덮어씌우는 방법 DataTransfer을 사용한다.
 //fileList 는 읽기전용 객체이기 때문에 직접적인 삭제가 불가하기 때문
-function updateFileList(fileInput, updatedFiles){
+function updateFileList(updatedFiles){
 	const dataTransfer = new DataTransfer();//해당 객체를 사용해서 덮어씌울 수 있다.
 	updatedFiles.forEach((file) => dataTransfer.items.add(file));//
-    fileInput.files = dataTransfer.files;//덮어쓰기
+    fileInput1.files = dataTransfer.files;//덮어쓰기
     
     console.log(updatedFiles);
     
 	   
-}
-
-
-function rend(lastFiles){
-	section1.innerHTML = '';
-	lastFiles.forEach((item) =>{
-		
-		const file = document.createElement('li');
-		file.textContent = item.name;
-		
-		section1.appendChild(file);
-	});
-	
-	
-	
-}
-
-function rend(lastFiles, inputsection){
-	inputsection.innerHTML = '';
-	lastFiles.forEach((item) =>{
-		
-		const file = document.createElement('li');
-		file.textContent = item.name;
-		
-		inputsection.appendChild(file);
-	});
-
 }
 </script>
 
