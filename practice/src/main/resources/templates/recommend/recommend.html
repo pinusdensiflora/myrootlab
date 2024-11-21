@@ -16,6 +16,7 @@
 
 function recommend() {
 	var text = document.getElementById("new_id").value;
+	console.log(text);
 	if(text == ""){
 		alert("입력하세요");
 		return;
@@ -23,11 +24,16 @@ function recommend() {
 	
 	text = text.toLowerCase();
 
+	if(!text.match(/[\w-\.]+/g)){
+		//null 인 경우(ex ㅁㄴㅇㄹ, @@@)
+		alert("허용하는 문자를 포함하여 아이디를 만들어 주세요.");
+	}
+	
 	text = text.match(/[\w-\.]+/g).join(""); //비허용 문자 제거
-
+	
 	text = text.match(/(?<!\.)\.|([\w-]+)/g).join(""); // 앞에 .이 없는 . 과 다른 문자(\w, -)만 추출 
 
-	text = text.replace(/^(\.)|(\.)$/g, ""); // 맨앞의 . 또는 맨뒤의 . 을 ""로 치환
+	text = text.replace(/^(\.)|(\.)$/g, ""); // 맨앞의 . 또는 맨뒤의 . 을 ""로 치환(replace 안쓰고는 ..ㅠ)
 
 	text = text ? text : "a" ; //공백일 시, "a"로 치환
 
