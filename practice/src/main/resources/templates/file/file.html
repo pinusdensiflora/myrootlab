@@ -21,14 +21,24 @@
         <input type="submit" value="업로드">
     </form>
     
-    <div></div>
+    <div id = "section"></div>
 
 <script>
+
+let lastFiles1 = [];
 const fileInput1 = document.getElementById("fileInput1");
 
 fileInput1.addEventListener('change',function(){//<input type="file">에 변화가 생길 시.
     let files = fileInput1.files;//files 로 <input type="file"> 에 담긴 파일을 볼 수 있다.
+    
     console.log(files);
+    
+    if(files.length == 0){// 선택하지 않고 취소
+    	alert("취소하셨습니다.");
+    	console.log("last : ",lastFiles1);
+    	updateFileList(lastFiles1);
+    	return;
+    }
     
     
     files = Array.from(files); //배열로 변환 
@@ -40,36 +50,15 @@ fileInput1.addEventListener('change',function(){//<input type="file">에 변화�
     	"application/pdf",
     	"application/vnd.openxmlformats-officedocument.presentationml.presentation"]
 
-
-    /* files.forEach((file, index)=>{//foreach의 콜백함수(item(명명됨), index 이용), array
-    	
-    	console.log(`루프 ${index}`,file);
-    	if(!fileTypes.includes(file.type)){
-    		
-    		alert(`파일 ${file.name} 은 지원하지 않은 파일형식입니다. (.jpg, .png, .pdf, .pptx)`)
-    		files.splice(index,1);//files[index]부터 1개 삭제(미해당 파일형식 파일을 삭제한다.)
-    		updateFileList(files);
-    		// continue; //forEach는 함수라서 return으로 continue 처리를 해주어야함.
-    		return;
-    	}
-    
-    	if(file.size > 5242880){
-    		alert(`파일 ${file.name} 의 용량이 너무 커 업로드 할 수 없습니다. (최대 5mb)`);
-    		files.splice(index,1);//files[index]부터 1개 삭제(용량이 큰 파일을 삭제한다.)
-    		console.log(files);
-    		updateFileList(files);
-    	}
-		//삭제시 인덱스가 꼬여서 순회가 잘일어나지 않음
-    }); */
     
     for(let i = files.length -1 ; i >= 0 ; i--){
-    	//순서가 꼬이는 부분으로 인해서 역순으로 순회
+    	//삭제로 인해 순서가 꼬이는 부분으로 인해서 역순으로 순회
     	console.log(`루프 ${i}`,files[i]);
     	if(!fileTypes.includes(files[i].type)){
     		
-    		alert(`파일 ${files[i].name} 은 지원하지 않은 파일형식입니다. (.jpg, .png, .pdf, .pptx)`)
+    		alert(`파일 ${files[i].name} 은 지원하지 않은 파일형식입니다. \n지원 형식 : (.jpg, .png, .pdf, .pptx)`)
     		files.splice(i,1);//files[index]부터 1개 삭제(미해당 파일형식 파일을 삭제한다.)
-    		updateFileList(files);
+    		//updateFileList(files);
     		continue; //forEach는 함수라서 return으로 continue 처리를 해주어야함.
     		
     	}
@@ -78,28 +67,36 @@ fileInput1.addEventListener('change',function(){//<input type="file">에 변화�
     		alert(`파일 ${files[i].name} 의 용량이 너무 커 업로드 할 수 없습니다. (최대 5mb)`);
     		files.splice(i,1);//files[index]부터 1개 삭제(용량이 큰 파일을 삭제한다.)
     		console.log(files);
-    		updateFileList(files);
+    		//updateFileList(files);
     	}
 		
     }
     
-   //인풋에 들어온 데이터 fileList를 덮어씌우는 방법 DataTransfer을 사용한다.
-   //fileList 는 읽기전용 객체이기 때문에 직접적인 삭제가 불가하기 때문
-   function updateFileList(updatedFiles){
-	   const dataTransfer = new DataTransfer();//해당 객체를 사용해서 덮어씌울 수 있다.
-	   updatedFiles.forEach((file) => dataTransfer.items.add(file));//
-       fileInput1.files = dataTransfer.files;//덮어쓰기
-       
-       console.log(updatedFiles);
-       
-	   
-   }
-   
-    
-    
-    
+    if(files.length == 0){
+    	alert("저장할 파일이 없어 파일입력이 취소되었습니다.");
+    	updateFileList(lastFiles1);
+    	return;
+    	
+    }
+    updateFileList(files);
+    lastFiles1 = files.slice(); //최종 배열복제
+    console.log("갱신성공");
+
+
     
 });
+
+//인풋에 들어온 데이터 fileList를 덮어씌우는 방법 DataTransfer을 사용한다.
+//fileList 는 읽기전용 객체이기 때문에 직접적인 삭제가 불가하기 때문
+function updateFileList(updatedFiles){
+	const dataTransfer = new DataTransfer();//해당 객체를 사용해서 덮어씌울 수 있다.
+	updatedFiles.forEach((file) => dataTransfer.items.add(file));//
+    fileInput1.files = dataTransfer.files;//덮어쓰기
+    
+    console.log(updatedFiles);
+    
+	   
+}
 </script>
 
 
