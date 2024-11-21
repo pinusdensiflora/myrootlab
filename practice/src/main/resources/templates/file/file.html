@@ -9,7 +9,11 @@
 
     <form action="/file/upload" method="post" enctype="multipart/form-data">
         <label for="fileInput1">파일 선택 1:</label>
-        <input type="file" id="fileInput1" name="files1[]" multiple accept=".png, .pdf .pptx"><br><br>
+        <input type="file" id="fileInput1" name="files1[]"
+         multiple accept="image/jpeg, 
+    					image/png,
+    					application/pdf,
+    					application/vnd.openxmlformats-officedocument.presentationml.presentation"><br><br>
 
         <label for="fileInput2">파일 선택 2:</label>
         <input type="file" id="fileInput2" name="files2[]" multiple><br><br>
@@ -18,23 +22,6 @@
     </form>
     
     <div></div>
-    <!-- <input type="file"> 태그는 파일 선택을 위한 입력 필드입니다.
-multiple 속성을 추가하면 사용자가 여러 파일을 선택할 수 있습니다.
-name 속성에 []를 추가하면 서버에서 여러 파일을 배열 형태로 받을 수 있습니다.
-enctype="multipart/form-data"는 파일 업로드를 위해 반드시 설정해야 하는 속성입니다. -->
-
-<!-- 
-MIME 타입 (application/pdf):
-
-application/pdf는 MIME 타입으로, 웹에서 파일의 형식을 정의하는 데 사용됩니다. 서버가 클라이언트에게 파일을 전송할 때 이 MIME 타입을 사용하여 파일의 형식을 알려줍니다. 브라우저는 이 정보를 바탕으로 파일을 어떻게 처리할지 결정합니다.
-파일 확장자 (.pdf):
-
-.pdf는 파일의 확장자로, 파일 이름의 끝에 붙어 파일 형식을 나타냅니다. 운영 체제나 파일 탐색기에서 파일을 인식하고, 해당 파일을 열기 위해 어떤 프로그램을 사용할지를 결정하는 데 도움을 줍니다.
-사용 이유
-MIME 타입은 주로 서버와 클라이언트 간의 통신에서 사용되며, 파일의 실제 내용에 대한 정보를 제공합니다.
-파일 확장자는 사용자에게 파일의 형식을 쉽게 인식할 수 있도록 도와줍니다.
-따라서, 웹 개발에서는 파일 업로드 시 accept 속성에 application/pdf를 사용하여 PDF 파일만 선택할 수 있도록 제한할 수 있습니다. 반면, .pdf는 파일 이름에서 파일 형식을 나타내는 데 사용됩니다. 두 가지 모두 중요하지만, 각각의 용도에 따라 적절히 사용됩니다. -->
-
 
 <script>
 const fileInput1 = document.getElementById("fileInput1");
@@ -43,32 +30,58 @@ fileInput1.addEventListener('change',function(){//<input type="file">에 변화�
     let files = fileInput1.files;//files 로 <input type="file"> 에 담긴 파일을 볼 수 있다.
     console.log(files);
     
+    
     files = Array.from(files); //배열로 변환 
     
-    //용량이 초과되면 용량 초과안내 5mb = 5,242,880 byte
-    //console.log(files.length);
-    /*for (let i=0; i< files.length; i++){ //파일의 key 값은 정수로 들어감
-    	 if(files[i].size > 5242880){
-    		 alert(`file${i+1}의 용량이 큽니다. (최대5mb)`);
-     		 //delete files[i];//Input.files는 읽기 전용 데이터라 배열화 시켜주지 않으면 이런식의 삭제가 불가능함
-    		 fileInput1.value = ""; // 따라서 파일 선택 초기화
-    		 console.log(files); 
-    		 
-    	 }
+    //조건에 맞는 mime 타입들 (직접입력후 log 확인)
+    fileTypes = [
+    	//"image/jpeg", 
+    	"image/png",
+    	"application/pdf",
+    	"application/vnd.openxmlformats-officedocument.presentationml.presentation"]
+
+
+    /* files.forEach((file, index)=>{//foreach의 콜백함수(item(명명됨), index 이용), array
     	
-    }*/
+    	console.log(`루프 ${index}`,file);
+    	if(!fileTypes.includes(file.type)){
+    		
+    		alert(`파일 ${file.name} 은 지원하지 않은 파일형식입니다. (.jpg, .png, .pdf, .pptx)`)
+    		files.splice(index,1);//files[index]부터 1개 삭제(미해당 파일형식 파일을 삭제한다.)
+    		updateFileList(files);
+    		// continue; //forEach는 함수라서 return으로 continue 처리를 해주어야함.
+    		return;
+    	}
     
-    
-    
-    files.forEach((file, index)=>{//foreach의 콜백함수(item(명명됨), index 이용), array
     	if(file.size > 5242880){
     		alert(`파일 ${file.name} 의 용량이 너무 커 업로드 할 수 없습니다. (최대 5mb)`);
-    		files.splice(index,1);//files[index]부터 1개 삭제
+    		files.splice(index,1);//files[index]부터 1개 삭제(용량이 큰 파일을 삭제한다.)
     		console.log(files);
     		updateFileList(files);
     	}
-    });
+		//삭제시 인덱스가 꼬여서 순회가 잘일어나지 않음
+    }); */
     
+    for(let i = files.length -1 ; i >= 0 ; i--){
+    	//순서가 꼬이는 부분으로 인해서 역순으로 순회
+    	console.log(`루프 ${i}`,files[i]);
+    	if(!fileTypes.includes(files[i].type)){
+    		
+    		alert(`파일 ${files[i].name} 은 지원하지 않은 파일형식입니다. (.jpg, .png, .pdf, .pptx)`)
+    		files.splice(i,1);//files[index]부터 1개 삭제(미해당 파일형식 파일을 삭제한다.)
+    		updateFileList(files);
+    		continue; //forEach는 함수라서 return으로 continue 처리를 해주어야함.
+    		
+    	}
+    
+    	if(files[i].size > 5242880){
+    		alert(`파일 ${files[i].name} 의 용량이 너무 커 업로드 할 수 없습니다. (최대 5mb)`);
+    		files.splice(i,1);//files[index]부터 1개 삭제(용량이 큰 파일을 삭제한다.)
+    		console.log(files);
+    		updateFileList(files);
+    	}
+		
+    }
     
    //인풋에 들어온 데이터 fileList를 덮어씌우는 방법 DataTransfer을 사용한다.
    //fileList 는 읽기전용 객체이기 때문에 직접적인 삭제가 불가하기 때문
@@ -76,6 +89,8 @@ fileInput1.addEventListener('change',function(){//<input type="file">에 변화�
 	   const dataTransfer = new DataTransfer();//해당 객체를 사용해서 덮어씌울 수 있다.
 	   updatedFiles.forEach((file) => dataTransfer.items.add(file));//
        fileInput1.files = dataTransfer.files;//덮어쓰기
+       
+       console.log(updatedFiles);
        
 	   
    }
