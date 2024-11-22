@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+    <h1>파일 업로드-모달</h1>
+    <button id ="modalopen" class = "modalopen">열기</button>
+    
+    
+	<div id = "modal" class = "modal" style = "display: none;
+			 position: fixed;
+            z-index: 1;
+            left: 20%;
+            top: 20%;
+            width: 60%;
+            height: 32%;
+            overflow: auto;
+            background-color: rgba(255, 255, 255, 1);
+            border : 1px solid">
+	<h1>모달</h1>
+	
+	<form id="uploadForm" action="/filemodal/upload" method="post" enctype="multipart/form-data">
+        <label for="fileInput1">파일 선택 1:</label>
+        <input type="file" id="fileInput1" name="files1[]"
+         multiple accept="image/jpeg, 
+    					image/png,
+    					application/pdf,
+    					application/vnd.openxmlformats-officedocument.presentationml.presentation"><br><br>
+
+        <label for="fileInput2">파일 선택 2:</label>
+        <input type="file" id="fileInput2" name="files2[]" multiple><br><br>
+
+
+		<ul id = "section1"></ul>
+    	<ul id = "section2"></ul>
+
+			
+        <input type="submit" value="업로드" id="uploadBtn">
+    </form>
+	
+
+	
+	<button id = "modalclose" class="modalclose">닫기</button>
+	</div>
+	
+	
+
+
+<script>
+//모달 관련 스크립트
+	const modal = document.getElementById("modal");
+	const modalopen = document.getElementById("modalopen");
+	const modalclose = document.getElementById("modalclose");
+	
+	modalopen.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // 닫기 버튼을 클릭하면 모달 창을 닫기
+    // 모달 창 닫기 함수를 따로 빼두었다.
+    //modalclose.onclick = close_modal(); // 콸호는 이 코드를 수행할 때 함수를 호출한다는 의미, 즉시 시행되므로 잘못된 코드
+    modalclose.onclick = close_modal; // 이렇게 함수를 할당
+    
+function close_modal() {
+        modal.style.display = "none";
+}
+    
+</script>
+
+
+
+
+<script>
+const fileInput1 = document.getElementById("fileInput1");
+const fileInput2 = document.getElementById("fileInput2");
+let lastFiles1 = [];
+let lastFiles2 = [];
+//핸들러 설정, 렌더링 시 정해짐
+fileInput1.addEventListener('change', function(){
+	
+	
+	const section = document.getElementById("section1");
+	fileupload(fileInput1,lastFiles1);
+	rend(lastFiles1, section, fileInput1);
+
+});
+fileInput2.addEventListener('change', function(){
+
+	
+	const section = document.getElementById("section2");
+	fileupload(fileInput2,lastFiles2);
+	rend(lastFiles2, section, fileInput2);
+	
+});
+
+function fileupload(fileInput, lastFiles){//<input type="file">에 변화가 생길 시.
+    let files = fileInput.files;//files 로 <input type="file"> 에 담긴 파일을 볼 수 있다.
+    
+    console.log(files);
+    
+    if(files.length == 0){// 선택하지 않고 취소
+    	alert("취소하셨습니다.");
+    	console.log("last : ",lastFiles);
+    	updateFileList(fileInput,lastFiles);
+    	return;
+    }
+    
+    
+    files = Array.from(files); //배열로 변환 
+    
+    //조건에 맞는 mime 타입들 (직접입력후 log 확인)
+    fileTypes = [
+    	"image/jpeg", 
+    	"image/png",
+    	"application/pdf",
+    	"application/vnd.openxmlformats-officedocument.presentationml.presentation"]
+
+    
+    for(let i = files.length -1 ; i >= 0 ; i--){
+    	//삭제로 인해 순서가 꼬이는 부분으로 인해서 역순으로 순회
+    	console.log(`루프 ${i}`,files[i]);
+    	if(!fileTypes.includes(files[i].type)){
+    		
+    		alert(`파일 ${files[i].name} 은 지원하지 않은 파일형식입니다. \n지원 형식 : (.jpg, .png, .pdf, .pptx)`)
+    		files.splice(i,1);//files[index]부터 1개 삭제(미해당 파일형식 파일을 삭제한다.)
+    		//updateFileList(files);
+    		continue; //forEach는 함수라서 return으로 continue 처리를 해주어야함.
+    		
+    	}
+    
+    	if(files[i].size > 5242880){
+    		alert(`파일 ${files[i].name} 의 용량이 너무 커 업로드 할 수 없습니다. (최대 5mb)`);
+    		files.splice(i,1);//files[index]부터 1개 삭제(용량이 큰 파일을 삭제한다.)
+    		console.log(files);
+    		//updateFileList(files);
+    	}
+		
+    }
+    
+    if(files.length == 0){
+    	alert("저장할 파일이 없어 파일입력이 취소되었습니다.");
+    	updateFileList(fileInput, lastFiles);
+    	return;
+    	
+    }
+    updateFileList(fileInput, files);
+    //lastFiles = files.slice(); //최종 배열복제 
+    //여기서 새로운 객체가 들어가게 되면서 핸들러(이건 렌더링할때 이미 정해졌음)가 다시 lastFiles1 을 호출할 때는 과거의 [] 만 남게됨
+    
+    //따라서 lastFiles를 주소가 바뀌지 않게 직접적으로 그 내용을 변경하여야한다.
+    lastFiles.length = 0; // 기존 내용을 비운다
+    lastFiles.push(...files); // 새로운 파일 목록을 추가한다
+    console.log("last : ",lastFiles);
+    console.log("갱신성공");
+
+}
+
+//인풋에 들어온 데이터 fileList를 덮어씌우는 방법 DataTransfer을 사용한다.
+//fileList 는 읽기전용 객체이기 때문에 직접적인 삭제가 불가하기 때문
+function updateFileList(fileInput, updatedFiles){
+	const dataTransfer = new DataTransfer();//해당 객체를 사용해서 덮어씌울 수 있다.
+	updatedFiles.forEach((file) => dataTransfer.items.add(file));//
+    fileInput.files = dataTransfer.files;//덮어쓰기
+    
+    console.log(updatedFiles);
+    
+	   
+}
+
+
+
+function rend(lastFiles, inputsection, fileInput){
+	inputsection.innerHTML = '';
+	for(let i = lastFiles.length-1; i>=0; i--){
+		
+		const file = document.createElement('li');
+		file.textContent = lastFiles[i].name;
+		const delBtn = document.createElement('button');
+		delBtn.textContent = "삭제";
+		delBtn.addEventListener('click', function() {
+	        delFile(lastFiles, i, fileInput);
+	        rend(lastFiles, inputsection, fileInput); //갱신
+	        return;
+	    });
+		file.appendChild(delBtn);
+		
+		inputsection.appendChild(file);
+	}
+
+}
+
+function delFile(lastFiles, index, fileInput){
+	lastFiles.splice(index,1);
+	updateFileList(fileInput,lastFiles);
+}
+
+
+</script>
+
+
+</body>
+</html>
