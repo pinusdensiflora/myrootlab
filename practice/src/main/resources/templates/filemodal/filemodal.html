@@ -21,30 +21,32 @@
             overflow: auto;
             background-color: rgba(255, 255, 255, 1);
             border : 1px solid">
-	<h1>모달</h1>
+	<h3>파일제출 모달</h3>
 	
 	<form id="uploadForm" name="uploadForm" method="post" onsubmit="return false;" enctype="multipart/form-data">
         <label for="fileInput1">파일 선택 1:</label>
-        <input type="file" id="fileInput1" name="files1[]"
-         multiple accept="image/jpeg, 
+        <input type="file" id="fileInput1" name="files1[]" multiple 
+        	accept="image/jpeg, 
     					image/png,
     					application/pdf,
     					application/vnd.openxmlformats-officedocument.presentationml.presentation"><br><br>
 
         <label for="fileInput2">파일 선택 2:</label>
-        <input type="file" id="fileInput2" name="files2[]" multiple><br><br>
+        <input type="file" id="fileInput2" name="files2[]" multiple
+        	accept="image/jpeg, 
+    					image/png,
+    					application/pdf,
+    					application/vnd.openxmlformats-officedocument.presentationml.presentation"><br><br>
 
 
 		<ul id = "section1"></ul>
     	<ul id = "section2"></ul>
 
-			
+        <button id = "modalclose" class="modalclose">취소</button>
         <input type="button" value="업로드" id="uploadBtn" onClick ="save()">
     </form>
 	
 
-	
-	<button id = "modalclose" class="modalclose">닫기</button>
 	</div>
 	
 	
@@ -62,17 +64,13 @@ let lastFiles1 = [];
 let lastFiles2 = [];
 //핸들러 설정, 렌더링 시 정해짐
 fileInput1.addEventListener('change', function(){
-	
-	
-	
+
 	fileupload(fileInput1,lastFiles1);
 	rend(lastFiles1, section1, fileInput1);
 
 });
 fileInput2.addEventListener('change', function(){
 
-	
-	
 	fileupload(fileInput2,lastFiles2);
 	rend(lastFiles2, section2, fileInput2);
 	
@@ -89,7 +87,6 @@ function fileupload(fileInput, lastFiles){//<input type="file">에 변화가 생
     	updateFileList(fileInput,lastFiles);
     	return;
     }
-    
     
     files = Array.from(files); //배열로 변환 
     
@@ -184,12 +181,18 @@ function delFile(lastFiles, index, fileInput){
 	const modalclose = document.getElementById("modalclose");
 	
 	modalopen.onclick = function() {
+		if(modal.style.display == "block"){
+			//열려있으면 그냥 리턴
+			return;
+		}
 		
         // 모달 데이터 리셋 작업 (중복제출 방지)
         const dataTransfer = new DataTransfer();//해당 객체를 사용해서 덮어씌울 수 있다. 빈객체를 만들어 덮어씌운다.
         fileInput1.files = dataTransfer.files;
+        lastFiles1.length = 0
         section1.innerHTML = '';
         fileInput2.files = dataTransfer.files;
+        lastFiles2.length = 0
         section2.innerHTML = '';
 		
         modal.style.display = "block";
@@ -203,7 +206,9 @@ function delFile(lastFiles, index, fileInput){
 function close_modal() {
         modal.style.display = "none";
    
-       	
+        // 모달 데이터 리셋 작업 (중복제출 방지)
+        const dataTransfer = new DataTransfer();//해당 객체를 사용해서 덮어씌울 수 있다. 빈객체를 만들어 덮어씌운다.
+
         console.log("취소");
 }
 function save(){

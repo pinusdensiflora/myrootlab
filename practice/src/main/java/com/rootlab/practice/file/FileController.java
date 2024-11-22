@@ -20,7 +20,7 @@ public class FileController {
 	public String file() {
 		return "/file/file";
 	}
-
+	/*
 	@PostMapping("/upload")
 	public String file(@RequestParam("files1[]") MultipartFile[] files1,
 			@RequestParam("files2[]") MultipartFile[] files2) {
@@ -52,6 +52,6 @@ public class FileController {
 		}
 
 		return "redirect:/file";
-	}
+	}*/
 
 }

@@ -1,11 +1,13 @@
-package com.rootlab.practice.file;
+package com.rootlab.practice.filemodal;
 
 
 import java.time.LocalDateTime;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class FileMeta {
 
 	private int id;
@@ -18,6 +20,20 @@ public class FileMeta {
 
 	
 }
+
+/*
+ * 테이블 생성 쿼리
+CREATE TABLE filemeta(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	name VARCHAR(255) NOT NULL,
+	size LONG,
+	type VARCHAR(255),
+	createtime DATETIME,
+	path VARCHAR(255),
+	link VARCHAR(255)
+);
+ * */
+
 
 /*
  * 1. 기본 메타정보
