@@ -17,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
 
+
+
 @Controller
 @RequestMapping("/filemodal")
 @RequiredArgsConstructor
@@ -24,10 +26,12 @@ public class FilemodalController {
 
 	private final FileMetaService fileMetaService;
 	
+	
 	@GetMapping("")
 	public String file() {
 		return "/filemodal/filemodal";
 	}
+	
 
 	@PostMapping("/upload")
 	public String file(@RequestParam("files1[]") MultipartFile[] files1,
