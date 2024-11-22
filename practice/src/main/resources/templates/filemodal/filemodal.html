@@ -213,16 +213,16 @@ function close_modal() {
 }
 function save(){
 	if (!fileInput1.value && !fileInput2.value) {
-	     
 	      alert('파일을 선택해주세요.');
 	      return;
-	    }
+	}
 	
 	let frm = document.uploadForm;
 	frm.method="post";
 	frm.action="/filemodal/upload";
 	frm.submit();
-
+	
+	alert('업로드 되었습니다.');
 	
 }
     
