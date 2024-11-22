@@ -165,9 +165,7 @@ function updateFileList(fileInput, updatedFiles){
 	const dataTransfer = new DataTransfer();//해당 객체를 사용해서 덮어씌울 수 있다.
 	updatedFiles.forEach((file) => dataTransfer.items.add(file));//
     fileInput.files = dataTransfer.files;//덮어쓰기
-    
-    console.log(updatedFiles);
-    
+      
 	   
 }
 
@@ -199,8 +197,26 @@ function delFile(lastFiles, index, fileInput){
 }
 
 
+
+
 </script>
 
+<script>
+const uploadBtn = document.getElementById("uploadBtn");
+uploadBtn.onclick = function() {
+	if(lastFiles1 == "" && lastFiles2 == ""){
+	   	//alert(`${lastFiles1}, ${lastFiles2}`);
+	   	alert("업로드할 파일이 없습니다.");
+	   
+	}
+    history.pushState(null, null, location.href);
+    window.onpopstate = function(event) {
+        history.go(1);
+    };
+
+}
+
+</script>
 
 </body>
 </html>
