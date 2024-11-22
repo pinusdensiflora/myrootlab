@@ -23,7 +23,7 @@
             border : 1px solid">
 	<h1>모달</h1>
 	
-	<form id="uploadForm" action="/filemodal/upload" method="post" enctype="multipart/form-data">
+	<form id="uploadForm" name="uploadForm" method="post" onsubmit="return false;" enctype="multipart/form-data">
         <label for="fileInput1">파일 선택 1:</label>
         <input type="file" id="fileInput1" name="files1[]"
          multiple accept="image/jpeg, 
@@ -39,7 +39,7 @@
     	<ul id = "section2"></ul>
 
 			
-        <input type="submit" value="업로드" id="uploadBtn">
+        <input type="button" value="업로드" id="uploadBtn" onClick ="save()">
     </form>
 	
 
@@ -128,13 +128,10 @@ function fileupload(fileInput, lastFiles){//<input type="file">에 변화가 생
     	return;
     	
     }
-    updateFileList(fileInput, files);
-    //lastFiles = files.slice(); //최종 배열복제 
-    //여기서 새로운 객체가 들어가게 되면서 핸들러(이건 렌더링할때 이미 정해졌음)가 다시 lastFiles1 을 호출할 때는 과거의 [] 만 남게됨
     
-    //따라서 lastFiles를 주소가 바뀌지 않게 직접적으로 그 내용을 변경하여야한다.
-    lastFiles.length = 0; // 기존 내용을 비운다
+	//기존파일 + 새로입력한 파일
     lastFiles.push(...files); // 새로운 파일 목록을 추가한다
+    updateFileList(fileInput, lastFiles);
     console.log("last : ",lastFiles);
     console.log("갱신성공");
 
@@ -179,44 +176,8 @@ function delFile(lastFiles, index, fileInput){
 
 
 
+   
 
-</script>
-
-<script>
-/* const uploadBtn = document.getElementById("uploadBtn");
-uploadBtn.onclick = function() {
-	if(lastFiles1 == "" && lastFiles2 == ""){
-	   	//alert(`${lastFiles1}, ${lastFiles2}`);
-	   	alert("업로드할 파일이 없습니다.");
-	   
-	}
-    history.pushState(null, null, location.href);
-    window.onpopstate = function(event) {
-        history.go(1);
-    };
-
-}
- */
- // 빈파일을 제출 방지
- document.getElementById('uploadForm').onsubmit = function (e) {
-	    
-	    if (!fileInput1.value && !fileInput2.value) {
-	      e.preventDefault(); // 폼 제출 방지
-	      alert('파일을 선택해주세요.');
-	      return;
-	    }
-	    
-	    history.pushState(null, null, location.href);
-	    window.onpopstate = function(event) {
-	        history.go(1);
-	    };
-	    
-	  };
-	  
-</script>
-
-
-<script>
 //모달 관련 스크립트
 	const modal = document.getElementById("modal");
 	const modalopen = document.getElementById("modalopen");
@@ -241,11 +202,24 @@ uploadBtn.onclick = function() {
     
 function close_modal() {
         modal.style.display = "none";
-       	//여기에는 굳이 모달을 깔끔하게 리셋하는 코드가 필요하지 않을 듯
+   
        	
         console.log("취소");
 }
+function save(){
+	if (!fileInput1.value && !fileInput2.value) {
+	     
+	      alert('파일을 선택해주세요.');
+	      return;
+	    }
+	
+	let frm = document.uploadForm;
+	frm.method="post";
+	frm.action="/filemodal/upload";
+	frm.submit();
 
+	
+}
     
 </script>
 

@@ -51,7 +51,7 @@ public class FilemodalController {
 			}
 		}
 
-		return "redirect:/filemodal";
+		return "redirect:/";
 	}
 
 }
