@@ -6,7 +6,7 @@
 </head>
 <body>
 
-
+	<a href = "/">메인으로</a>
     <h1>파일 업로드-모달</h1>
     <button id ="modalopen" class = "modalopen">열기</button>
     
@@ -50,50 +50,31 @@
 	
 
 
-<script>
-//모달 관련 스크립트
-	const modal = document.getElementById("modal");
-	const modalopen = document.getElementById("modalopen");
-	const modalclose = document.getElementById("modalclose");
-	
-	modalopen.onclick = function() {
-        modal.style.display = "block";
-    }
-
-    // 닫기 버튼을 클릭하면 모달 창을 닫기
-    // 모달 창 닫기 함수를 따로 빼두었다.
-    //modalclose.onclick = close_modal(); // 콸호는 이 코드를 수행할 때 함수를 호출한다는 의미, 즉시 시행되므로 잘못된 코드
-    modalclose.onclick = close_modal; // 이렇게 함수를 할당
-    
-function close_modal() {
-        modal.style.display = "none";
-}
-    
-</script>
-
 
 
 
 <script>
 const fileInput1 = document.getElementById("fileInput1");
 const fileInput2 = document.getElementById("fileInput2");
+const section1 = document.getElementById("section1");
+const section2 = document.getElementById("section2");
 let lastFiles1 = [];
 let lastFiles2 = [];
 //핸들러 설정, 렌더링 시 정해짐
 fileInput1.addEventListener('change', function(){
 	
 	
-	const section = document.getElementById("section1");
+	
 	fileupload(fileInput1,lastFiles1);
-	rend(lastFiles1, section, fileInput1);
+	rend(lastFiles1, section1, fileInput1);
 
 });
 fileInput2.addEventListener('change', function(){
 
 	
-	const section = document.getElementById("section2");
+	
 	fileupload(fileInput2,lastFiles2);
-	rend(lastFiles2, section, fileInput2);
+	rend(lastFiles2, section2, fileInput2);
 	
 });
 
@@ -202,7 +183,7 @@ function delFile(lastFiles, index, fileInput){
 </script>
 
 <script>
-const uploadBtn = document.getElementById("uploadBtn");
+/* const uploadBtn = document.getElementById("uploadBtn");
 uploadBtn.onclick = function() {
 	if(lastFiles1 == "" && lastFiles2 == ""){
 	   	//alert(`${lastFiles1}, ${lastFiles2}`);
@@ -215,8 +196,60 @@ uploadBtn.onclick = function() {
     };
 
 }
-
+ */
+ // 빈파일을 제출 방지
+ document.getElementById('uploadForm').onsubmit = function (e) {
+	    
+	    if (!fileInput1.value && !fileInput2.value) {
+	      e.preventDefault(); // 폼 제출 방지
+	      alert('파일을 선택해주세요.');
+	      return;
+	    }
+	    
+	    history.pushState(null, null, location.href);
+	    window.onpopstate = function(event) {
+	        history.go(1);
+	    };
+	    
+	  };
+	  
 </script>
+
+
+<script>
+//모달 관련 스크립트
+	const modal = document.getElementById("modal");
+	const modalopen = document.getElementById("modalopen");
+	const modalclose = document.getElementById("modalclose");
+	
+	modalopen.onclick = function() {
+		
+        // 모달 데이터 리셋 작업 (중복제출 방지)
+        const dataTransfer = new DataTransfer();//해당 객체를 사용해서 덮어씌울 수 있다. 빈객체를 만들어 덮어씌운다.
+        fileInput1.files = dataTransfer.files;
+        section1.innerHTML = '';
+        fileInput2.files = dataTransfer.files;
+        section2.innerHTML = '';
+		
+        modal.style.display = "block";
+    }
+
+    // 닫기 버튼을 클릭하면 모달 창을 닫기
+    // 모달 창 닫기 함수를 따로 빼두었다.
+    //modalclose.onclick = close_modal(); // 콸호는 이 코드를 수행할 때 함수를 호출한다는 의미, 즉시 시행되므로 잘못된 코드
+    modalclose.onclick = close_modal; // 이렇게 함수를 할당
+    
+function close_modal() {
+        modal.style.display = "none";
+       	//여기에는 굳이 모달을 깔끔하게 리셋하는 코드가 필요하지 않을 듯
+       	
+        console.log("취소");
+}
+
+    
+</script>
+
+
 
 </body>
 </html>

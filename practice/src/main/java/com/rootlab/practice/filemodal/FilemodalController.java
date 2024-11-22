@@ -39,7 +39,7 @@ public class FilemodalController {
 					byte[] bytes = file.getBytes();
 					System.out.println(fileName + " " + fileSize + " " + bytes);
 					// 파일을 특정 경로에 저장하기
-					Path path = Paths.get("/home/dawon/_dev/download/" + fileName);// 여기에 저장 // ㄱ 같은 이름이 있다면?
+					Path path = Paths.get("C:\\_dev\\download\\" + fileName);// 여기에 저장 // ㄱ 같은 이름이 있다면? > uuid
 					Files.write(path, bytes);
 
 					System.out.println("Uploaded file: " + fileName + " (" + fileSize + " bytes)");
