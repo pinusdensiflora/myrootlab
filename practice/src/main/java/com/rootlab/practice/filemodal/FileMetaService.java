@@ -18,5 +18,9 @@ public class FileMetaService {
 	public List<FileMeta> find(String filename) {
 		return fileMetaMapper.find(filename);				
 	}
+	
+	public List<FileMeta> findAll() {
+		return fileMetaMapper.findAll();				
+	}
 
 }

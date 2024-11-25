@@ -10,20 +10,27 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequestMapping("/filemodal")
+@RequiredArgsConstructor
 public class FileDownloadController {
 	
 	
-	 private final Path downloadDir = Paths.get("").toAbsolutePath();
-	 
+	
+	 private final FileMetaService fileMetaService;
 	 
 	@GetMapping("/download")
-	public String download() {
+	public String download(Model model) {
+		model.addAttribute("filemetas", fileMetaService.findAll());
+		//System.out.println(fileMetaService.findAll());
 		return "/filemodal/download";
 	}
 	
@@ -51,17 +58,20 @@ public class FileDownloadController {
 	}
 	
 	@GetMapping("/download/{filename}")
-	public ResponseEntity<FileSystemResource> filedown(@PathVariable String filename) throws IOException {
-		System.out.println("확인");
+	public ResponseEntity<FileSystemResource> filedown(@PathVariable("filename") String filename) throws IOException {
 		
-		String filePath = "src/main/resources/static/files/" + "Sample.pdf";
+		
+		String filePath = "C:/_dev/download/" + filename;
         File file = new File(filePath);
-        
+
         
         if (!file.exists()) {
+        	System.out.println("파일이 존재하지 않습니다");
             return ResponseEntity.notFound().build();
         }
-
+        
+        
+        
         FileSystemResource resource = new FileSystemResource(file);
         
         HttpHeaders headers = new HttpHeaders();
@@ -72,6 +82,8 @@ public class FileDownloadController {
                 .body(resource);		
 		
 	}
+	
+	
 	
 	
 

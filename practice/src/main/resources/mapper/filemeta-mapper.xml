@@ -9,8 +9,7 @@
     <result property="type" column="type" />
     <result property="createDateTime" column="createtime" />
     <result property="path" column="path" />
-    <result property="link" column="link" />
-    
+
 </resultMap>
 
 	<insert id="save" parameterType="com.rootlab.practice.filemodal.FileMeta">
@@ -21,6 +20,12 @@
 	<select id="find" parameterType="String" resultMap="FMetaResultMap">
 		SELECT * FROM filemeta
 		WHERE name = #{filename};
+	</select>
+	
+	<select id = "findAll" resultMap="FMetaResultMap">
+	
+		SELECT * FROM filemeta;
+		
 	</select>
 
 </mapper>

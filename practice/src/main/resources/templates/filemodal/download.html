@@ -5,7 +5,13 @@
 <title>Insert title here</title>
 </head>
 <body>
- <a href="/filemodal/download/Sample.pdf">Sample.pdf</a>
+ <a href="/filemodal/download/Sample.pdf">Sample.pdf</a><br/>
+
+<th:block th:each="filemeta :${filemetas}">
+
+<a th:href="@{|/filemodal/download/${filemeta.name}|}">[[${filemeta.name}]]</a><br/>
+
+</th:block> 
 
 </body>
 </html>

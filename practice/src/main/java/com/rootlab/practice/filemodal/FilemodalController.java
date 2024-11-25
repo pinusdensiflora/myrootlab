@@ -65,10 +65,7 @@ public class FilemodalController {
 					// 파일 이름(확장자 포함) 가져오기
 					String fileName = file.getOriginalFilename();
 				
-//					boolean duplication = false;
-//					if(!fileMetaService.find(fileName).isEmpty()) {
-//						duplication = true; //0이 아님
-//					}
+
 					
 					// 파일 크기 가져오기
 					long fileSize = file.getSize();
@@ -85,13 +82,7 @@ public class FilemodalController {
 					//순수 파일 명
 					fileName = fileName.substring(0,fileName.length()-fileType.length()-1);
 
-//					if(duplication) {//중복이있는 경우
-//						fileName = indexName(fileName, fileType);
-//					}
-//					else {
-//						fileName = file.getOriginalFilename();//원복
-//					}
-					
+					//중복이 있으면 파일명을 파일명(1).png 과 같이 변경해줌
 					fileName = indexName(fileName,fileType);
 					
 					// 파일 내용을 바이트 배열로 읽기
@@ -110,7 +101,6 @@ public class FilemodalController {
 												.build();
 				
 					fileMetaService.save(filemeta);
-					//System.out.println(filemeta.toString());
 				
 				} catch (IOException e) {
 					e.printStackTrace();
