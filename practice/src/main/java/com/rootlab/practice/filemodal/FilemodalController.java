@@ -37,67 +37,6 @@ public class FilemodalController {
 	public String file(@RequestParam("files1[]") MultipartFile[] files1,
 			@RequestParam("files2[]") MultipartFile[] files2) {
 
-		// https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/multipart/MultipartFile.html
-		//for(MultipartFile[] files : [files1, files2] 배열 생성해서..?)
-		/*for (MultipartFile file : files1) {
-			if (!file.isEmpty()) {
-				try {
-
-					// 파일 이름(확장자 포함) 가져오기
-					String fileName = file.getOriginalFilename();
-				
-					boolean duplication = false;
-					if(!fileMetaService.find(fileName).isEmpty()) {
-						duplication = true; //0이 아님
-					}
-					
-					// 파일 크기 가져오기
-					long fileSize = file.getSize();
-					
-					
-					Pattern typeReg = Pattern.compile("\\.([a-z]+)$");
-					Matcher matcher = typeReg.matcher(fileName);
-					String fileType = "";
-					if (matcher.find()) {
-						fileType = matcher.group(1);	
-						System.out.println(fileType);
-			        }
-
-					//순수 파일 명
-					fileName = fileName.substring(0,fileName.length()-fileType.length()-1);
-
-					if(duplication) {//중복이있는 경우
-						fileName = indexName(fileName, fileType);
-					}
-					else {
-						fileName = file.getOriginalFilename();//원복
-					}
-					
-					// 파일 내용을 바이트 배열로 읽기
-					byte[] bytes = file.getBytes();
-					
-					// 파일을 특정 경로에 저장하기
-					Path path = Paths.get("C:\\_dev\\download\\" + fileName);// 여기에 저장 // ㄱ 같은 이름이 있다면? > uuid또는 인덱스 ㅂ튀이기
-					Files.write(path, bytes);
-				
-					FileMeta filemeta = FileMeta.builder()
-												.name(fileName)
-												.size(fileSize)
-												.type(fileType)
-												.createDateTime(LocalDateTime.now())
-												.path(path.toString())
-												.build();
-				
-					fileMetaService.save(filemeta);
-					//System.out.println(filemeta.toString());
-				
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} else {
-				System.out.println("Empty file: " + file.getOriginalFilename());
-			}
-		}*/
 		saveFile(files1);
 		saveFile(files2);
 		return "redirect:/";
@@ -126,10 +65,10 @@ public class FilemodalController {
 					// 파일 이름(확장자 포함) 가져오기
 					String fileName = file.getOriginalFilename();
 				
-					boolean duplication = false;
-					if(!fileMetaService.find(fileName).isEmpty()) {
-						duplication = true; //0이 아님
-					}
+//					boolean duplication = false;
+//					if(!fileMetaService.find(fileName).isEmpty()) {
+//						duplication = true; //0이 아님
+//					}
 					
 					// 파일 크기 가져오기
 					long fileSize = file.getSize();
@@ -146,12 +85,14 @@ public class FilemodalController {
 					//순수 파일 명
 					fileName = fileName.substring(0,fileName.length()-fileType.length()-1);
 
-					if(duplication) {//중복이있는 경우
-						fileName = indexName(fileName, fileType);
-					}
-					else {
-						fileName = file.getOriginalFilename();//원복
-					}
+//					if(duplication) {//중복이있는 경우
+//						fileName = indexName(fileName, fileType);
+//					}
+//					else {
+//						fileName = file.getOriginalFilename();//원복
+//					}
+					
+					fileName = indexName(fileName,fileType);
 					
 					// 파일 내용을 바이트 배열로 읽기
 					byte[] bytes = file.getBytes();
