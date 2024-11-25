@@ -13,6 +13,8 @@
 	<a href="/filemodal">업로드 하러가기</a>
 	<hr>
 	<th:block th:each="filemeta :${filemetas}">
+		<a th:href="@{|/filemodal/download/${filemeta.name}|}">[[${filemeta.name}]] / [[${filemeta.createDateTime}]]</a>
+		<br />
 
 
 	</th:block>

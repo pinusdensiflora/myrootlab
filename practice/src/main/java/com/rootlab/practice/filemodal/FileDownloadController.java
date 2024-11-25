@@ -73,8 +73,10 @@ public class FileDownloadController {
         FileSystemResource resource = new FileSystemResource(file);
         
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName()); //다운시에는 디코딩된 이름
-
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName()); //다운시에는 디코딩된 이름(인코딩과정에서 공백이 +가 되는데.. 이건..)
+        //URLEncoder.encode의 공백 + 문제 //https://hoyam.tistory.com/69 
+        
+        	
         return ResponseEntity.ok()
                 .headers(headers)
                 .body(resource);
