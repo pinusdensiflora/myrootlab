@@ -5,13 +5,17 @@
 <title>Insert title here</title>
 </head>
 <body>
- <a href="/filemodal/download/Sample.pdf">Sample.pdf</a><br/>
+	<a href="/filemodal/download/Sample.pdf">Sample.pdf</a>
+	<br />
+	<hr>
 
-<th:block th:each="filemeta :${filemetas}">
+	<h3>다운로드 할 수 있는 파일</h3>
+	<a href="/filemodal">업로드 하러가기</a>
+	<hr>
+	<th:block th:each="filemeta :${filemetas}">
 
-<a th:href="@{|/filemodal/download/${filemeta.name}|}">[[${filemeta.name}]]</a><br/>
 
-</th:block> 
+	</th:block>
 
 </body>
 </html>

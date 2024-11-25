@@ -41,7 +41,7 @@ public class FilemodalController {
 
 		saveFile(files1);
 		saveFile(files2);
-		return "redirect:/";
+		return "redirect:/filemodal/download";
 	}
 
 	
