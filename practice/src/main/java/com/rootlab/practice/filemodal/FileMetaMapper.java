@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface FileMetaMapper {
 	void save(FileMeta fileMeta);
-	List<FileMeta> find(String filename);
+	FileMeta find(String filename);
 	List<FileMeta> findAll();
 	
 }

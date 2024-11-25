@@ -2,17 +2,16 @@ package com.rootlab.practice.filemodal;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -61,25 +60,24 @@ public class FileDownloadController {
 	public ResponseEntity<FileSystemResource> filedown(@PathVariable("filename") String filename) throws IOException {
 		
 		
-		String filePath = "C:/_dev/download/" + filename;
-        File file = new File(filePath);
+		FileMeta fm = fileMetaService.find(filename);
 
+		String filePath = fm.getPath();
+        File file = new File(filePath);
+        
         
         if (!file.exists()) {
-        	System.out.println("파일이 존재하지 않습니다");
             return ResponseEntity.notFound().build();
         }
-        
-        
-        
+
         FileSystemResource resource = new FileSystemResource(file);
         
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName());
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + file.getName()); //다운시에는 디코딩된 이름
 
         return ResponseEntity.ok()
                 .headers(headers)
-                .body(resource);		
+                .body(resource);
 		
 	}
 	

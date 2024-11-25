@@ -1,6 +1,8 @@
 package com.rootlab.practice.filemodal;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -47,7 +49,7 @@ public class FilemodalController {
 		int index = 1;
 		String newFilename = filename+"."+fileType;
 		
-		while(!fileMetaService.find(newFilename).isEmpty()) {
+		while(fileMetaService.find(newFilename) != null) {
 			//비지 않았을때 index 갱신
 			System.out.print("loop ");
 			newFilename = filename + "(" + index + ")" + "." + fileType;
@@ -85,15 +87,19 @@ public class FilemodalController {
 					//중복이 있으면 파일명을 파일명(1).png 과 같이 변경해줌
 					fileName = indexName(fileName,fileType);
 					
+					//인코딩된 파일명(파일 찾기 시 인코딩 문제 떄문에 파일 저장은 인코딩된 이름으로 )
+					String encodeName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.toString());
+					
 					// 파일 내용을 바이트 배열로 읽기
 					byte[] bytes = file.getBytes();
 					
 					// 파일을 특정 경로에 저장하기
-					Path path = Paths.get("C:\\_dev\\download\\" + fileName);// 여기에 저장 // ㄱ 같은 이름이 있다면? > uuid또는 인덱스 ㅂ튀이기
+					Path path = Paths.get("C:\\_dev\\download\\" + encodeName);// 여기에 저장 // ㄱ 같은 이름이 있다면? > uuid또는 인덱스 ㅂ튀이기
 					Files.write(path, bytes);
 				
 					FileMeta filemeta = FileMeta.builder()
 												.name(fileName)
+												.encodename(encodeName)
 												.size(fileSize)
 												.type(fileType)
 												.createDateTime(LocalDateTime.now())

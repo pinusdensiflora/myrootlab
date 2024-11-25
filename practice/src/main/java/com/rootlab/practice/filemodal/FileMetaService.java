@@ -15,7 +15,7 @@ public class FileMetaService {
 		fileMetaMapper.save(filemeta);
 	}
 	
-	public List<FileMeta> find(String filename) {
+	public FileMeta find(String filename) {
 		return fileMetaMapper.find(filename);				
 	}
 	

@@ -12,6 +12,7 @@ public class FileMeta {
 
 	private int id;
 	private String name;
+	private String encodename;
 	private long size; //q바이트 단위로 저장예정
 	private String type;
 	private LocalDateTime createDateTime;
