@@ -42,6 +42,8 @@
 		    [128.58172166692066, 35.86476194105173],
 		    [128.5824900877616, 35.86220635712659]  
 		];
+		
+	
 		var latLngArray = namsan4.map(function(coord) {
 		    return new kakao.maps.LatLng(coord[1], coord[0]);  // LatLng(위도, 경도) 순서 
 		});
@@ -51,6 +53,12 @@
 		    var point = namsan4[i];
 		    namsan4Paths.push(new kakao.maps.LatLng(point[1], point[0])); //kakao.maps.LatLng 객체로 만들어야함
 		}
+		
+		
+		
+		
+		
+		
 		// 마커에 클릭 이벤트를 등록한다 (우클릭 : rightclick)
 		kakao.maps.event.addListener(marker, 'click', function() {
 		    alert('마커를 클릭했습니다!');

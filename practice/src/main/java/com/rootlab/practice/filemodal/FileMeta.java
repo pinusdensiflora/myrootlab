@@ -16,7 +16,7 @@ public class FileMeta {
 	private String type;
 	private LocalDateTime createDateTime;
 	private String path; //저장 위치
-	private String link;
+
 
 	
 }
@@ -39,7 +39,7 @@ CREATE TABLE filemeta(
  * 1. 기본 메타정보
 파일 이름: 사용자가 업로드한 원본 파일의 이름.
 파일 크기: 파일의 크기 (바이트 단위).
-파일 형식: MIME 타입 또는 파일 확장자 (예: .jpg, .pdf 등).
+파일 형식: 파일 확장자 (예: .jpg, .pdf 등).
 업로드 날짜 및 시간: 파일이 서버에 업로드된 날짜와 시간.
 2. 사용자 관련 정보
 업로드한 사용자 ID: 파일을 업로드한 사용자의 고유 식별자.

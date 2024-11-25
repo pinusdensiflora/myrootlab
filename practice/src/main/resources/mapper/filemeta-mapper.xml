@@ -14,9 +14,13 @@
 </resultMap>
 
 	<insert id="save" parameterType="com.rootlab.practice.filemodal.FileMeta">
-		INSERT INTO filemeta (name, size, type, createtime, path, link) 
-		VALUES (#{name},#{size},#{type},#{createDateTime},#{path},#{link});
+		INSERT INTO filemeta (name, size, type, createtime, path) 
+		VALUES (#{name},#{size},#{type},#{createDateTime},#{path});
 	</insert>
 
+	<select id="find" parameterType="String" resultMap="FMetaResultMap">
+		SELECT * FROM filemeta
+		WHERE name = #{filename};
+	</select>
 
 </mapper>
