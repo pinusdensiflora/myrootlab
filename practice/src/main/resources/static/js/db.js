@@ -5,13 +5,17 @@ let gender;
 let score;
 let status;
 
+let personData;
 
 const btn = document.getElementById("submitBtn");
 const tbody = document.getElementById("tbody");
 
 
 btn.onclick = function() {
-	validation();
+	if(!validation()){
+		return;
+	} 
+	
 	if (window.confirm(`정말 제출하시겠습니까?\n\n성명: ${name}\n나이: ${age}\n성별: ${gender}\n점수: ${score}\n상태: ${status}`)) {
 		sendData({
 			name: name,
@@ -22,6 +26,8 @@ btn.onclick = function() {
 		});
 	}
 	else {
+		getData();
+		//console.log("현재 데이터 : ",personData)
 		return;
 	}
 
@@ -41,16 +47,17 @@ function validation() {
 
 	if (!name || !age || !score) {
 		alert("모든 항목을 작성해 주십시오");
-		return;
+		return false;
 	}
 	if (age < 1 || age > 130) {
 		alert("올바른 나이를 입력하세요 (1-130)");
-		return;
+		return false;
 	}
 	if (score > 100 || score < 0) {
 		alert("올바른 점수를 입력하세요 (0-100)");
-		return;
+		return false;
 	}
+	return true;
 
 }
 //then 체인 말고 async await로
@@ -81,16 +88,17 @@ async function sendData(person) {
 async function getData() {
 	//async await 	
 	try {
-        const response = await fetch('https://localhost:8080/db');
+        const response = await fetch('/db/api/list');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const data = await response//response.json(); // JSON 데이터를 파싱
+        const data = await response.json(); // JSON 데이터를 파싱
         console.log('Data:', data); // 파싱된 데이터 사용
+
+        return data; //promise?
     } catch (error) {
         console.error('Error:', error); // 에러 처리
     }
-
 
 }
 function rend() {

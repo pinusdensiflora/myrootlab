@@ -32,6 +32,4 @@ public class KakaoSearch {
 		return response.getBody();
 	}
 
-
-
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rootlab.practice.db.PersonMapper">
 
-<resultMap id="PersonResultMap" type="com.rootlab.practice.db.Person">
+<!-- <resultMap id="PersonResultMap" type="com.rootlab.practice.db.Person">
 
     <id property="id" column="id" />
     <result property="name" column="name" />
@@ -13,14 +13,23 @@
     <result property="grade" column="grade" />
     <result property="status" column="status" />
 
-</resultMap>
+</resultMap> -->
 	
-<select id="findAll">
+<insert id="save" parameterType="com.rootlab.practice.db.Person">
+INSERT INTO person (name, age, gender, score, status)
+VALUES (#{name},#{age},#{gender},#{score},#{status});
+</insert>	
+
+<select id="findAll" resultType="com.rootlab.practice.db.Person">
 SELECT * FROM person;
 </select>
 
-<select id="findAllOrderByScoreAge">
-SELECT name, agegroup, gender, grade, status FROM person ORDER BY score, age;
+<select id="findAllOrderByScoreAge" resultType="com.rootlab.practice.db.Person">
+SELECT * FROM person ORDER BY score, age;
+</select>
+
+<select id="findById" parameterType="int" resultType="com.rootlab.practice.db.Person">
+SELECT * FROM person WHERE id = ${id}
 </select>
 
 
