@@ -24,8 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SearchController {
 
-	//bean은 new로 선언시 의미없어짐
-	private final KakaoSearch kakaoSearch; // = new KakaoSearch(); //객체를 여기서 생성?
+
+	KakaoSearch kakaoSearch = new KakaoSearch(); //객체를 여기서 생성?
 
 	//pretty print 할 때 gson 또는 jackson을 사용함. 의존성 필요
 	//https://mvnrepository.com/artifact/com.google.code.gson/gson/2.7
