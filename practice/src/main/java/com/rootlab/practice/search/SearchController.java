@@ -3,6 +3,7 @@ package com.rootlab.practice.search;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,14 +15,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import lombok.RequiredArgsConstructor;
+
 
 
 @Controller
 @RequestMapping("/search")
+@RequiredArgsConstructor
 public class SearchController {
 
-	
-	KakaoSearch kakaoSearch = new KakaoSearch(); //객체를 여기서 생성?
+	//bean은 new로 선언시 의미없어짐
+	private final KakaoSearch kakaoSearch; // = new KakaoSearch(); //객체를 여기서 생성?
 
 	//pretty print 할 때 gson 또는 jackson을 사용함. 의존성 필요
 	//https://mvnrepository.com/artifact/com.google.code.gson/gson/2.7
@@ -32,8 +36,7 @@ public class SearchController {
 	@GetMapping("")
 	public String search() {
 		
-		
-		
+
 		return "/search/search";
 	}
 	
