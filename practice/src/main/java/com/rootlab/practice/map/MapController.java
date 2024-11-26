@@ -12,4 +12,9 @@ public class MapController {
 	public String map() {
 		return "map/map";
 	}
+	
+	@GetMapping("/jukgok")
+	public String jukgok() {
+		return "map/map2";
+	}
 }
