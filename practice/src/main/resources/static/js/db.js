@@ -11,7 +11,7 @@ const btn = document.getElementById("submitBtn");
 const tbody = document.getElementById("tbody");
 
 
-btn.onclick = function() {
+btn.onclick = async function() {
 	if(!validation()){
 		return;
 	} 
@@ -26,8 +26,8 @@ btn.onclick = function() {
 		});
 	}
 	else {
-		getData();
-		//console.log("현재 데이터 : ",personData)
+		await getData();
+		console.log("현재 데이터 : ",personData)
 		return;
 	}
 
@@ -86,7 +86,8 @@ async function sendData(person) {
 }
 
 async function getData() {
-	//async await 	
+	//async await 
+	
 	try {
         const response = await fetch('/db/api/list');
         if (!response.ok) {
@@ -95,14 +96,14 @@ async function getData() {
         const data = await response.json(); // JSON 데이터를 파싱
         console.log('Data:', data); // 파싱된 데이터 사용
 
-        return data; //promise?
+        personData = data;//
     } catch (error) {
         console.error('Error:', error); // 에러 처리
     }
 
 }
 function rend() {
-
+	
 
 
 }
