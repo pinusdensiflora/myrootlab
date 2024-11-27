@@ -113,7 +113,35 @@ async function getData(callback) {//콜백으로 rend()로 연결하려고
 }
 function rend() {
 	console.log("현재 데이터 : ",personData);
+	tbody.innerHTML = "";
 
+	personData.forEach(function(data){
+		//console.log(data.title);
+		const datarow = document.createElement('tr');
+		
+		const name = document.createElement('td');
+		const agerange = document.createElement('td');
+		const gender = document.createElement('td');
+		const grade = document.createElement('td');
+		const status = document.createElement('td');
+		
+		name.textContent = data.name;
+		agerange.textContent = data.agegroup;
+		gender.textContent = data.gender;
+		grade.textContent = data.grade;
+		status.textContent = data.status;
+		
+		datarow.appendChild(name);
+		datarow.appendChild(agerange);
+		datarow.appendChild(gender);
+		datarow.appendChild(grade);
+		datarow.appendChild(status);
+		
+		tbody.appendChild(datarow);
+		
+	});
+
+	
 
 }
 function clear() {
