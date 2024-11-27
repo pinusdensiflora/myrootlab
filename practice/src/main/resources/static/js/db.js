@@ -10,6 +10,14 @@ let personData;
 const btn = document.getElementById("submitBtn");
 const tbody = document.getElementById("tbody");
 
+const cbtn = document.getElementById("checkBtn");
+cbtn.onclick = async function(){
+	await getData(()=>{
+		console.log("콜백");
+		rend();
+	});
+	//콜백으로 완료시 rend()가 실행되게
+}
 
 btn.onclick = async function() {//getData 부분 처리위해 async
 	if(!validation()){
@@ -17,24 +25,31 @@ btn.onclick = async function() {//getData 부분 처리위해 async
 	} 
 	
 	if (window.confirm(`정말 제출하시겠습니까?\n\n성명: ${name}\n나이: ${age}\n성별: ${gender}\n점수: ${score}\n상태: ${status}`)) {
-		sendData({
+		await sendData({
 			name: name,
 			age: age,
 			gender: gender,
 			score: score,
 			status: status
 		});
-	}
-	else {
+		
+		document.getElementById("personForm").reset();
+	
 		await getData(()=>{
 			console.log("콜백");
 			rend();
 		});
 		//콜백으로 완료시 rend()가 실행되게
+	
+		
+	}
+	else {
+		
 		return;
 	}
 
-	document.getElementById("personForm").reset();
+	
+	
 
 };
 
