@@ -11,7 +11,7 @@ const btn = document.getElementById("submitBtn");
 const tbody = document.getElementById("tbody");
 
 
-btn.onclick = async function() {
+btn.onclick = async function() {//getData 부분 처리위해 async
 	if(!validation()){
 		return;
 	} 
@@ -26,8 +26,11 @@ btn.onclick = async function() {
 		});
 	}
 	else {
-		await getData();
-		console.log("현재 데이터 : ",personData)
+		await getData(()=>{
+			console.log("콜백");
+			rend();
+		});
+		//콜백으로 완료시 rend()가 실행되게
 		return;
 	}
 
@@ -85,7 +88,7 @@ async function sendData(person) {
     }
 }
 
-async function getData() {
+async function getData(callback) {//콜백으로 rend()로 연결하려고
 	//async await 
 	
 	try {
@@ -97,13 +100,19 @@ async function getData() {
         console.log('Data:', data); // 파싱된 데이터 사용
 
         personData = data;//
+        
+        if (callback) {//파라미터에 콜백함수가 있으면
+      		callback(); // 콜백 함수 호출 (필요 시)
+    	}
+        
+        
     } catch (error) {
         console.error('Error:', error); // 에러 처리
     }
 
 }
 function rend() {
-	
+	console.log("현재 데이터 : ",personData);
 
 
 }
