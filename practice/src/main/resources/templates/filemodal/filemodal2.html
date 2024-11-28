@@ -1,264 +1,47 @@
 
- <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>파일 업로드 및 전송</title>
-</head>
-<body>
-    <h3>파일 선택: <span id="fileCount">파일 0개</span></h3>
-    <input type="file" id="fileInput" multiple>
-    <ul id="fileList"></ul>
-    <button id="uploadButton">업로드</button>
-
-    <script>
-        const fileInput = document.getElementById('fileInput');
-        const fileList = document.getElementById('fileList');
-        const fileCountDisplay = document.getElementById('fileCount');
-        let files = [];
-
-        // 파일 추가 시 이벤트
-        fileInput.addEventListener('change', (event) => {
-            const selectedFiles = Array.from(event.target.files);
-            files.push(...selectedFiles);
-            updateFileList();
-        });
-
-        // 파일 목록 업데이트
-        function updateFileList() {
-            fileList.innerHTML = '';
-            files.forEach((file, index) => {
-                const li = document.createElement('li');
-                li.innerText = file.name;
-                const deleteButton = document.createElement('button');
-                deleteButton.innerText = '삭제';
-                deleteButton.onclick = function() {
-                    deleteFile(index);
-                };
-                li.appendChild(deleteButton);
-                fileList.appendChild(li);
-            });
-            updateFileCount();
-        }
-
-        // 파일 삭제
-        function deleteFile(index) {
-            files.splice(index, 1);
-            updateFileList(); // 업데이트 과정은 여기서만 수행
-            // input 값 초기화
-            const dataTransfer = new DataTransfer();
-            files.forEach(file => dataTransfer.items.add(file));
-            fileInput.files = dataTransfer.files;
-        }
-
-        // 파일 개수 업데이트
-        function updateFileCount() {
-            fileCountDisplay.innerText = `파일 ${files.length}개`;
-        }
-
-        // 업로드 버튼 클릭 시
-        document.getElementById('uploadButton').addEventListener('click', () => {
-            const formData = new FormData();
-            files.forEach(file => {
-                formData.append('files[]', file); // 'files[]'는 백엔드에서 사용할 키
-            });
-
-            // 파일을 백엔드로 전송
-            fetch('/upload', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('성공:', data);
-                // 성공 메시지 처리
-            })
-            .catch((error) => {
-                console.error('오류:', error);
-                // 오류 처리
-            });
-        });
-    </script>
-</body>
-</html>
-
-
-<!-- 
-
-
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>파일 업로드 및 전송</title>
 </head>
 <body>
-    <h3>파일 선택: <span id="fileCount">파일 0개</span></h3>
-    <input type="file" id="fileInput" multiple>
-    <ul id="fileList"></ul>
+	
+	<h3>
+		파일 선택: <span id="fileCount">파일 0개</span>
+	</h3>
+	<input type="file" id="fileInput" multiple>
+	<ul id="fileList"></ul>
+ 	<button id="uploadButton">업로드</button> 
 
-    <script>
+
+
+
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	<hr/>
+	배열 그대로를 전송 : ok <br/>
+	파일 인풋에 들어간 거 그대로 남음 동기화를 시키는 법 <br/>
+	new DataTransfer() ? <br/>
+	(지금 빈 값, 용량, 타입 등 validation 진행 X) <br/>
+	
+	<script>
+    
+    
         const fileInput = document.getElementById('fileInput');
         const fileList = document.getElementById('fileList');
         const fileCountDisplay = document.getElementById('fileCount');
         let files = [];
 
-        // 파일 추가 시 이벤트
-        fileInput.addEventListener('change', (event) => {
-            const selectedFiles = Array.from(event.target.files);
-            files = [...files, ...selectedFiles];
-            updateFileList();
-            updateFileCount();
-        });
-
-        // 파일 목록 업데이트
-        function updateFileList() {
-            fileList.innerHTML = ''; // 기존 목록 초기화
-            files.forEach((file, index) => {
-                const li = document.createElement('li');
-                li.innerText = file.name;
-                const deleteButton = document.createElement('button');
-                deleteButton.innerText = '삭제';
-                deleteButton.onclick = () => deleteFile(index);
-                li.appendChild(deleteButton);
-                fileList.appendChild(li);
-            });
-        }
-
-        // 파일 삭제
-        function deleteFile(index) {
-            files.splice(index, 1); // 배열에서 파일 삭제
-            updateFileList(); // 목록 업데이트
-            updateFileCount(); // 개수 업데이트
-            // input 값 초기화
-            const dataTransfer = new DataTransfer();
-            files.forEach(file => dataTransfer.items.add(file));
-            fileInput.files = dataTransfer.files;
-        }
-
-        // 파일 개수 업데이트
-        function updateFileCount() {
-            fileCountDisplay.innerText = `파일 ${files.length}개`;
-        }
-    </script>
-
-</body>
-</html>-->
-
-
-<!-- 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>파일 업로드 및 전송</title>
-</head>
-<body>
-    <h3>파일 선택: <span id="fileCount">파일 0개</span></h3>
-    <input type="file" id="fileInput" multiple>
-    <ul id="fileList"></ul>
-    <button id="uploadButton">업로드</button>
-
-    <script>
-        const fileInput = document.getElementById('fileInput');
-        const fileList = document.getElementById('fileList');
-        const fileCountDisplay = document.getElementById('fileCount');
-        let files = [];
-
-        // 파일 추가 시 이벤트
-        fileInput.addEventListener('change', (event) => {
-            const selectedFiles = Array.from(event.target.files);
-            files = [...files, ...selectedFiles];
-            updateFileList();
-            updateFileCount();
-        });
-
-        // 파일 목록 업데이트
-        function updateFileList() {
-            fileList.innerHTML = '';
-            files.forEach((file, index) => {
-                const li = document.createElement('li');
-                li.innerText = file.name;
-                const deleteButton = document.createElement('button');
-                deleteButton.innerText = '삭제';
-                deleteButton.onclick = () => deleteFile(index);
-                li.appendChild(deleteButton);
-                fileList.appendChild(li);
-            });
-        }
-
-        // 파일 삭제
-        function deleteFile(index) {
-            files.splice(index, 1);
-            updateFileList();
-            updateFileCount();
-            // input 값 초기화
-            const dataTransfer = new DataTransfer();
-            files.forEach(file => dataTransfer.items.add(file));
-            fileInput.files = dataTransfer.files;
-        }
-
-        // 파일 개수 업데이트
-        function updateFileCount() {
-            fileCountDisplay.innerText = `파일 ${files.length}개`;
-        }
-
-        // 업로드 버튼 클릭 시
-        document.getElementById('uploadButton').addEventListener('click', () => {
-            const formData = new FormData();
-            files.forEach(file => {
-                formData.append('files[]', file); // 'files[]'는 백엔드에서 사용할 키
-            });
-
-            // 파일을 백엔드로 전송
-            fetch('/upload', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('성공:', data);
-                // 성공 메시지 처리
-            })
-            .catch((error) => {
-                console.error('오류:', error);
-                // 오류 처리
-            });
-        });
-    </script>
-</body>
-</html>
-
-
- -->
- 
- <!-- 
- <!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>파일 업로드 및 전송</title>
-</head>
-<body>
-    <h3>파일 선택: <span id="fileCount">파일 0개</span></h3>
-    <input type="file" id="fileInput" multiple>
-    <ul id="fileList"></ul>
-    <button id="uploadButton">업로드</button>
-
-    <script>
-        const fileInput = document.getElementById('fileInput');
-        const fileList = document.getElementById('fileList');
-        const fileCountDisplay = document.getElementById('fileCount');
-        let files = [];
-
-        // 파일 추가 시 이벤트
+        // 파일 추가 리스너 change
         fileInput.addEventListener('change', (event) => {
             const selectedFiles = Array.from(event.target.files);
             files.push(...selectedFiles);
             updateFileList();
+            
         });
 
         // 파일 목록 업데이트
@@ -275,39 +58,45 @@
                 li.appendChild(deleteButton);
                 fileList.appendChild(li);
             });
+            
             updateFileCount();
         }
 
         // 파일 삭제
         function deleteFile(index) {
-            files.splice(index, 1);
-            updateFileList(); // 업데이트 과정은 여기서만 수행
-            // input 값 초기화
-            const dataTransfer = new DataTransfer();
-            files.forEach(file => dataTransfer.items.add(file));
-            fileInput.files = dataTransfer.files;
+            delete files[index];
+            updateFileList(); //항목 뷰 업데이트
+       
         }
 
         // 파일 개수 업데이트
         function updateFileCount() {
-            fileCountDisplay.innerText = `파일 ${files.length}개`;
+        	//files.length 는 empty 까지 반영되기에 실질 파일 개수를 for문으로 찾음
+        	let count = 0;
+        	files.forEach(function(file){
+        		if(file){
+        			count += 1;
+        		}
+        	});
+            fileCountDisplay.innerText = `파일 ${count}개`;
         }
 
-        // 업로드 버튼 클릭 시
+        // 업로드 클릭 (배열자체를 전달할 것임 => form처럼 FormData 형태로)
         document.getElementById('uploadButton').addEventListener('click', () => {
             const formData = new FormData();
             files.forEach(file => {
-                formData.append('files[]', file); // 'files[]'는 백엔드에서 사용할 키
+                formData.append('files1[]', file); // 'files[]'는 백엔드에서 사용할 키
+                formData.append('files2[]', file);
             });
 
-            // 파일을 백엔드로 전송
-            fetch('/upload', {
+            // 주소
+            fetch('/filemodal/upload', {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => response) //response.json()) 백엔드에선 json으로 응답을 보내지 않음
             .then(data => {
-                console.log('성공:', data);
+                console.log('처리됨 / ', data);
                 // 성공 메시지 처리
             })
             .catch((error) => {
@@ -317,5 +106,6 @@
         });
     </script>
 </body>
+
 </html>
-  -->
+
