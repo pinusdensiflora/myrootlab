@@ -1,10 +1,13 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
+
 	<script src="js/search.js"></script>
 	영역 <input type="text" id="keyword">
 	<button type="button" onclick="search()">검색</button>
 	
-
+	<div id="loading" style="display: none;">
+    	Loading...
+	</div>
 	
 	<div id="nothing">데이터가 없습니다</div>
 	

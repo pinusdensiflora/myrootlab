@@ -34,7 +34,7 @@ public class SearchController {
 	
 	
 	
-	@PostMapping("")
+	@GetMapping("")
 	@ResponseBody
 	public Map<String, Object> search(@RequestParam("keyword") String keyword,
 										   @RequestParam("page") Integer page)  {

@@ -43,6 +43,9 @@ dependencies {
 	
 		//pretty print - gson
 	implementation group: 'com.google.code.gson', name: 'gson', version: '2.7'
+	//webClient
+	implementation 'org.springframework.boot:spring-boot-starter-webflux:3.4.0'
+
 }
 
 tasks.named('test') {

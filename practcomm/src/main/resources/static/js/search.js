@@ -10,51 +10,34 @@ function search() {
 }
 
 
-function ajax() {
-
-	return new Promise((resolve, reject) => {
-
-
-		if (!keyword) {
-			alert("검색어를 입력하세요.");
-			return;
-		}
-
-		var xhr = new XMLHttpRequest();
-		xhr.open('POST', `http://localhost:8080/community/search?keyword=${keyword}&page=${page}`, true);
-		xhr.responseType = 'json';
-
-		xhr.onload = function() {
-			if (xhr.status >= 200 && xhr.status < 300) {
-				// 요청이 성공했을 때
-				//result = xhr.response["documents"];
-				//console.log(xhr.response);
-				resolve(xhr.response); //promise 로 반환해줄때는 resolve, reject이용하면됨
-				//console.log(resolve(xhr.response));
-
-			} else {
-				// 요청이 실패했을 때
-				console.error('Request failed with status: ' + xhr.status);
-				reject('Request failed with status: ' + xhr.status);//promise
-			}
-		};
-
-		xhr.onerror = function() {
-			// 네트워크 오류가 발생했을 때
-			console.error('Network error');
-			reject('Network error');
-		};
-
-		xhr.send();
-	});
-
+function showLoading() {
+    document.getElementById("loading").style.display = "flex"; // 로딩 화면 보이기
 }
+
+function hideLoading() {
+    document.getElementById("loading").style.display = "none"; // 로딩 화면 안보이기
+}
+
+async function getData() {
+    showLoading(); // 데이터를 요청하기 전에 로딩 화면을 표시
+    try {
+        const response = await fetch(`http://localhost:8080/community/search?keyword=${keyword}&page=${page}`); // 데이터 요청
+        const data = await response.json();
+        console.error("data : ",data);
+        return data; // 데이터 반환
+    } catch (error) {
+        console.error("Error fetching data", error);
+    } finally {
+        hideLoading(); // 데이터 요청이 끝나면 로딩 화면을 숨기기
+    }
+}
+
 
 async function getresult() {
 
 	try {
 
-		const ajaxResult = await ajax();
+		const ajaxResult = await getData();
 		const meta = ajaxResult["meta"];
 		const result = ajaxResult["documents"];
 		end = meta.is_end;
