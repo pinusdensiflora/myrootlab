@@ -1,0 +1,29 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+<script src = "js/search.js"></script>
+영역
+<input type="text" id="keyword">
+<button type="button" onclick = "search()">검색</button>
+<div id="nothing">데이터가 없습니다</div>
+
+<button type="button" onclick = "onoff()">가리기</button>
+<section id="resultsection">
+
+<table id = "table" style = "display:none">
+<thead>
+<tr>
+<td>번호</td>
+<td>문서제목</td>
+<td>본문</td>
+<td>작성일</td>
+</tr>
+</thead>
+
+<tbody id= "tbody">
+</tbody>
+</table>
+
+</section>
+
+</div>
+</html>
