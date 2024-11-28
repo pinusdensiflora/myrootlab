@@ -34,6 +34,10 @@ public class FilemodalController {
 		return "/filemodal/filemodal";
 	}
 	
+	@GetMapping("/2")
+	public String file2() {
+		return "/filemodal/filemodal2";
+	}
 
 	@PostMapping("/upload")
 	public String file(@RequestParam("files1[]") MultipartFile[] files1,

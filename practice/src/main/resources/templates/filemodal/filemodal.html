@@ -55,7 +55,8 @@
 	<br/>
 	<br/>
 	
-	<a href = "/filemodal/download">올린 파일 다운로드하러가기</a>
+	<a href = "/filemodal/download">올린 파일 다운로드하러가기</a><br/>
+	<a href = "/filemodal/2">2</a>
 
 
 
@@ -156,6 +157,13 @@ function rend(lastFiles, inputsection, fileInput){
 	inputsection.innerHTML = '';
 	for(let i = lastFiles.length-1; i>=0; i--){
 		
+/* 		inputsection.innerHTML = 
+			inputsection + 
+			`<li>${lastFiles[i].name}
+			<button type = "button" onclick = "delFile(${lastfiles}, ${i}, ${fileInput})">삭제</button> 
+			</li>`; */
+		
+		
 		const file = document.createElement('li');
 		file.textContent = lastFiles[i].name;
 		const delBtn = document.createElement('button');
@@ -175,6 +183,7 @@ function rend(lastFiles, inputsection, fileInput){
 function delFile(lastFiles, index, fileInput){
 	lastFiles.splice(index,1);
 	updateFileList(fileInput,lastFiles);
+	
 }
 
 
