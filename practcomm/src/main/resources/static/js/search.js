@@ -2,23 +2,6 @@ var keyword = "";
 var page = 1;
 var end;
 
-function onoff(){
-	/*	if(document.getElementById("resultsection").style.display == "block"){
-		document.getElementById("resultsection").style.display = "none";
-	}
-	else{
-		document.getElementById("resultsection").style.display = "block";
-	}
-	*/
-	if(document.getElementById("resultsection").style.visibility == "hidden"){
-		document.getElementById("resultsection").style.visibility = "visible";
-	}
-	else{
-		document.getElementById("resultsection").style.visibility = "hidden";
-	}
-
-
-}
 
 function search() {
 	keyword = document.getElementById("keyword").value;
@@ -75,17 +58,20 @@ async function getresult() {
 		const meta = ajaxResult["meta"];
 		const result = ajaxResult["documents"];
 		end = meta.is_end;
+		let tbody = document.getElementById("tbody");
+		
 		if(result.length == 0){
-			document.getElementById("table").style.display = "none";
+			tbody.innerHTML = "";
+			document.getElementById("resultsection").style.visibility = "hidden";
 			document.getElementById("nothing").style.display = "block";
 			alert("검색된 내용 없음");
 			
 			return;
 		}
 		//console.log(meta, result);
-		document.getElementById("table").style.display = "table";
+		document.getElementById("resultsection").style.visibility = "visible";
 		document.getElementById("nothing").style.display = "none";
-		let tbody = document.getElementById("tbody");
+		
 		tbody.innerHTML = "";
 		for (let i = 0; i < result.length; i++) {
 			let res = result[i];
