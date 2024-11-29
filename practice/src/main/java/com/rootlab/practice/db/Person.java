@@ -3,9 +3,12 @@ package com.rootlab.practice.db;
 import lombok.Builder;
 import lombok.Data;
 
+//mybatis는 기본생성자를 써서 기본생성자를 못쓰는 Builder 와 충돌이 나야할 건데,, 이유모르게 잘 돌아감... mariaDB 세팅에 mysql을 돌리고 있어서 그런가
+//아무튼 추가 어노테이션을 붙여 기본생성자 삭제를 막거나 해야함
+//그냥 빌더를 안쓰는 것이 일반적이긴 함
 
 @Data
-@Builder
+@Builder 
 public class Person {
 
 	private int id;
