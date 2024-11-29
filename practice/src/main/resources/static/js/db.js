@@ -21,11 +21,6 @@ cbtn.onclick = async function(){
 	//콜백으로 완료시 rend()가 실행되게
 }
 
-//함수가 처음 선언 될 때 실행, 바로 한번은 데이터를 가져오고, 화면에 띄우고자함 
-(async function firstFarming(){
-	personData = await getData(rend());
-})();
-
 /* 데이터 입력으로 이뤄지는 부분 */
 btn.onclick = async function() {//getData 부분 처리위해 async
 	if(!validation()){
