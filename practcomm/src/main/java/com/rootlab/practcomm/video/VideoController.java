@@ -5,6 +5,7 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
@@ -30,11 +31,16 @@ public class VideoController {
 	}
 	
 	
+	//요청 url 예시
+	//http://localhost:8080/community/video/api?keyword=안녕하세요&page=1
 	@GetMapping("/api")
 	@ResponseBody
-	public Map<String, Object> videoapi() {
+	public Map<String, Object> videoapi(
+							@RequestParam(value = "keyword", defaultValue = "defaultKey") String keyword,
+							@RequestParam(value = "page", defaultValue = "1") int page) {
 		
-		String response = kakaoVideo.searchResult("에스파", 1);
+		
+		String response = kakaoVideo.searchResult(keyword, page);
 		
 		// JSON 문자열을 Map<String, Object>로 변환
 		Map<String, Object> map = gson.fromJson(response, new TypeToken<Map<String, Object>>(){}.getType());

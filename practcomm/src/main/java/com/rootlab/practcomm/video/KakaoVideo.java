@@ -29,7 +29,7 @@ page	Integer	결과 페이지 번호, 1~15 사이의 값	X
 size	Integer	한 페이지에 보여질 문서 수, 1~30 사이의 값, 기본 값 15	X
 		 * */
 		String sort = "recency";
-		int size = 10;
+		int size = 8;
 		
 		String baseUrl = "https://dapi.kakao.com/v2/search/vclip";
 		String param = "?query=" + keyword
@@ -39,7 +39,7 @@ size	Integer	한 페이지에 보여질 문서 수, 1~30 사이의 값, 기본 �
 		
 		baseUrl = baseUrl+param;
 		
-		System.out.println("webclient 생성직전");
+		
 		WebClient webClient = WebClient.create();
 		
 		String response = webClient.get()

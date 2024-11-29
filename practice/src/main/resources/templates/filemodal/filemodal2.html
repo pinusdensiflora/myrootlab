@@ -13,8 +13,8 @@
 	</h3>
 	<input type="file" id="fileInput" multiple>
 	<ul id="fileList"></ul>
- 	<button id="uploadButton">업로드</button> 
-
+ 	<button type ="button" id="uploadButton">업로드</button> 
+	<button type ="button" id ="thisck">로그확인</button>
 
 
 
@@ -43,9 +43,12 @@
 
         // 파일 추가 리스너 change
         fileInput.addEventListener('change', (event) => {
-            const selectedFiles = Array.from(event.target.files);
+            console.log("파일인풋의 this : " ,this);
+        	const selectedFiles = Array.from(event.target.files);
             files.push(...selectedFiles);
             updateFileList();
+            
+            
             
         });
 
@@ -88,6 +91,8 @@
 
         // 업로드 클릭 (배열자체를 전달할 것임 => form처럼 FormData 형태로)
         document.getElementById('uploadButton').addEventListener('click', () => {
+        	console.log("업로드버튼의 this : " ,this);
+        	
             const formData = new FormData();
             files.forEach(file => {
                 formData.append('files1[]', file); // 'files[]'는 백엔드에서 사용할 키
@@ -109,6 +114,10 @@
                 // 오류 처리
             });
         });
+        
+        document.getElementById("thisck").addEventListener('click',function(){
+        	console.log("체크버튼의 this : " ,this);
+        });        
     </script>
 </body>
 
