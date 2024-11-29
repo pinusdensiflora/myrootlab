@@ -172,6 +172,10 @@ function clear() {
 	status = document.querySelector('input[name="status"]:checked').value;
 }
 
+document.addEventListener("DOMContentLoaded", async function() {
+    await firstFarming();
+});
 
-
-
+async function firstFarming() {
+    personData = await getData(() => rend());
+}
