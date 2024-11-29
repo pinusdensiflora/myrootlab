@@ -11,10 +11,11 @@
 	<h3>
 		파일 선택: <span id="fileCount">파일 0개</span>
 	</h3>
-	<input type="file" id="fileInput" multiple>
+	<input type="file" id="fileInput" multiple style="display:none;">
+	<button type="button" onclick="fileChange()" >파일 선택</button>
 	<ul id="fileList"></ul>
  	<button type ="button" id="uploadButton">업로드</button> 
-	<button type ="button" id ="thisck">로그확인</button>
+
 
 
 
@@ -23,15 +24,8 @@
 	<br/>
 	<br/>
 	<hr/>
-	 fileCountDisplay = document.getElementById('fileCount');<br/>
-	 fileInput = document.getElementById('fileInput');<br/>
-     fileList = document.getElementById('fileList');<br/>
-     files = [];<br/>
 	<hr/>
-	배열 그대로를 전송 : ok <br/>
-	파일 인풋에 들어간 거 그대로 남음 동기화를 시키는 법 <br/>
-	new DataTransfer() ? <br/>
-	(지금 빈 값, 용량, 타입 등 validation 진행 X) <br/>
+	
 	
 	<script>
     
@@ -40,6 +34,10 @@
         const fileList = document.getElementById('fileList');
         const fileCountDisplay = document.getElementById('fileCount');
         let files = [];
+        
+        function fileChange() {
+        	document.getElementById('fileInput').click();
+        }
 
         // 파일 추가 리스너 change
         fileInput.addEventListener('change', function(event) {
@@ -48,7 +46,7 @@
         	const selectedFiles = Array.from(event.target.files);
             files.push(...selectedFiles);
             updateFileList();
-            this.value = "";//fileInput.value 비우기?
+            //this.value = "";//fileInput.value 비우기
             
             
             
@@ -117,9 +115,7 @@
             });
         });
         
-        document.getElementById("thisck").addEventListener('click',function(){
-        	console.log("체크버튼의 this : " ,this);
-        });        
+       
     </script>
 </body>
 
