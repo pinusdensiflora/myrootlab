@@ -172,6 +172,8 @@ function clear() {
 	status = document.querySelector('input[name="status"]:checked').value;
 }
 
+//DOMContentLoaded 이벤트 : 페이지가 완전히 로드될 때 일어나기 때문에, 
+//즉시 실행함수에서 html객체에 접근 시 null 값이 받아와지는 등의 문제에서 해결될 수 있다.
 document.addEventListener("DOMContentLoaded", async function() {
     await firstFarming();
 });
