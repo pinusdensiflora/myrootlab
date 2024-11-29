@@ -42,11 +42,13 @@
         let files = [];
 
         // 파일 추가 리스너 change
-        fileInput.addEventListener('change', (event) => {
-            console.log("파일인풋의 this : " ,this);
+        fileInput.addEventListener('change', function(event) {
+            console.log("파일인풋의파일 this : " ,this.files);
+            
         	const selectedFiles = Array.from(event.target.files);
             files.push(...selectedFiles);
             updateFileList();
+            this.value = "";//fileInput.value 비우기?
             
             
             
@@ -55,7 +57,7 @@
         // 파일 목록 업데이트
         function updateFileList() {
             fileList.innerHTML = '';
-            files.forEach((file, index) => {
+            files.forEach(function(file, index){
                 const li = document.createElement('li');
                 li.innerText = file.name;
                 const deleteButton = document.createElement('button');
@@ -90,7 +92,7 @@
         }
 
         // 업로드 클릭 (배열자체를 전달할 것임 => form처럼 FormData 형태로)
-        document.getElementById('uploadButton').addEventListener('click', () => {
+        document.getElementById('uploadButton').addEventListener('click', function(){
         	console.log("업로드버튼의 this : " ,this);
         	
             const formData = new FormData();
