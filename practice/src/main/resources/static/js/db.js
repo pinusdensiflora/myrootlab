@@ -10,6 +10,8 @@ let personData;
 const btn = document.getElementById("submitBtn");
 const tbody = document.getElementById("tbody");
 
+
+/* 데이터 새로고침 부분 */
 const cbtn = document.getElementById("checkBtn");
 cbtn.onclick = async function(){
 	await getData(()=>{
@@ -19,6 +21,12 @@ cbtn.onclick = async function(){
 	//콜백으로 완료시 rend()가 실행되게
 }
 
+//함수가 처음 선언 될 때 실행, 바로 한번은 데이터를 가져오고, 화면에 띄우고자함 
+(async function firstFarming(){
+	personData = await getData(rend());
+})();
+
+/* 데이터 입력으로 이뤄지는 부분 */
 btn.onclick = async function() {//getData 부분 처리위해 async
 	if(!validation()){
 		return;
@@ -44,7 +52,7 @@ btn.onclick = async function() {//getData 부분 처리위해 async
 		
 	}
 	else {
-		
+		//확인창에서 취소
 		return;
 	}
 
@@ -103,6 +111,7 @@ async function sendData(person) {
     }
 }
 
+/* 데이터 가져오기 띄우기 */
 async function getData(callback) {//콜백으로 rend()로 연결하려고
 	//async await 
 	
@@ -167,3 +176,7 @@ function clear() {
 	score = document.getElementById("score").value;
 	status = document.querySelector('input[name="status"]:checked').value;
 }
+
+
+
+
