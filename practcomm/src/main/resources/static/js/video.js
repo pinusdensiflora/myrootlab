@@ -49,9 +49,10 @@ async function getresult() {
 
 function rend(result){
 	const section = document.getElementById("section");
+	section.innerHTML = "";
 	result.forEach(function(item){
 		
-		section.innerHTML = section.innerHTML + `<div class="col-3"><input type="checkbox" id = "${item.url}"><img src="${item.thumbnail}"></div>`;
+		section.innerHTML = section.innerHTML + `<div class="col-3"><input type="checkbox" value = "${item.url}"><img src="${item.thumbnail}"></div>`;
 		
 		
 	});

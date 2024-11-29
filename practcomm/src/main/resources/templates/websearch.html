@@ -4,14 +4,14 @@
 	<script src="js/search.js"></script>
 	영역 <input type="text" id="keyword">
 	<button type="button" onclick="search()">검색</button>
-	
-	<div id="loading" style="display: none;">
-    	Loading...
-	</div>
-	
+
+	<!-- <div id="loading" style="display: none;">Loading...</div> -->
+	<div class="spinner-border" role="status" id = "loading" style="display: none;">
+	</div>	
+
 	<div id="nothing">데이터가 없습니다</div>
-	
-	<section id="resultsection" style = "visibility:hidden">
+
+	<section id="resultsection" style="visibility: hidden">
 
 		<table id="table">
 			<thead>
@@ -27,7 +27,18 @@
 			</tbody>
 		</table>
 
+
+			<div id="pageBar">
+				<button type="button" class="btn btn-outline-dark active" onclick="pageSet(this)" value = '3'>3쪽</button>
+				<button type="button" class="btn btn-outline-dark">2</button>
+
+			</div>
+		</div>
+		
+
 	</section>
 
+
+ㅠㅠ 한번에 50개 내용을 받고 페이지 바를 구헝하는건 될거같은데 10개씩 받아서 마지막 페이지가 몇번이 될지 예측하기가 어렵스뮤
 </div>
 </html>
