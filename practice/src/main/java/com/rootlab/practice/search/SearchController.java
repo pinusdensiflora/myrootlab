@@ -47,33 +47,18 @@ public class SearchController {
 	public Map<String, Object> searchget(@RequestParam("keyword") String keyword,
 										   @RequestParam("page") Integer page)  {
 		
+		
 		System.out.println(keyword + " " + page);
 
-				
-				
-		//String resultString = kakaoSearch.searchResult(keyword, page);
-		//String prettyJson = gson.toJson(gson.fromJson(resultString, Object.class));
 		String prettyJson = kakaoSearch.searchResult(keyword, page);
 		System.out.println(prettyJson);
-		
-//		prettyJson = prettyJson.replaceAll("\\\\u003cb\\\\u003e", "");//<b>
-//		prettyJson = prettyJson.replaceAll("\\\\u003c/b\\\\u003e", "");//</b>
-//		prettyJson = prettyJson.replaceAll("\\\\u0026", "&");//
-//		prettyJson = prettyJson.replaceAll("\\\\u003d", "=");//
+
 		
 		prettyJson = prettyJson.replaceAll("\\\\u003cb\\\\u003e", "");//<b> //볼드처리
 		prettyJson = prettyJson.replaceAll("\\\\u003c/b\\\\u003e", "");//</b>
 		
 		Map<String, Object> mapData = gson.fromJson(prettyJson, new TypeToken<Map<String, Object>>(){}.getType());
-       //System.out.println("map 형식 : " + mapData);
-		//System.out.println("map에서 json다시 변환 : "+ gson.toJson(mapData));
-		
 
-//		Map<String, Object> resultMap = new HashMap<>();
-//		resultMap.put("documents", mapData.get("documents"));
-//		resultMap.put("meta", mapData.get("meta"));
-//		System.out.println("resultMap : " + resultMap);
-		//return resultMap;
 		
 		System.out.println(mapData);
 		return mapData;
