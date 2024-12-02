@@ -16,6 +16,7 @@
 	<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4744c6a0f40964abe0bca6e6b7db639e&autoload=true&libraries=services"></script>
 	<!-- 523333f1a555299952c746db00a9938f -->
 	<a href ="/map/jukgok">죽곡</a>
+	
 	<script>
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
 		    mapOption = {
@@ -44,13 +45,11 @@
 		];
 		
 	
-		var latLngArray = namsan4.map(function(coord) {
-		    return new kakao.maps.LatLng(coord[1], coord[0]);  // LatLng(위도, 경도) 순서 
-		});
 		
 		var namsan4Paths = [];
 		for (let i = 0; i < namsan4.length; i++) {
 		    var point = namsan4[i];
+		    //위도 경도 순서로 입력
 		    namsan4Paths.push(new kakao.maps.LatLng(point[1], point[0])); //kakao.maps.LatLng 객체로 만들어야함
 		}
 		
@@ -76,17 +75,15 @@
 				    map: map // 마커를 표시할 지도 객체
 				});
 		    	
-				
-				
-			
+
 				
 				var polyline = new kakao.maps.Polygon({
 					map: map, // 선을 표시할 지도 객체 
 					path: namsan4Paths,
-					fillColor: '#5af36e', // 채움 색
+					fillColor: '#55ff66', // 채움 색
 					fillOpacity: 0.5, // 채움 불투명도
 					strokeWeight: 3, // 선의 두께 
-					strokeColor: '#0067ff', // 선 색
+					strokeColor: '#0066ff', // 선 색
 					strokeOpacity: 0.9, // 선 투명도
 					strokeStyle: 'solid' // 선 스타일
 				});	

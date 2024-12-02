@@ -41,7 +41,7 @@ public class FilemodalController {
 
 	@PostMapping("/upload")
 	public String file(@RequestParam("files1[]") MultipartFile[] files1,
-			@RequestParam("files2[]") MultipartFile[] files2) {
+					   @RequestParam("files2[]") MultipartFile[] files2) {
 
 		saveFile(files1);
 		saveFile(files2);

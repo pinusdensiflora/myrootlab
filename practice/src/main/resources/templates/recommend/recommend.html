@@ -37,6 +37,7 @@ function recommend() {
 
 	text = text ? text : "a" ; //공백일 시, "a"로 치환
 
+	//console.log(text.match(/^.{1,15}/g)); // array결과로 반환
 	text = text.match(/^.{1,15}/)[0]; //앞 15글자
 
 	text = text.replace(/(\.)$/g, ""); // 맨뒤의 . ""로 치환
