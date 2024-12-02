@@ -9,7 +9,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-
+/* webClient (Spring WebFlux 의존성, 비동기에 유리, 라이징스타) 
+ * OkHttp (모바일)
+ * RestTemplate (Spring boot 프로젝트 주)
+ * HttpClient
+ * HttpURLConnection(표준, 경량)*/
 public class KakaoSearch {
 	
 	

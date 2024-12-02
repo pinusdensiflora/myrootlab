@@ -54,7 +54,7 @@ public class SearchController {
 		System.out.println(prettyJson);
 
 		
-		prettyJson = prettyJson.replaceAll("\\\\u003cb\\\\u003e", "");//<b> //볼드처리
+		prettyJson = prettyJson.replaceAll("\\\\u003cb\\\\u003e", "");//<b>
 		prettyJson = prettyJson.replaceAll("\\\\u003c/b\\\\u003e", "");//</b>
 		
 		Map<String, Object> mapData = gson.fromJson(prettyJson, new TypeToken<Map<String, Object>>(){}.getType());
@@ -62,6 +62,7 @@ public class SearchController {
 		
 		System.out.println(mapData);
 		return mapData;
+		
 		
 	}
 	
