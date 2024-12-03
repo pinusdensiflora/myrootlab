@@ -52,7 +52,7 @@ async function rend(result) {
 	const section = document.getElementById("section");
 	section.innerHTML = "";
 	await result.forEach(function(item, index) {
-		console.log(item);
+		//console.log(item);
 		section.innerHTML = section.innerHTML
 			+ `<div class="col-3"><input type="checkbox" name="save" value = "${index+1}"><img src="${item.thumbnail}"></div>`;
 	
