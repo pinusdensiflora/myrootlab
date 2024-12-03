@@ -32,7 +32,9 @@ async function getData() {
 async function getresult() {
 
 	try {
-
+		
+		keyword = document.getElementById("keywordInput").value;
+		
 		const ajaxResult = await getData();
 		const meta = ajaxResult["meta"];
 		const result = ajaxResult["documents"];
@@ -49,6 +51,7 @@ async function getresult() {
 }
 
 async function rend(result) {
+	document.getElementById("titlecontainer").style.display = "flex";
 	const section = document.getElementById("section");
 	section.innerHTML = "";
 	await result.forEach(function(item, index) {

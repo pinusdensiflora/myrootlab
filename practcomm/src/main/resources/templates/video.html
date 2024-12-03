@@ -1,25 +1,45 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
-<script src="js/video.js"></script>
-<h1>Video 페이지</h1>
-<!-- <div id="loading" style="display: none;">
+<style>
+.box{
+	border: 1px solid #000;
+    display: -webkit-box; /* Flexbox 사용 */
+    display: box; /* 구형 브라우저 지원 */
+    -webkit-box-orient: vertical; /* 세로 방향으로 설정 */
+    -webkit-line-clamp: 2; /* 줄 수 제한 */
+    overflow: hidden; /* 넘치는 내용 숨기기 */
+    text-overflow: ellipsis; /* 잘린 부분에 ... 표시 */
+    height: 50px; /* 높이 설정 */
+    width: 25%; /* 너비 설정 */
+
+	}
+
+</style>
+	<script src="js/video.js"></script>
+
+
+
+	<h1>Video 페이지</h1>
+	<input type="text" id="keywordInput">
+	<button type="button" onclick="getresult()">검색</button>
+	<!-- <div id="loading" style="display: none;">
     	Loading...
 </div> -->
-<div class="spinner-border" role="status" id = "loading" style="display: none;"></div>	
+	<div class="spinner-border" role="status" id="loading"
+		style="display: none;"></div>
 
 
-<div class="container" >
-  <div class="row" id = "section">
+	<div class="container">
+		<div class="row" id="section"></div>
+	</div>
+	
 
-  </div>
-</div>
-<button type="button" onclick = "getresult()">버튼</button>
+	<div class="container" id="titlecontainer" style = "display:none;">
+		<div class="row" id="listSection"></div>
+	
+		<button type="button" onclick="getresult()">저장</button>
+	</div>
 
-<div class="container" >
-  <div class="row" id = "listSection">
-
-  </div>
-</div>
 
 
 </div>
