@@ -64,16 +64,14 @@ async function rend(result) {
 	checkboxs.forEach(function(checkbox) {
 		checkbox.addEventListener("click", function(){
 			let index = checkbox.value;
-			console.log(this);
-			//if(checked.includes(result[index].title)){
+
 			if(checkMap.has(index)){
 				checkMap.delete(index);
 				
 			}else{
-				//checkMap[index] = `${result[index-1].title}#${index}.mp4`;
 				checkMap.set(index, `${result[index-1].title}#${index}.mp4`);
 			}
-			console.log(checkMap);
+			//console.log(checkMap);
 			rendList(checkMap);
 		});
 	});
@@ -87,30 +85,16 @@ function rendList(list){
 	const listSection = document.getElementById("listSection");
 	listSection.innerHTML = "";
 	
-	/*list.forEach(function(item){
-		listSection.innerHTML += `<div class="col-3">${item}</div>`;
-	});*/
+
 	console.log(list.keys());
-/*	for (const key in list.keys()) {
-  		//console.log(key, list[key]);
-  		
-  		listSection.innerHTML += `<div class="col-3 box">${list.get(key)}</div>`;
-	}*/
+
 	for (const [key, value] of list.entries()) {
 		listSection.innerHTML += `<div class="col-3 box">${value}</div>`;
-  		console.log(`${key} = ${value}`);
+  		//console.log(`${key} = ${value}`);
 	}
 	
 	
 }
 
-
-/*function checkedBoxAll() {
-	const query = 'input[name="save"]:checked';
-	const selectedEls = document.querySelector(query);
-
-
-	console.log(selectedEls);
-}*/
 
 
