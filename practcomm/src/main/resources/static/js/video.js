@@ -4,6 +4,7 @@ let page = 1;
 let is_end = false;
 
 let checked = [];
+let checkMap = new Map();
 
 function showLoading() {
 	document.getElementById("loading").style.display = "flex"; // 로딩 화면 보이기
@@ -51,8 +52,9 @@ async function rend(result) {
 	const section = document.getElementById("section");
 	section.innerHTML = "";
 	await result.forEach(function(item, index) {
+		console.log(item);
 		section.innerHTML = section.innerHTML
-			+ `<div class="col-3"><input type="checkbox" name="save" value = "${index}"><img src="${item.thumbnail}"></div>`;
+			+ `<div class="col-3"><input type="checkbox" name="save" value = "${index+1}"><img src="${item.thumbnail}"></div>`;
 	
 	});
 	
@@ -62,13 +64,17 @@ async function rend(result) {
 	checkboxs.forEach(function(checkbox) {
 		checkbox.addEventListener("click", function(){
 			let index = checkbox.value;
-			if(checked.includes(result[index].title)){
-				console.log();
+			console.log(this);
+			//if(checked.includes(result[index].title)){
+			if(checkMap.has(index)){
+				checkMap.delete(index);
+				
 			}else{
-				checked.push(`${result[index].title}#${index+1}.mp4`);
+				//checkMap[index] = `${result[index-1].title}#${index}.mp4`;
+				checkMap.set(index, `${result[index-1].title}#${index}.mp4`);
 			}
-			
-			rendList(checked);
+			console.log(checkMap);
+			rendList(checkMap);
 		});
 	});
 	
@@ -81,11 +87,20 @@ function rendList(list){
 	const listSection = document.getElementById("listSection");
 	listSection.innerHTML = "";
 	
-	list.forEach(function(item){
+	/*list.forEach(function(item){
 		listSection.innerHTML += `<div class="col-3">${item}</div>`;
-		
-		
-	});
+	});*/
+	console.log(list.keys());
+/*	for (const key in list.keys()) {
+  		//console.log(key, list[key]);
+  		
+  		listSection.innerHTML += `<div class="col-3 box">${list.get(key)}</div>`;
+	}*/
+	for (const [key, value] of list.entries()) {
+		listSection.innerHTML += `<div class="col-3 box">${value}</div>`;
+  		console.log(`${key} = ${value}`);
+	}
+	
 	
 }
 
