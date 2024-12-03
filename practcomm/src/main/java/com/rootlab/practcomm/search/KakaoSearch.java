@@ -15,7 +15,7 @@ public class KakaoSearch {
 	
 	public String searchResult(String keyword, Integer page) {
 
-		String url = "https://dapi.kakao.com/v2/search/web" + "?query=" + keyword + "&page=" + page;
+		String url = "https://dapi.kakao.com/v2/search/web" + "?query=" + keyword + "&page=" + page + "&size=50";
 		
 		
 
