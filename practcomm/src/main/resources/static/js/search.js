@@ -4,6 +4,22 @@ var end;
 let ajaxResult;
 let requestPage = 1;
 
+document.addEventListener('DOMContentLoaded', () => {
+	const inputField = document.getElementById('keyword');
+	
+	// 입력 필드에 포커스 설정(새로고침 시 디폴트)
+	inputField.focus();
+
+	// 엔터 키 감지
+	document.addEventListener('keydown', (event) => {
+		if(document.activeElement === inputField && event.key === 'Enter'){
+			//포커스 되어있지 않으면 엔터키를 눌러도 갱신 시키지 않음
+			//console.log('엔터 키가 눌렸습니다.');
+			search();
+		}
+		
+	});
+});
 
 async function search() {
 	keyword = document.getElementById("keyword").value;
@@ -37,7 +53,7 @@ async function getData() {
 		const data = await response.json();
 		console.log("data : ", data);
 		end = data["meta"].is_end;
-		if(end){
+		if (end) {
 			console.log("is_end == true");
 		}
 		return data; // 데이터 반환
@@ -50,7 +66,7 @@ async function getData() {
 
 
 function getresult() {
-	
+
 	//const meta = ajaxResult["meta"];
 	const result = ajaxResult["documents"];
 	//end = meta.is_end;
@@ -71,19 +87,19 @@ function getresult() {
 	document.getElementById("nothing").style.display = "none";
 
 	tbody.innerHTML = "";
-//6->0(1번째)  11->0 ... 나머지 *10 
-//7->10(11번째)
-//8->20
+	//6->0(1번째)  11->0 ... 나머지 *10 
+	//7->10(11번째)
+	//8->20
 	//let lastn = result.length < page * 10 ? result.length : page * 10;
-	let startIndex = ((page-1)%5) * 10;
-	let lastIndex = result.length-1 < startIndex + 9 ? result.length-1 :startIndex + 9;
-	console.log(`s: ${startIndex}, l: ${lastIndex}}`);
-	
-	for (let i = startIndex ; i <= lastIndex ; i++) {
+	let startIndex = ((page - 1) % 5) * 10;
+	let lastIndex = result.length - 1 < startIndex + 9 ? result.length - 1 : startIndex + 9;
+	//console.log(`s: ${startIndex}, l: ${lastIndex}}`);
+
+	for (let i = startIndex; i <= lastIndex; i++) {
 		let res = result[i];
 		tbody.innerHTML = tbody.innerHTML +
 			`<tr>
-				<td>${i + 1}</td>
+				<td>${i + 1 + (requestPage - 1) * 50}</td>
 				<td><a href = "${res.url}"  target='_blank' >${res.title}</a></td>
 				<td>체크</td>
 				<td>체크</td>
@@ -101,7 +117,7 @@ function pageSet(btn) {
 
 }
 async function nextPage() {
-	if(end){
+	if (end) {
 		alert("더 이상 검색 내용이 없습니다.");
 		return;
 	}
@@ -109,21 +125,21 @@ async function nextPage() {
 
 	try {
 		const temp = await getData();
-		
+
 		ajaxResult = temp;
 		page = (requestPage - 1) * 5 + 1;
-		
-		
-		
+
+
+
 	} catch (error) {
 		console.error("Error: ", error);  // 오류 처리
 	}
-	
+
 	getresult();
 
 }
 async function prevPage() {
-	if(requestPage == 1){
+	if (requestPage == 1) {
 		alert("이전페이지 없음");
 		return;
 	}
@@ -131,16 +147,16 @@ async function prevPage() {
 
 	try {
 		const temp = await getData();
-		
+
 		ajaxResult = temp;
-		page = (requestPage - 1) * 5 + 5 ;
+		page = (requestPage - 1) * 5 + 5;
 		console.log(ajaxResult, page);
-		
-		
+
+
 	} catch (error) {
 		console.error("Error: ", error);  // 오류 처리
 	}
-	
+
 	getresult();
 
 }
@@ -158,13 +174,13 @@ function pageBar(index) {
 
 	let i;
 	let pageCount = 4;
-	
-	if(end){
-		pageCount = parseInt((ajaxResult["documents"].length-1)/10);
-		
+
+	if (end) {
+		pageCount = parseInt((ajaxResult["documents"].length - 1) / 10);
+
 	}
-	
-	
+
+
 	for (i = 0; i <= pageCount; i++) {
 		/*
 		if(parseInt((i-1)%5)+1 >= parseInt((ajaxResult["documents"].length-1)/10)){ // 27개(20) : 6 7 8 9 10 => 1 2 3 4 0  // 5 6 7 8 9 => 0 1 2 3 4 +1
@@ -173,15 +189,15 @@ function pageBar(index) {
 			break;//이후 페이지가 없다면
 		
 		}*/
-	
 
 
-		if (i+start == index) {
-			pageBar.innerHTML += `<button type="button" class="btn btn-outline-dark active" onclick="pageSet(this)" value = '${i+start}'>${i+start}쪽</button>`
+
+		if (i + start == index) {
+			pageBar.innerHTML += `<button type="button" class="btn btn-outline-dark active" onclick="pageSet(this)" value = '${i + start}'>${i + start}쪽</button>`
 
 		}
 		else {
-			pageBar.innerHTML += `<button type="button" class="btn btn-outline-dark" onclick="pageSet(this)" value = '${i+start}'>${i+start}쪽</button>`
+			pageBar.innerHTML += `<button type="button" class="btn btn-outline-dark" onclick="pageSet(this)" value = '${i + start}'>${i + start}쪽</button>`
 		}
 
 	}
