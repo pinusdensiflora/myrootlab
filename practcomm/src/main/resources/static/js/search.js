@@ -1,8 +1,9 @@
 var keyword = "";
 var page = 1;
+let requestPage = 1;
 var end;
 let ajaxResult;
-let requestPage = 1;
+
 
 document.addEventListener('DOMContentLoaded', () => {
 	const inputField = document.getElementById('keyword');
@@ -47,9 +48,13 @@ function hideLoading() {
 }
 
 async function getData() {
+	const url =`http://localhost:8080/community/search?keyword=${keyword}&page=${requestPage}`;
+	// URL에 쿼리 파라미터 추가
+    //history.pushState(null, '', `?keyword=${keyword}&page=${requestPage}`);
+    
 	showLoading(); // 데이터를 요청하기 전에 로딩 화면을 표시
 	try {
-		const response = await fetch(`http://localhost:8080/community/search?keyword=${keyword}&page=${requestPage}`); // 데이터 요청
+		const response = await fetch(url); // 데이터 요청
 		const data = await response.json();
 		console.log("data : ", data);
 		end = data["meta"].is_end;

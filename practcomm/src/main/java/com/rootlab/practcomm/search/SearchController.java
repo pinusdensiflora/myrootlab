@@ -38,6 +38,8 @@ public class SearchController {
 	@ResponseBody
 	public Map<String, Object> search(@RequestParam("keyword") String keyword,
 										   @RequestParam("page") Integer page)  {
+
+		int lastpage = 45;
 		
 		System.out.println(keyword + " " + page);
 
