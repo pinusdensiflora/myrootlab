@@ -92,10 +92,23 @@ function rendList(list){
 	console.log(list.keys());
 
 	for (const [key, value] of list.entries()) {
-		listSection.innerHTML += `<div class="col-3 box">${value}</div>`;
+		listSection.innerHTML += `<div class="col-3 box"><input type="checkbox" checked value = "${key}" name = "savelist"> ${value}</div>`;
   		//console.log(`${key} = ${value}`);
 	}
 	
+	
+	//제목 리스트 체크박스는 다시 클릭하면 사라짐
+	//기존 체크박스의 체크도 해제해야함
+	let checkboxs = document.getElementsByName("savelist");
+	checkboxs.forEach(function(checkbox) {
+		checkbox.addEventListener("click", function(){
+			let index = checkbox.value;
+			checkMap.delete(index);
+			let thumbcheckbox = document.querySelector(`input[type="checkbox"][name="save"][value="${index}"]`);
+			thumbcheckbox.checked = false;
+			rendList(checkMap);
+		});
+	});
 	
 }
 

@@ -2,6 +2,7 @@
 <div layout:fragment="content">
 <style>
 .box{
+	margin : 2%;
 	border: 1px solid #000;
     display: -webkit-box; /* Flexbox 사용 */
     display: box; /* 구형 브라우저 지원 */
@@ -10,7 +11,8 @@
     overflow: hidden; /* 넘치는 내용 숨기기 */
     text-overflow: ellipsis; /* 잘린 부분에 ... 표시 */
     height: 50px; /* 높이 설정 */
-    width: 25%; /* 너비 설정 */
+    width: 20%; /* 너비 설정 */
+    
 
 	}
 
@@ -35,11 +37,11 @@
 	
 
 	<div class="container" id="titlecontainer" style = "display:none;">
-		<div class="row" id="listSection"></div>
+		<div class="row" id="listSection" style = "width:100vw;"></div>
 	
-		<button type="button" onclick="getresult()">저장</button>
+		
 	</div>
-
+	<button type="button" onclick="getresult()">저장</button>
 
 
 </div>
