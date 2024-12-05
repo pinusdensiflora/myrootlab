@@ -54,8 +54,8 @@ public class VideoController {
 	
 	
 	@PostMapping("/upload")
-	public ResponseEntity<String> upload(@RequestBody List<VideoMeta> vl){
-		System.out.println(vl.toString());
+	public ResponseEntity<String> upload(@RequestBody List<VideoMeta> map){
+		System.out.println(map.toString());
 		return ResponseEntity.ok("Data received successfully");
 	}
 	

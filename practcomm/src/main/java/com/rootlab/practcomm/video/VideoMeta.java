@@ -31,4 +31,6 @@ public class VideoMeta {
     "thumbnail": "https://search4.kakaocdn.net/argon/138x78_80_pr/DqVgdS1nrED",
     "title": "업로드테스트",
     "url": "https://tv.kakao.com/v/cvtbkzsykys6vz7oj77god90o"
+    
+    //키워드 추가하기
  */

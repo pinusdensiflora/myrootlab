@@ -116,47 +116,26 @@ function rendList(list) {
 
 async function save() {
 	
-	const url = "http://localhost:8080/community/video/upload"; // 예시 API URL
-	
+	const url = "http://localhost:8080/community/video/upload"; 
+
 	showLoading(); // POST 요청 전 로딩 화면을 보임
-	
-	const videoData = {
-    "videos": {
-        "2": {
-            "author": "황인호",
-            "datetime": "2022-03-15T23:03:48.000+09:00",
-            "play_time": 1134,
-            "thumbnail": "https://search4.kakaocdn.net/argon/138x78_80_pr/3ajLZ5JiXiE",
-            "title": "카트 인호예요 ㅁㄴㅇㄻㄴㅇㄹ",
-            "url": "http://www.youtube.com/watch?v=6_qRzwFKH4E"
-        },
-        "6": {
-            "author": "에코.",
-            "datetime": "2021-11-16T19:20:29.000+09:00",
-            "play_time": 10022,
-            "thumbnail": "https://search1.kakaocdn.net/argon/138x78_80_pr/JP7BY2uV05r",
-            "title": "iidx ㅁㄴㅇㄻㄴㅇㄹ",
-            "url": "http://www.youtube.com/watch?v=A9bdh-Y8Q3g"
-        }
-    }
-};
 
-
+	let arr = Array.from(checkMap.values());//값만 배열로 변환 //그냥 배열로 보내는게 제일 낫다..
+	//키워드 필드 추가 과정
+	arr.forEach(function(item){
+		item["keyword"] = keyword;
+	})
+	console.log("keyword를 추가한 value의 arr : ", arr);
 	try {
-		//그냥 배열로 보내는게 제일 낫다..
-		let arr = Array.from(checkMap.values());
-		//const nomalObject = Object.fromEntries(checkMap);//일반객체로변환
-		//const nomalObject2 = Object.values(nomalObject);//배열로 변환
-		console.log("ㅈㅈ ", arr);
+		
 		const response = await fetch(url, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			//body: JSON.stringify(checkMap) // JSON 형식으로 데이터 전송 
-			body: JSON.stringify(arr) // JSON 형식으로 데이터 전송 
+			
+			body: JSON.stringify(arr) // JSON 형식으로 데이터 전송 //json으로 보낼 때는 어노테이션 붙이기
 			//또는 폼 데이터를 만들어서 전송해도 됨
-			//json으로 보낼 때는 어노테이션 붙이기
 		});
 
 		const result = await response;
