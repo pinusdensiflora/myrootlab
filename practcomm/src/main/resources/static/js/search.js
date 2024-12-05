@@ -105,9 +105,9 @@ function getresult() {
 		tbody.innerHTML = tbody.innerHTML +
 			`<tr>
 				<td>${i + 1 + (requestPage - 1) * 50}</td>
-				<td><a href = "${res.url}"  target='_blank' >${res.title}</a></td>
-				<td>체크</td>
-				<td>체크</td>
+				<td><a href = "${res.url}"  target='_blank' class="ellipsis">${res.title}</a></td>
+				<td class="ellipsis">${res.contents}</td>
+				<td>${res.datetime}</td>
 				</tr>`;
 	}
 

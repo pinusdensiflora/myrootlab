@@ -1,5 +1,12 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
+<style>
+tr{
+	height : 50px;
+
+}
+</style>
+
 
 	<script src="js/search.js"></script>
 	검색어 입력 : <input type="text" id="keyword">
@@ -16,10 +23,10 @@
 		<table id="table" >
 			<thead>
 				<tr>
-					<td>번호</td>
-					<td>문서제목</td>
-					<td>본문</td>
-					<td>작성일</td>
+					<td style="width :5%;">번호</td>
+					<td style="width :25%;">문서제목</td>
+					<td style="width :50%;">본문</td>
+					<td style="width :20%;">작성일</td>
 				</tr>
 			</thead>
 
