@@ -175,7 +175,7 @@ function pageBar(index) {
 
 
 	//pageBar.innerHTML = start == 1 ? "" : `<button type="button" onclick="prevPage()">이전</button>`;
-	pageBar.innerHTML = `<button type="button" onclick="prevPage()">이전</button>`;
+	pageBar.innerHTML = `<button type="button" onclick="prevPage()"><</button>`;
 
 	let i;
 	let pageCount = 4;
@@ -198,7 +198,7 @@ function pageBar(index) {
 
 
 		if (i + start == index) {
-			pageBar.innerHTML += `<button type="button" class="btn btn-outline-dark active" onclick="pageSet(this)" value = '${i + start}'>${i + start}쪽</button>`
+			pageBar.innerHTML += `<button type="button" class="btn btn-primary" onclick="pageSet(this)" value = '${i + start}' disabled>${i + start}쪽</button>`
 
 		}
 		else {
@@ -212,7 +212,7 @@ function pageBar(index) {
 	}
 
 
-	pageBar.innerHTML += `<button type="button" onclick="nextPage()">다음</button>`;
+	pageBar.innerHTML += `<button type="button" onclick="nextPage()">></button>`;
 
 
 
