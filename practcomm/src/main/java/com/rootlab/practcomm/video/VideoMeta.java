@@ -2,6 +2,8 @@ package com.rootlab.practcomm.video;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
 @Data
 public class VideoMeta {
@@ -9,7 +11,11 @@ public class VideoMeta {
 	private String keyword;//?
 	
 	private String author;
+	
+	//@RequestBody로 json을 바로 받으려니.. LocalDateTime을 자동 매핑안됨. 아래 어노테이션이 필요
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")	
 	private LocalDateTime datetime;
+	
 	private int play_time;
 	private String thumbnail;
 	private String title;
