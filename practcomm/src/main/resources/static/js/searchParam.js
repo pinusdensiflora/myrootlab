@@ -203,7 +203,7 @@ function rendPageBar(keyword, page) {
 	let start = (parseInt((page - 1) / 5)) * 5 + 1;
 	
 	let max = Math.min(Math.ceil(pageableCache[keyword] / 10), start + 4);
-	console.log(pageableCache[keyword], start + 4);
+	//console.log(pageableCache[keyword], start + 4);
 	
 	pageBar.innerHTML = `<button type="button" onclick="prevPage('${keyword}', ${page-1})">prev</button>`;
 	for (let i = start; i <= max; i++) {
