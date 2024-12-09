@@ -80,7 +80,7 @@ async function updateContent(keyword, page) {
 	//데이터 가져오기
 	ajaxResult = await getData(keyword, page);
 
-	console.log("리렌더링 준비 : ", getQueryParams(), ajaxResult);
+	//console.log("리렌더링 준비 : ", getQueryParams(), ajaxResult);
 	render(keyword, page);
 }
 
@@ -179,7 +179,7 @@ function render(keyword, page) {
 	document.getElementById("resultsection").style.visibility = "visible";
 	document.getElementById("nothing").style.display = "none";
 
-	console.log("렌더인데 왜 안돌지,", ajaxResult);
+	//console.log("ㅠㅠ", ajaxResult);
 	tbody.innerHTML = "";
 
 	for (let i = 0; i <= 9; i++) {
@@ -201,8 +201,9 @@ function rendPageBar(keyword, page) {
 	const pageBar = document.getElementById("pageBar");
 
 	let start = (parseInt((page - 1) / 5)) * 5 + 1;
-	let max = Math.min(parseInt(pageableCache[keyword] / 10) + 1, start + 4);
-
+	
+	let max = Math.min(Math.ceil(pageableCache[keyword] / 10), start + 4);
+	console.log(pageableCache[keyword], start + 4);
 	
 	pageBar.innerHTML = `<button type="button" onclick="prevPage('${keyword}', ${page-1})">prev</button>`;
 	for (let i = start; i <= max; i++) {
@@ -236,9 +237,9 @@ function prevPage(keyword, page){
 function nextPage(keyword, page){
 	const Params = getQueryParams();
 	//validation
-	if (page > (parseInt(pageableCache[keyword] / 10) + 1)) {
+	if (page > Math.ceil(pageableCache[keyword]/10) ) {
 		
-		page = parseInt(pageableCache[keyword] / 10) + 1;
+		page = Math.ceil(pageableCache[keyword]/10);
 		alert(`마지막페이지 입니다.`);
 		return;
 	}
