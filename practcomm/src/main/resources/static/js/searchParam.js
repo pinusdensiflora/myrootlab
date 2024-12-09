@@ -25,21 +25,47 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	//뒤로가기 앞으로가기 리스너
 	window.addEventListener('popstate', () => {
-		console.log("페이지 이동");
-		const { currkeyword, currpage } = getQueryParams();
-		updateContent(currkeyword, currpage);
+		const params = getQueryParams();
+		//console.log("페이지 이동", getQueryParams());
+		updateContent(params['keyword'], params['page']);
 	});
 
 
 });
 
+//검색버튼 클릭 시,
+async function search() {
+	const keyword = document.getElementById("keyword").value;
+	//document.getElementById("keyword").value = ""; //클리어
+	if (keyword == "") {
+		alert("입력");
+		return;
+	}
+	const page = 1;
+
+	try {
+		if (pageableCache[keyword] === undefined) { //pageableCache[keyword] == null 느슨한 비교(null과 undefined 를 둘다 확인)
+
+			await getPageable(keyword);
+		}
+		updateURLAndContent(keyword, page);//에러없이 데이터가 잘 받아와졌으면. 파라미터를 히스토리에 넣으면서 동시에 리렌더링도 해결됨
+		//ajaxResult = await getData(keyword,page); 
+	} catch (error) {
+		console.error("Error: ", error);
+	}
+
+	//getresult();
+	//updateContent(keyword,page);
+}
+
+
 
 
 function updateURLAndContent(keyword, page) {
-	//히스토리에 파라미터 추가하는 function
-	
-	if(getQueryParams()['keyword'] == keyword && getQueryParams()['page'] == page){
-		console.log("동일파라미터로 히스토리에 추가안함");
+	//히스토리에 파라미터 추가하고 그 파라미터를 기반으로 렌더링호출 function
+
+	if (getQueryParams()['keyword'] == keyword && getQueryParams()['page'] == page) {
+		console.log("동일파라미터로 히스토리에 추가안함", page);
 		return;
 	}
 
@@ -47,9 +73,15 @@ function updateURLAndContent(keyword, page) {
 	updateContent(keyword, page); //리렌더링
 }
 
-function updateContent(keyword, page) {
-	//const { getkeyword, getpage } = getQueryParams();
-	console.log("리렌더링 준비 : ",getQueryParams(), ajaxResult);
+async function updateContent(keyword, page) {
+	
+
+
+	//데이터 가져오기
+	ajaxResult = await getData(keyword, page);
+
+	console.log("리렌더링 준비 : ", getQueryParams(), ajaxResult);
+	render(keyword, page);
 }
 
 function getQueryParams() {
@@ -61,28 +93,15 @@ function getQueryParams() {
 }
 
 
-async function search() {
-	const keyword = document.getElementById("keyword").value;
-	//document.getElementById("keyword").value = ""; //클리어
-	if(keyword == ""){
-		alert("입력");
-		return;
-	}
-	const page = 1;
 
-	try {
-		if (pageableCache[keyword] === undefined) { //pageableCache[keyword] == null 느슨한 비교(null과 undefined 를 둘다 확인)
-			
-			await getPageable(keyword);
-		}
-		ajaxResult = await getData(keyword,page); //파라미터를 히스토리에 넣으면서 동시에 리렌더링도 해결됨
-	} catch (error) {
-		console.error("Error: ", error);
-	}
 
-	//getresult();
-	//updateContent(keyword,page);
+//로딩 온.오프
+function showLoading() {
+	document.getElementById("loading").style.display = "flex"; // 로딩 화면 보이기
+}
 
+function hideLoading() {
+	document.getElementById("loading").style.display = "none"; // 로딩 화면 안보이기
 }
 
 async function getPageable(keyword) {
@@ -103,21 +122,8 @@ async function getPageable(keyword) {
 
 }
 
-
-function showLoading() {
-	document.getElementById("loading").style.display = "flex"; // 로딩 화면 보이기
-}
-
-function hideLoading() {
-	document.getElementById("loading").style.display = "none"; // 로딩 화면 안보이기
-}
-
 async function getData(keyword, page) {
 	const url = `http://localhost:8080/community/search-param/api?keyword=${keyword}&page=${page}`;
-	// URL에 쿼리 파라미터 추가
-	//history.pushState(null, '', `?keyword=${keyword}&page=${page}`);
-	updateURLAndContent(keyword, page);
-
 
 	showLoading(); // 데이터를 요청하기 전에 로딩 화면을 표시
 	try {
@@ -137,11 +143,26 @@ async function getData(keyword, page) {
 }
 
 
-function getresult() {
+
+
+
+
+
+
+function render(keyword, page) {
+	document.getElementById("keyword").value = keyword; //다시 띄우려고
+
+
+
+	if (keyword == "") {
+		document.getElementById("resultsection").style.visibility = "hidden";
+		document.getElementById("nothing").style.display = "block";
+		return;
+	}
 
 	//const meta = ajaxResult["meta"];
 	const result = ajaxResult["documents"];
-	//end = meta.is_end;
+
 	let tbody = document.getElementById("tbody");
 
 
@@ -153,25 +174,19 @@ function getresult() {
 
 		return;
 	}
-	//pageBar(page);
+	rendPageBar(keyword, page);
 	//console.log(meta, result);
 	document.getElementById("resultsection").style.visibility = "visible";
 	document.getElementById("nothing").style.display = "none";
 
+	console.log("렌더인데 왜 안돌지,", ajaxResult);
 	tbody.innerHTML = "";
-	//6->0(1번째)  11->0 ... 나머지 *10 
-	//7->10(11번째)
-	//8->20
-	//let lastn = result.length < page * 10 ? result.length : page * 10;
-	let startIndex = ((page - 1) % 5) * 10;
-	let lastIndex = result.length - 1 < startIndex + 9 ? result.length - 1 : startIndex + 9;
-	//console.log(`s: ${startIndex}, l: ${lastIndex}}`);
 
-	for (let i = startIndex; i <= lastIndex; i++) {
+	for (let i = 0; i <= 9; i++) {
 		let res = result[i];
 		tbody.innerHTML = tbody.innerHTML +
 			`<tr>
-				<td>${i + 1 + (page - 1) * 50}</td>
+				<td>${page * 10 - 9 + i}</td>
 				<td><a href = "${res.url}"  target='_blank' class="ellipsis">${res.title}</a></td>
 				<td class="ellipsis">${res.contents}</td>
 				<td>${res.datetime}</td>
@@ -182,4 +197,50 @@ function getresult() {
 }
 
 
+function rendPageBar(keyword, page) {
+	const pageBar = document.getElementById("pageBar");
 
+	let start = (parseInt((page - 1) / 5)) * 5 + 1;
+	let max = Math.min(parseInt(pageableCache[keyword] / 10) + 1, start + 4);
+
+	
+	pageBar.innerHTML = `<button type="button" onclick="prevPage('${keyword}', ${page-1})">prev</button>`;
+	for (let i = start; i <= max; i++) {
+
+		if (i == page) {
+			pageBar.innerHTML += `<button type="button" class="btn btn-primary" onclick="updateURLAndContent('${keyword}', ${i})" value = '${i}' disabled>${i}쪽</button>`
+
+		}
+		else {
+			pageBar.innerHTML += `<button type="button" class="btn btn-outline-dark" onclick="updateURLAndContent('${keyword}', ${i})" value = '${i}'>${i}쪽</button>`
+		}
+
+	}
+
+
+	pageBar.innerHTML += `<button type="button" onclick="nextPage('${keyword}', ${page+1})">next</button>`;
+
+}
+
+
+function prevPage(keyword, page){
+	const Params = getQueryParams();
+	//validation
+	if (page < 1) {
+		page = 1;
+		alert("1페이지 입니다.");
+		return;
+	}
+	updateURLAndContent(keyword, parseInt(Params['page']) - 1);
+}
+function nextPage(keyword, page){
+	const Params = getQueryParams();
+	//validation
+	if (page > (parseInt(pageableCache[keyword] / 10) + 1)) {
+		
+		page = parseInt(pageableCache[keyword] / 10) + 1;
+		alert(`마지막페이지 입니다.`);
+		return;
+	}
+	updateURLAndContent(keyword, parseInt(Params['page']) + 1);
+}
