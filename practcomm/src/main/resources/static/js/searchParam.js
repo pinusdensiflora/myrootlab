@@ -1,40 +1,105 @@
-var keyword = "";
-var page = 1;
-let requestPage = 1;
-var end;
+//let keyword = "";
+//let page = 1;
 let ajaxResult;
+let pageableCache = {};
 
 
+//렌더링시 처리해야할 것
 document.addEventListener('DOMContentLoaded', () => {
 	const inputField = document.getElementById('keyword');
-	
+
 	// 입력 필드에 포커스 설정(새로고침 시 디폴트)
 	inputField.focus();
 
 	// 엔터 키 감지
 	document.addEventListener('keydown', (event) => {
-		if(document.activeElement === inputField && event.key === 'Enter'){
+		if (document.activeElement === inputField && event.key === 'Enter') {
 			//포커스 되어있지 않으면 엔터키를 눌러도 갱신 시키지 않음
 			//console.log('엔터 키가 눌렸습니다.');
 			search();
 		}
-		
 	});
+
+	history.pushState(null, '', `?keyword=&page=`);
+	//const {keyword, page} = getQueryParams();
+
+	//뒤로가기 앞으로가기 리스너
+	window.addEventListener('popstate', () => {
+		console.log("페이지 이동");
+		const { currkeyword, currpage } = getQueryParams();
+		updateContent(currkeyword, currpage);
+	});
+
+
 });
 
+
+
+function updateURLAndContent(keyword, page) {
+	//히스토리에 파라미터 추가하는 function
+	
+	if(getQueryParams()['keyword'] == keyword && getQueryParams()['page'] == page){
+		console.log("동일파라미터로 히스토리에 추가안함");
+		return;
+	}
+
+	history.pushState(null, '', `?keyword=${keyword}&page=${page}`);
+	updateContent(keyword, page); //리렌더링
+}
+
+function updateContent(keyword, page) {
+	//const { getkeyword, getpage } = getQueryParams();
+	console.log("리렌더링 준비 : ",getQueryParams(), ajaxResult);
+}
+
+function getQueryParams() {
+	const params = new URLSearchParams(window.location.search);
+	return {
+		keyword: params.get("keyword"),
+		page: params.get("page"),
+	};
+}
+
+
 async function search() {
-	keyword = document.getElementById("keyword").value;
-	requestPage = 1;
-	page = 1;
-	start = 0;
+	const keyword = document.getElementById("keyword").value;
+	//document.getElementById("keyword").value = ""; //클리어
+	if(keyword == ""){
+		alert("입력");
+		return;
+	}
+	const page = 1;
 
 	try {
-		ajaxResult = await getData();
-		//50개의 데이터가
+		if (pageableCache[keyword] === undefined) { //pageableCache[keyword] == null 느슨한 비교(null과 undefined 를 둘다 확인)
+			
+			await getPageable(keyword);
+		}
+		ajaxResult = await getData(keyword,page); //파라미터를 히스토리에 넣으면서 동시에 리렌더링도 해결됨
 	} catch (error) {
-		console.error("Error: ", error);  // 오류 처리
+		console.error("Error: ", error);
 	}
-	getresult();
+
+	//getresult();
+	//updateContent(keyword,page);
+
+}
+
+async function getPageable(keyword) {
+	const url = `http://localhost:8080/community/search-param/api/pageable?keyword=${keyword}`;
+	showLoading(); // 데이터를 요청하기 전에 로딩 화면을 표시
+	try {
+		const response = await fetch(url); // 데이터 요청
+		const data = await response.json();
+		//console.log("data : ", data);
+
+		pageableCache[keyword] = parseInt(data);
+		//return data; // 데이터 반환
+	} catch (error) {
+		console.error("Error fetching data", error);
+	} finally {
+		hideLoading(); // 데이터 요청이 끝나면 로딩 화면을 숨기기
+	}
 
 }
 
@@ -47,20 +112,22 @@ function hideLoading() {
 	document.getElementById("loading").style.display = "none"; // 로딩 화면 안보이기
 }
 
-async function getData() {
-	const url =`http://localhost:8080/community/search?keyword=${keyword}&page=${requestPage}`;
+async function getData(keyword, page) {
+	const url = `http://localhost:8080/community/search-param/api?keyword=${keyword}&page=${page}`;
 	// URL에 쿼리 파라미터 추가
-    //history.pushState(null, '', `?keyword=${keyword}&page=${requestPage}`);
-    
+	//history.pushState(null, '', `?keyword=${keyword}&page=${page}`);
+	updateURLAndContent(keyword, page);
+
+
 	showLoading(); // 데이터를 요청하기 전에 로딩 화면을 표시
 	try {
 		const response = await fetch(url); // 데이터 요청
 		const data = await response.json();
-		console.log("data : ", data);
-		end = data["meta"].is_end;
+		//console.log("data : ", data);
+		/*end = data["meta"].is_end;
 		if (end) {
 			console.log("is_end == true");
-		}
+		}*/
 		return data; // 데이터 반환
 	} catch (error) {
 		console.error("Error fetching data", error);
@@ -86,7 +153,7 @@ function getresult() {
 
 		return;
 	}
-	pageBar(page);
+	//pageBar(page);
 	//console.log(meta, result);
 	document.getElementById("resultsection").style.visibility = "visible";
 	document.getElementById("nothing").style.display = "none";
@@ -104,7 +171,7 @@ function getresult() {
 		let res = result[i];
 		tbody.innerHTML = tbody.innerHTML +
 			`<tr>
-				<td>${i + 1 + (requestPage - 1) * 50}</td>
+				<td>${i + 1 + (page - 1) * 50}</td>
 				<td><a href = "${res.url}"  target='_blank' class="ellipsis">${res.title}</a></td>
 				<td class="ellipsis">${res.contents}</td>
 				<td>${res.datetime}</td>
@@ -113,107 +180,6 @@ function getresult() {
 
 
 }
-function pageSet(btn) {
-	//console.log(btn);
-	//console.log(btn.value);
-	page = btn.value;
-	getresult();
-
-
-}
-async function nextPage() {
-	if (end) {
-		alert("더 이상 검색 내용이 없습니다.");
-		return;
-	}
-	requestPage += 1;
-
-	try {
-		const temp = await getData();
-
-		ajaxResult = temp;
-		page = (requestPage - 1) * 5 + 1;
 
 
 
-	} catch (error) {
-		console.error("Error: ", error);  // 오류 처리
-	}
-
-	getresult();
-
-}
-async function prevPage() {
-	if (requestPage == 1) {
-		alert("이전페이지 없음");
-		return;
-	}
-	requestPage -= 1;
-
-	try {
-		const temp = await getData();
-
-		ajaxResult = temp;
-		page = (requestPage - 1) * 5 + 5;
-		console.log(ajaxResult, page);
-
-
-	} catch (error) {
-		console.error("Error: ", error);  // 오류 처리
-	}
-
-	getresult();
-
-}
-
-function pageBar(index) {
-	let start = (requestPage - 1) * 5 + 1;
-
-	//일단 5쪽까지만
-	//4쪽이 끝일 경우 5쪽은 내용은 동일하고 왼쪽 값만 변경되므로 끝 확인이 가능하면 지워야함
-	const pageBar = document.getElementById("pageBar");
-
-
-	//pageBar.innerHTML = start == 1 ? "" : `<button type="button" onclick="prevPage()">이전</button>`;
-	pageBar.innerHTML = `<button type="button" onclick="prevPage()"><</button>`;
-
-	let i;
-	let pageCount = 4;
-
-	if (end) {
-		pageCount = parseInt((ajaxResult["documents"].length - 1) / 10);
-
-	}
-
-
-	for (i = 0; i <= pageCount; i++) {
-		/*
-		if(parseInt((i-1)%5)+1 >= parseInt((ajaxResult["documents"].length-1)/10)){ // 27개(20) : 6 7 8 9 10 => 1 2 3 4 0  // 5 6 7 8 9 => 0 1 2 3 4 +1
-			console.log(`${i} 쪽 페이지는 없음.`)
-			i = -1;
-			break;//이후 페이지가 없다면
-		
-		}*/
-
-
-
-		if (i + start == index) {
-			pageBar.innerHTML += `<button type="button" class="btn btn-primary" onclick="pageSet(this)" value = '${i + start}' disabled>${i + start}쪽</button>`
-
-		}
-		else {
-			pageBar.innerHTML += `<button type="button" class="btn btn-outline-dark" onclick="pageSet(this)" value = '${i + start}'>${i + start}쪽</button>`
-		}
-
-	}
-
-	if (i == -1) {
-		return;
-	}
-
-
-	pageBar.innerHTML += `<button type="button" onclick="nextPage()">></button>`;
-
-
-
-}

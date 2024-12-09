@@ -29,7 +29,7 @@ public class KakaoSearchParam {
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
 //		System.out.println(response.getBody());
-		System.out.println("완료");
+		//System.out.println("완료");
 		return response.getBody();
 		
 	}

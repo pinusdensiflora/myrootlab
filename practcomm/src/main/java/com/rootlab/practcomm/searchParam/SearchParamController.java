@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 
 
 @Controller
-@RequestMapping("/searchParam")
+@RequestMapping("/search-param")
 @RequiredArgsConstructor
 public class SearchParamController {
 
@@ -35,36 +35,22 @@ public class SearchParamController {
 	
 	
 	@GetMapping("")
+	public String searchParamMain(){
+		return "websearchParam";
+	}
+	
+	
+	
+	@GetMapping("/api")
 	@ResponseBody
 	public Map<String, Object> search(@RequestParam("keyword") String keyword,
 										   @RequestParam("page") Integer page)  {
 
 		
-		String lastPage;
-		int endPage = 1;
-        do {
-        	lastPage = kakaoSearch.searchResult(keyword, endPage, 50);
-    		Map<String, Object> lastPageMap = gson.fromJson(lastPage, new TypeToken<Map<String, Object>>(){}.getType());
-    		lastPage = lastPageMap.get("meta").toString();
-    		//System.out.println(lastPage.charAt(8));
-    		System.out.println(lastPage);
-    		System.out.println(endPage);
-    		endPage++;
-        	
-        }while(lastPage.charAt(8) == 'f');
-		
-		
-//    	lastPage = kakaoSearch.searchResult(keyword, 45, 50);
-//		Map<String, Object> lastPageMap = gson.fromJson(lastPage, new TypeToken<Map<String, Object>>(){}.getType());
-//		lastPage = lastPageMap.get("meta").toString();
-//		//System.out.println(lastPage.charAt(8));
-//		System.out.println(lastPage);
-		
-		
-		
-		
+		System.out.println(findPageable(keyword));
+	
 		System.out.println(keyword + " " + page);
-
+		
 				
 				
 		String resultString = kakaoSearch.searchResult(keyword, page, 10);
@@ -91,9 +77,34 @@ public class SearchParamController {
 		
 	}
 	
-	
-	public int findEnd(String keyword) {
-		return 1;
+	@GetMapping("/api/pageable")
+	@ResponseBody
+	public int findPageable(
+								@RequestParam("keyword") 
+								String keyword) {
+		String lastPage;
+//		int endPage = 1;
+//        do {
+//        	lastPage = kakaoSearch.searchResult(keyword, endPage, 50);
+//    		Map<String, Object> lastPageMap = gson.fromJson(lastPage, new TypeToken<Map<String, Object>>(){}.getType());
+//    		lastPage = lastPageMap.get("meta").toString();
+//    		//System.out.println(lastPage.charAt(8));
+//    		System.out.println(lastPage);
+//    		System.out.println(endPage);
+//    		endPage++;
+//        	
+//        }while(lastPage.charAt(8) == 'f');
+		
+		
+    	lastPage = kakaoSearch.searchResult(keyword, 10, 50);
+		Map<String, Object> lastPageMap = gson.fromJson(lastPage, new TypeToken<Map<String, Object>>(){}.getType());
+		lastPage = lastPageMap.get("meta").toString();
+		Map<String, Object> meta = gson.fromJson(lastPage, new TypeToken<Map<String, Object>>(){}.getType());
+		//System.out.println(lastPage.charAt(8));
+		String pageable = meta.get("pageable_count").toString();
+		//System.out.println(Float.parseFloat(pageable));
+		
+		return (int)(Float.parseFloat(pageable));
 	}
 
 	
