@@ -89,7 +89,8 @@ async function getresult() {
 		rend(result);
 
 	} catch (error) {
-		console.error("Error: ", error);  // 오류 처리
+		console.error("Error에러: ", error);  // 오류 처리
+		nothing(`Error ${error}`);
 	}
 
 }
@@ -229,7 +230,8 @@ async function save() {
 	} catch (error) {
 		alert(error);
 		console.error('Error:', error);
-		return;
+		nothing(`Error ${error}`);
+		
 	} finally {
 		hideLoading(); // 요청 후 로딩 화면을 숨김
 	}
