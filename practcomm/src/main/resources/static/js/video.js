@@ -1,10 +1,32 @@
 
-let keyword = "아이브";
+let keyword = "";
 let page = 1;
-let is_end = false;
+//let is_end = false;
 
 let checked = [];
 let checkMap = new Map();
+
+
+document.addEventListener('DOMContentLoaded', () => {
+	const inputField = document.getElementById('keywordInput');
+	nothing("데이터가 없습니다.");
+	// 입력 필드에 포커스 설정(새로고침 시 디폴트)
+	inputField.focus();
+
+	// 엔터 키 감지
+	document.addEventListener('keydown', (event) => {
+		if (document.activeElement === inputField && event.key === 'Enter') {
+			//포커스 되어있지 않으면 엔터키를 눌러도 갱신 시키지 않음
+			//console.log('엔터 키가 눌렸습니다.');
+			getresult();
+		}
+	});
+
+
+
+});
+
+
 
 function showLoading() {
 	document.getElementById("loading").style.display = "flex"; // 로딩 화면 보이기
@@ -34,11 +56,17 @@ async function getresult() {
 	try {
 
 		keyword = document.getElementById("keywordInput").value;
-
+		if (keyword == "") {
+			const inputElement = document.getElementById('keywordInput')
+			inputElement.style.border = "2px solid red";
+			nothing("검색어가 없습니다.");
+			return
+		}
+		document.getElementById('keywordInput').style.border = "2px solid black";
 		const ajaxResult = await getData();
 		const meta = ajaxResult["meta"];
 		const result = ajaxResult["documents"];
-		end = meta.is_end;
+		//end = meta.is_end;
 
 		console.log(result);
 		console.log(meta);
@@ -54,6 +82,12 @@ async function rend(result) {
 	document.getElementById("titlecontainer").style.display = "flex";
 	const section = document.getElementById("section");
 	section.innerHTML = "";
+
+	if (result.length == 0) {
+		nothing("검색된 데이터가 없습니다.");
+		return;
+	}
+
 	await result.forEach(function(item, index) {
 		//console.log(item);
 		section.innerHTML = section.innerHTML
@@ -84,7 +118,11 @@ async function rend(result) {
 
 }
 
-
+function nothing(message) {
+	document.getElementById("titlecontainer").style.display = "flex";
+	const section = document.getElementById("section");
+	section.innerHTML = message;
+}
 function rendList(list) {
 	const listSection = document.getElementById("listSection");
 	listSection.innerHTML = "";
@@ -115,25 +153,40 @@ function rendList(list) {
 
 
 async function save() {
-	
-	const url = "http://localhost:8080/community/video/upload"; 
+
+	if (checkMap.size == 0) {
+		alert("저장할 비디오가 없습니다.");
+		return;
+	}
+
+	const result = confirm("저장하시겠습니까?");
+	if (result) {
+		console.log("확인");
+	} else {
+
+		console.log("취소");
+		return;
+	}
+
+
+	const url = "http://localhost:8080/community/video/upload";
 
 	showLoading(); // POST 요청 전 로딩 화면을 보임
 
 	let arr = Array.from(checkMap.values());//값만 배열로 변환 //그냥 배열로 보내는게 제일 낫다..
 	//키워드 필드 추가 과정
-	arr.forEach(function(item){
+	arr.forEach(function(item) {
 		item["keyword"] = keyword;
 	})
 	console.log("keyword를 추가한 value의 arr : ", arr);
 	try {
-		
+
 		const response = await fetch(url, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			
+
 			body: JSON.stringify(arr) // JSON 형식으로 데이터 전송 //json으로 보낼 때는 어노테이션 붙이기
 			//또는 폼 데이터를 만들어서 전송해도 됨
 		});
@@ -146,6 +199,16 @@ async function save() {
 		hideLoading(); // 요청 후 로딩 화면을 숨김
 	}
 
+
+
+}
+function clearCheck() {
+	let checkboxes = document.querySelectorAll(`input[type="checkbox"][name="save"]`);
+	checkboxes.forEach(checkbox => {
+		checkbox.checked = false; // 각 체크박스의 체크 해제
+	});
+	checkMap.clear();
+	rendList(checkMap);
 }
 
 
