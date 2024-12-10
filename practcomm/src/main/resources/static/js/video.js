@@ -40,9 +40,25 @@ async function getData() {
 	showLoading(); // 데이터를 요청하기 전에 로딩 화면을 표시
 	try {
 		const response = await fetch(`http://localhost:8080/community/video/api?keyword=${keyword}&page=${page}`); // 데이터 요청
-		const data = await response.json();
+		
+		if (response.ok) {
+			// 응답이 성공적일 경우
+			const result = await response.json(); // JSON 데이터 파싱
+			console.log('Success:', result);
+			return result;
+			
+		} else {
+			// 응답이 실패할 경우
+			const result = await response.json(); // JSON 데이터 파싱
+			console.error('Error에러:', result.status, result.statusText);
+			alert(`${result.status} Error ${result.statusText}`);
+			return;
+		}
+		
+		/*const data = await response.json();
 		console.log("data : ", data);
-		return data; // 데이터 반환
+		return data; // 데이터 반환*/
+		
 	} catch (error) {
 		console.error("Error fetching data", error);
 	} finally {
@@ -192,9 +208,28 @@ async function save() {
 		});
 
 		const result = await response;
-		console.log('Response:', result);
+
+		if (result.ok) {
+			// 응답이 성공적일 경우
+			const data = await result.json(); // JSON 데이터 파싱
+			console.log('Success:', data);
+			alert("저장되었습니다.");
+			clearCheck();
+			
+		} else {
+			// 응답이 실패할 경우
+			console.error('Error에러:', result.status, result.statusText);
+			document.getElementById('keywordInput').value = "";
+			clearCheck();
+			nothing(`${result.status} Error ${result.statusText}`);
+			alert(`${result.status} Error ${result.statusText}`);
+		}
+		//console.log('Response:', result);
+
 	} catch (error) {
+		alert(error);
 		console.error('Error:', error);
+		return;
 	} finally {
 		hideLoading(); // 요청 후 로딩 화면을 숨김
 	}
