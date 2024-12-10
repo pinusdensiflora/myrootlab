@@ -38,7 +38,7 @@ async function search() {
 	const keyword = document.getElementById("keyword").value;
 	//document.getElementById("keyword").value = ""; //클리어
 	if (keyword == "") {
-		alert("입력");
+		alert("검색어를 입력하세요.");
 		return;
 	}
 	const page = 1;
