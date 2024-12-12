@@ -212,7 +212,7 @@ async function save() {
 
 		if (result.ok) {
 			// 응답이 성공적일 경우
-			const data = await result.json(); // JSON 데이터 파싱
+			const data = await result;//.json(); // JSON 데이터 파싱ㄴㄴㄴ
 			console.log('Success:', data);
 			alert("저장되었습니다.");
 			clearCheck();
@@ -224,6 +224,7 @@ async function save() {
 			clearCheck();
 			nothing(`${result.status} Error ${result.statusText}`);
 			alert(`${result.status} Error ${result.statusText}`);
+			
 		}
 		//console.log('Response:', result);
 
