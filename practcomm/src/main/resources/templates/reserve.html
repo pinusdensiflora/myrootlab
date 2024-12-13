@@ -3,35 +3,50 @@
 
 	<h1>예약</h1>
 
-	<label> <input type="radio" name="choice1" value="option1">
-		옵션 1
-	</label> <label> <input type="radio" name="choice1" value="option2">
-		옵션 2
-	</label> <label> <input type="radio" name="choice1" value="option3">
-		옵션 3
-	</label> <br>
-	<br>
-	<label> <input type="radio" name="choice2" value="option1">
-		옵션 1
-	</label> <label> <input type="radio" name="choice2" value="option2">
-		옵션 2
-	</label> <label> <input type="radio" name="choice2" value="option3">
-		옵션 3
-	</label> <br>
+	<button type="button" disabled>데이터 타입</button>
 
+	<label> <input type="radio" name="choice1" value="web" checked>
+		웹검색
+	</label> <label> <input type="radio" name="choice1" value="video">
+		비디오
+	</label> <label> <input type="radio" name="choice1" value="image"
+		disabled> 이미지
+	</label> <br> <br>
+
+	<button type="button" disabled>정렬 방식</button>
+	</label> <label> <input type="radio" name="choice2" value="accuracy"
+		checked> 정확도 순
+	</label> <label> <input type="radio" name="choice2" value="recency">
+		최신 순
+	</label> <br> <br>
 	<!-- 텍스트 입력 -->
-	<label for="textInput">텍스트 입력:</label> <input type="text"
-		id="textInput" name="textInput" placeholder="여기에 입력"> <br>
-	<br>
+	<button type="button" disabled>검색어</button>
+	<input type="text" id="textInput" name="textInput" placeholder="여기에 입력">
+	<br> <br>
 
-	<label> <input type="radio" name="choice3" value="option1">
-		옵션 1
-	</label> <label> <input type="radio" name="choice3" value="option2">
-		옵션 2
-	</label> <label> <input type="radio" name="choice3" value="option3">
-		옵션 3
-	</label> <br>
 
+	<button type="button" disabled>예약 주기</button>
+	<label> <input type="radio" name="choice3" value="hour">
+		한 시간
+	</label> <label> <input type="radio" name="choice3" value="day">
+		매일 자정
+	</label> <label> <input type="radio" name="choice3" value="week">
+		매주 월요일 자정
+	</label><br>
+	</label> <label> <input type="radio" name="choice3" value="custom" onChange="">
+		사용자 지정
+	</label> <br><br>
+	<div id="customTime" style = "visibility :hidden">
+	<form>
+		초 <input type="text" id="textInput" name="textInput" placeholder="여기에 입력" ><br>
+		분 <input type="text" id="textInput" name="textInput" placeholder="여기에 입력" ><br>
+		시 <input type="text" id="textInput" name="textInput" placeholder="여기에 입력" ><br>
+		일 <input type="text" id="textInput" name="textInput" placeholder="여기에 입력" ><br>
+		달 <input type="text" id="textInput" name="textInput" placeholder="여기에 입력" >
+	</form>
+	</div>
+
+	<button type="submit">관리</button>
 
 	<button type="submit">제출</button>
 
