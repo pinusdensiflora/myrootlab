@@ -6,8 +6,11 @@ let pageableCache = {};
 
 //렌더링시 처리해야할 것
 document.addEventListener('DOMContentLoaded', () => {
+	
 	const inputField = document.getElementById('keyword');
-
+	//새로고침 시에 파라미터 유지1 이전 파라미터가 있으면 temp
+	const { keyword, page } = getQueryParams();
+	
 	// 입력 필드에 포커스 설정(새로고침 시 디폴트)
 	inputField.focus();
 
@@ -20,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 
-	history.pushState(null, '', `?keyword=&page=`);
+	history.pushState(null, '', `?keyword=&page=`); //이거 때문에 조금 ...
 	//const {keyword, page} = getQueryParams();
 
 	//뒤로가기 앞으로가기 리스너
@@ -29,7 +32,12 @@ document.addEventListener('DOMContentLoaded', () => {
 		//console.log("페이지 이동", getQueryParams());
 		updateContent(params['keyword'], params['page']);
 	});
+	
+	//새로고침 시에 파라미터 유지2
+	getPageable(keyword);
+	updateURLAndContent(keyword, page);
 
+	
 
 });
 
