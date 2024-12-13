@@ -42,8 +42,64 @@ function reserve(){
 		alert("검색어를 입력하세요");
 	}
 	
+	const taskname = type + sort + timeOption + "|" + keyword  ;
+
+	console.log(taskname);
+	save(taskname,timeOption);
 	
-	console.log(type, sort, keyword, timeOption);
 	
-	
+}
+
+
+async function save(taskName, timeOption) {
+
+
+	const url = `http://localhost:8080/community/scheduler/add`;
+
+	/*const data ={
+		"taskId": taskName,
+  		"cronExpression": timeOption
+	}*/
+	const formData = new URLSearchParams();
+	formData.append("taskId", taskName);
+	formData.append("cronExpression", timeOption);
+	try {
+
+		const response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				//'Content-Type': 'application/json'
+				 "Content-Type": "application/x-www-form-urlencoded"
+			},
+
+			//body: JSON.stringify(data) // JSON 형식으로 데이터 전송 //json으로 보낼 때는 어노테이션 붙이기
+			//또는 폼 데이터를 만들어서 전송해도 됨
+			body : formData
+		});
+
+		const result = await response;
+
+		if (result.ok) {
+			// 응답이 성공적일 경우
+			const data = await result;//.json(); // JSON 데이터 파싱ㄴㄴㄴ
+			console.log('Success:', data);
+			alert("저장되었습니다.");
+			
+			
+		} else {
+			// 응답이 실패할 경우
+			console.error('Error에러:', result.status, result.statusText);
+			
+			
+		}
+		//console.log('Response:', result);
+
+	} catch (error) {
+		alert(error);
+		console.error('Error:', error);
+		
+		
+	} 
+
+
 }
