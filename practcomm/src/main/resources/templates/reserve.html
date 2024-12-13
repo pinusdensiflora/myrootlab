@@ -1,6 +1,15 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
 
+<link rel="stylesheet" href="https://unpkg.com/cron-expression-input@1.3.1/lib/cron-expression-input.min.css">
+<script src="https://unpkg.com/cron-expression-input@1.3.1/lib/cultures/en-US.js"></script> <!-- Languague (Optional) -->
+<script src="https://unpkg.com/cron-expression-input@1.3.1/lib/cron-expression-input.min.js"></script>
+
+
+<script src="js/reserve.js"></script>
+
+
+
 	<h1>예약</h1>
 
 	<button type="button" disabled>데이터 타입</button>
@@ -21,36 +30,115 @@
 	</label> <br> <br>
 	<!-- 텍스트 입력 -->
 	<button type="button" disabled>검색어</button>
-	<input type="text" id="textInput" name="textInput" placeholder="여기에 입력">
+	<input type="text" id="keyword" name="keyword" placeholder="여기에 입력">
 	<br> <br>
 
 
 	<button type="button" disabled>예약 주기</button>
-	<label> <input type="radio" name="choice3" value="hour">
+	<label> <input type="radio" name="timeOption" value= "0 0 */1 * * ? *" onchange="customOnOff(0)" checked >
 		한 시간
-	</label> <label> <input type="radio" name="choice3" value="day">
+	</label> <label> <input type="radio" name="timeOption" value="0 0 0 * * ? *" onchange="customOnOff(0)" >
 		매일 자정
-	</label> <label> <input type="radio" name="choice3" value="week">
+	</label> <label> <input type="radio" name="timeOption" value="0 0 0 ? * MON *" onchange="customOnOff(0)">
 		매주 월요일 자정
 	</label><br>
-	</label> <label> <input type="radio" name="choice3" value="custom" onChange="">
+	</label> <label> <input type="radio" name="timeOption" value="custom" onchange="customOnOff(0)" disabled>
 		사용자 지정
 	</label> <br><br>
-	<div id="customTime" style = "visibility :hidden">
-	<form>
-		초 <input type="text" id="textInput" name="textInput" placeholder="여기에 입력" ><br>
-		분 <input type="text" id="textInput" name="textInput" placeholder="여기에 입력" ><br>
-		시 <input type="text" id="textInput" name="textInput" placeholder="여기에 입력" ><br>
-		일 <input type="text" id="textInput" name="textInput" placeholder="여기에 입력" ><br>
-		달 <input type="text" id="textInput" name="textInput" placeholder="여기에 입력" >
+	<div id="customTime" style = "display :none">
+	<form id="customTimeForm">
+		시간에(일 을 지정하면 요일에는 ?가 들어갑니다. 기본적으로 요일을 ?로)<br>
+		초 <input type="text" id="sec" name="textInput" placeholder="*" ><br>
+		분 <input type="text" id="min" name="textInput" placeholder="*" ><br>
+		시 <input type="text" id="hr" name="textInput" placeholder="*" ><br>
+		일 <input type="text" id="day" name="textInput" placeholder="*" ><br>
+		달 <input type="text" id="mo" name="textInput" placeholder="*" ><br>
+		
+		
+		<br>
+		시간마다<br>
+		초 <input type="text" id="sec" name="textInput" placeholder="*/10" ><br>
+		분 <input type="text" id="min" name="textInput" placeholder="*/10" ><br>
+		시 <input type="text" id="hr" name="textInput" placeholder="*/10" ><br>
+		일 <input type="text" id="day" name="textInput" placeholder="*/10" ><br>
+		달 <input type="text" id="mo" name="textInput" placeholder="*/10" ><br>
+		요일 마다<br> 
+			<input type="radio" name="week" value="1">월
+			<input type="radio" name="week" value="2">화
+			<input type="radio" name="week" value="3">수
+			<input type="radio" name="week" value="4">목
+			<input type="radio" name="week" value="5">금
+			<input type="radio" name="week" value="6">토
+			<input type="radio" name="week" value="0">일<br>
+		<br>	
+		년 마다 <br>
+		<input type="text" id="yr" name="textInput" placeholder="*/10" ><br>
+		
 	</form>
 	</div>
 
 	<button type="submit">관리</button>
 
-	<button type="submit">제출</button>
+	<button type="submit" onclick = "reserve()">제출</button>
 
 
+ <!-- Component -->
+     <form> 
+      <cron-expression-input
+        height="34px" width="250px" color="d58512"
+        required="false" hotValidate="true"
+        value="* * * * *"
+      ></cron-expression-input>
+      <input type="submit" value="Send Form" style="margin-top: 20px;" />
+    </form>
+    <!-- Component -->
+    
+    
+    <span>
+    
+
+초 (Seconds)
+0 ~ 59
+, - * /
+
+분 (Minutes)
+0 ~ 59
+, - * /
+
+시 (Hours)
+0 ~ 23
+, - * /
+
+일 (Day)
+1 ~ 31
+, - * ? / L W
+
+월 (Month)
+1 ~ 12 or JAN ~ DEC
+, - * /
+
+요일 (Week)
+0 ~ 6 or SUN ~ SAT(7도 일요일)
+, - * ? / L #
+
+연도 (Year)
+empty or 1970 ~ 2099
+, - * /
+
+
+● Cron 표현식 - 특수문자
+ 
+각 특수문자의 의미도 살펴보겠습니다.
+● * : 모든 값을 뜻합니다.
+● ? : 특정한 값이 없음을 뜻합니다. 
+● - : 범위를 뜻합니다. (예) 월요일에서 수요일까지는 MON-WED로 표현
+● , : 특별한 값일 때만 동작 (예) 월,수,금 MON,WED,FRI 
+● / : 시작시간 / 단위  (예) 0분부터 매 5분 0/5
+● L : 일에서 사용하면 마지막 일, 요일에서는 마지막 요일(토요일)
+● W : 가장 가까운 평일 (예) 15W는 15일에서 가장 가까운 평일 (월 ~ 금)을 찾음
+● # : 몇째주의 무슨 요일을 표현 (예) 3#2 : 2번째주 수요일
+</span>
+    
 
 </div>
 </html>
