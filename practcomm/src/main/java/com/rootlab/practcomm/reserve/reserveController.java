@@ -10,4 +10,8 @@ public class reserveController {
 	public String reserve() {
 		return "reserve";
 	}
+	@GetMapping("/quartz")
+	public String quartz() {
+		return "quartz";
+	}
 }
