@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class VideoController {
 
 	private final KakaoVideo kakaoVideo;
-	
+	private final VideoMetaService videoMetaService;
 	
 	//json 형식의 String을 Map 으로 변환 (jackson 도 있는데 난 gson 씀)
 	//webClient의 응답-> String
@@ -56,9 +56,13 @@ public class VideoController {
 	@PostMapping("/upload")
 	public ResponseEntity<String> upload(@RequestBody List<VideoMeta> map){
 		System.out.println("저장할 VideoMeta 데이터 리스트 : " + map.toString());
+		videoMetaService.saveList(map);
+		
 		return ResponseEntity.ok("ok");
-		//return ResponseEntity.badRequest().body("error 발생시키기");
+		//return ResponseEntity.badRequest().body("error 배드리퀘");
 	}
+	
+	
 	
 	
 }

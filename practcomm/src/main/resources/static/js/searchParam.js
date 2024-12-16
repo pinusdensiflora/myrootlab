@@ -94,6 +94,12 @@ async function updateContent(keyword, page) {
 
 function getQueryParams() {
 	const params = new URLSearchParams(window.location.search);
+	if(params.get("page") === null){
+		return{
+			keyword: "",
+			page: "",
+		}//null 값 들어가는 것 방지
+	}
 	return {
 		keyword: params.get("keyword"),
 		page: params.get("page"),

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rootlab.practcomm.video.VideoMetaMapper">
+
+
+	<insert id="save" parameterType="com.rootlab.practcomm.video.VideoMeta">
+		INSERT INTO videometa (author, datetime, play_time, thumbnail, title, url)
+		VALUES
+		(#{author}, #{datetime}, #{play_time}, #{thumbnail}, #{title}, #{url});
+	</insert>
+	
+
+
+</mapper>

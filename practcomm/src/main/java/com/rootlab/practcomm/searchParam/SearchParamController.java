@@ -3,10 +3,8 @@ package com.rootlab.practcomm.searchParam;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +12,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.rootlab.practcomm.meta.WebMeta;
+import com.rootlab.practcomm.meta.WebMetaService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +32,7 @@ public class SearchParamController {
 	Gson gson = new Gson(); // 기본 생성
 	Gson prettyGson = new GsonBuilder().setPrettyPrinting().create(); // Pretty print 설정
 	
+	private final WebMetaService webMetaService;
 	
 	
 	@GetMapping("")
@@ -69,10 +70,13 @@ public class SearchParamController {
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("documents", mapData.get("documents"));
-		resultMap.put("meta", mapData.get("meta"));//최종페이지 값을 이렇게 넣기엔 좀...음...
+		//resultMap.put("meta", mapData.get("meta"));//최종페이지 값을 이렇게 넣기엔 좀...음...
+		
 		System.out.println("resultMap : " + resultMap);
 		
+		webMetaService.save(mapData.get("documents"));
 		
+	
 		return resultMap;
 		
 	}
@@ -104,9 +108,12 @@ public class SearchParamController {
 		String pageable = meta.get("pageable_count").toString();
 		//System.out.println(Float.parseFloat(pageable));
 		
+		
 		return (int)(Float.parseFloat(pageable));
 	}
-
+	
+	
+	
 	
 	
 

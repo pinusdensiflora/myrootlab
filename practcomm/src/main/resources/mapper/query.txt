@@ -1,0 +1,21 @@
+CREATE TABLE webmeta(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	contents LONGTEXT,
+	datetime DATETIME,
+	title VARCHAR(255),
+	url VARCHAR(255)
+);
+
+
+
+CREATE TABLE videometa(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	author VARCHAR(255),
+	datetime DATETIME,
+	play_time INT,
+	thumbnail LONGTEXT,
+	title VARCHAR(255),
+	url LONGTEXT
+);
+
+
