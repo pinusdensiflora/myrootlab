@@ -1,9 +1,52 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
 
+<script src="js/quartz.js"></script>
 <h1>Quartz</h1>
 
+	<h1>예약</h1>
 
+	<button type="button" disabled>데이터 타입</button>
+
+	<label> <input type="radio" name="choice1" value="w" checked>
+		웹검색
+	</label> <label> <input type="radio" name="choice1" value="v">
+		비디오
+	</label> <label> <input type="radio" name="choice1" value="i"
+		disabled> 이미지
+	</label> <br> <br>
+
+	<button type="button" disabled>정렬 방식</button>
+	</label> <label> <input type="radio" name="choice2" value="a"
+		checked> 정확도 순
+	</label> <label> <input type="radio" name="choice2" value="r">
+		최신 순
+	</label> <br> <br>
+	<!-- 텍스트 입력 -->
+	<button type="button" disabled>검색어</button>
+	<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요">
+	<br> <br>
+
+
+	<button type="button" disabled>예약 주기</button>
+	<label> <input type="radio" name="timeOption" value= "*/10 * * * * ?">
+		10초
+	</label>
+	<label> <input type="radio" name="timeOption" value= "0 0 */1 * * ?" checked>
+		한 시간
+	</label> <label> <input type="radio" name="timeOption" value="0 0 0 * * ?">
+		매일 자정
+	</label> <label> <input type="radio" name="timeOption" value="0 0 0 ? * MON">
+		매주 월요일 자정
+	</label><br>
+	</label> <label> <input type="radio" name="timeOption" value="custom" disabled>
+		사용자 지정
+	</label> <br><br>
+
+
+	<button type="submit">관리</button>
+
+	<button type="submit" onclick = "reserve()">제출</button>
 
 
 </div>

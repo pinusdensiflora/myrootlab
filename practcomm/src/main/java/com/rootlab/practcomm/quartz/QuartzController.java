@@ -19,17 +19,22 @@ public class QuartzController {
     								throws Exception {
     	
     	String groupName = jobName.charAt(0) + "";
-        schedulerService.addJob(jobName, groupName, cronExpression, 
-                () -> System.out.println("Task " + jobName + " is running."));
+    	System.out.println(jobName + cronExpression);
+//        schedulerService.addJob(jobName, groupName, cronExpression, 
+//                () -> System.out.println("Task " + jobName + " is running."));
         return "Job added successfully.";
     }
     
     @PostMapping("/add")
-    public String addJob(@RequestParam String jobName,
-                         @RequestParam String groupName,
-                         @RequestParam String cronExpression) throws Exception {
+    public String addJob(@RequestParam(value = "jobName") String jobName,
+			@RequestParam(value = "cronExpression") String cronExpression) throws Exception {
+    	
+    	String groupName = jobName.charAt(0) + "";
+    	System.out.println(jobName + cronExpression);
+    	
         schedulerService.addJob(jobName, groupName, cronExpression, 
                 () -> System.out.println("Task " + jobName + " is running."));
+        
         return "Job added successfully.";
     }
 
