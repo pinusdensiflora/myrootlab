@@ -1,4 +1,4 @@
-package com.rootlab.practcomm.meta;
+package com.rootlab.practcomm.searchParam;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;

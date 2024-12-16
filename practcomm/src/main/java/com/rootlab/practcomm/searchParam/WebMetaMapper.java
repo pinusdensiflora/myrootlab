@@ -1,4 +1,4 @@
-package com.rootlab.practcomm.meta;
+package com.rootlab.practcomm.searchParam;
 
 import org.apache.ibatis.annotations.Mapper;
 

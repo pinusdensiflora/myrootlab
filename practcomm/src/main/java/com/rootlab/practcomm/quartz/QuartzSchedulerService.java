@@ -37,4 +37,21 @@ public class QuartzSchedulerService {
             scheduler.deleteJob(jobKey);
         }
     }
+    
+    
+    public void pauseJob(String jobName, String groupName) throws SchedulerException {
+        JobKey jobKey = new JobKey(jobName, groupName);
+        if (scheduler.checkExists(jobKey)) {
+            scheduler.pauseJob(jobKey);
+        }
+    }
+
+    // 작업 재실행
+    public void resumeJob(String jobName, String groupName) throws SchedulerException {
+        JobKey jobKey = new JobKey(jobName, groupName);
+        if (scheduler.checkExists(jobKey)) {
+            scheduler.resumeJob(jobKey);
+        }
+    }
+    
 }

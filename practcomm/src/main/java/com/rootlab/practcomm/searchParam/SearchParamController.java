@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.rootlab.practcomm.meta.WebMeta;
-import com.rootlab.practcomm.meta.WebMetaService;
 
 import lombok.RequiredArgsConstructor;
 

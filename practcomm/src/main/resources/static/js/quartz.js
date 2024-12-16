@@ -28,6 +28,7 @@ function reserve(){
 	
 	if(keyword == ""){
 		alert("검색어를 입력하세요");
+		return;
 	}
 	
 	const jobName = type + sort + timeOption + "|" + keyword  ;

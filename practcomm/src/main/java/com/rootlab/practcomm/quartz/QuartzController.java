@@ -44,4 +44,24 @@ public class QuartzController {
         schedulerService.removeJob(jobName, groupName);
         return "Job removed successfully.";
     }
+    
+    
+    
+    // 작업 일시 중지
+    @PostMapping("/pause")
+    public String pauseJob(@RequestParam String jobName,
+                           @RequestParam String groupName) throws Exception {
+        schedulerService.pauseJob(jobName, groupName);
+        return "Job paused successfully.";
+    }
+
+    // 작업 재실행
+    @PostMapping("/resume")
+    public String resumeJob(@RequestParam String jobName,
+                            @RequestParam String groupName) throws Exception {
+        schedulerService.resumeJob(jobName, groupName);
+        return "Job resumed successfully.";
+    }
+    
+    
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.rootlab.practcomm.meta.WebMetaMapper">
+<mapper namespace="com.rootlab.practcomm.searchParam.WebMetaMapper">
 	<insert id="save" 
-		parameterType="com.rootlab.practcomm.meta.WebMeta">
+		parameterType="com.rootlab.practcomm.searchParam.WebMeta">
 		INSERT INTO webmeta (contents, datetime, title, url)
 		VALUES
 		(#{contents},#{datetime},#{title},#{url});
