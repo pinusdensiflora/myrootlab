@@ -49,7 +49,7 @@ async function save(jobName, timeOption) {
 		"taskId": taskName,
   		"cronExpression": timeOption
 	}*/
-	const formData = new URLSearchParams();
+	const formData = new URLSearchParams(); //정정) 폼데이터 아니고 Params
 	formData.append("jobName", jobName);
 	formData.append("cronExpression", timeOption);
 	

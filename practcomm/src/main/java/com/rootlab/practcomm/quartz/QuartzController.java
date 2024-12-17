@@ -1,6 +1,12 @@
 package com.rootlab.practcomm.quartz;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.rootlab.practcomm.reservation.Reservation;
 import com.rootlab.practcomm.reservation.service.ReservationService;
@@ -53,9 +59,12 @@ public class QuartzController {
     }
 
     @DeleteMapping("/remove")
-    public String removeJob(@RequestParam String jobName, 
-                            @RequestParam int id) throws Exception {
+    public String removeJob(@RequestParam(value = "jobName") String jobName, @RequestParam(value = "id") int id) throws Exception {
+   
         schedulerService.removeJob(jobName, jobName.charAt(0)+"");
+        Reservation r = reservationService.selectById(id);
+        r.setUse_yn('n'+"");
+        reservationService.update(r);
         return "Job removed successfully.";
     }
     

@@ -24,6 +24,8 @@
         	jobname
     	FROM 
         	reservation
+        WHERE 
+			use_yn = 'y';
 	
 	</select>
 	

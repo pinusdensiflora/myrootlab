@@ -1,23 +1,44 @@
 let tbody;
-	
 
-function stop(id){
+
+function stop(id, jobname) {
 	console.log(id, "- 중지");
 }
 
-function remove(id){
+async function remove(id, jobname) {
 	console.log(id, "- 삭제");
+
+    const Params = new URLSearchParams();
+	Params.append("jobName", jobname);
+	Params.append("id", id);
+	const url = "http://localhost:8080/community/quartz/remove"
+	try {
+
+		const response = await fetch(url, {
+			method: 'DELETE',
+			headers: {
+				//'Content-Type': 'application/json',
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			//body: JSON.stringify({ id: id, jobName : jobname})//DTO 안만드려고
+			body: Params.toString(),
+		});
+
+		if (!response.ok) {
+			console.log(response.status);
+        	throw new Error('Network response was not ok');
+    	}
+    	
+    	 const responseMessage = await response.text(); 
+    	 return responseMessage;
+	}
+	catch(error) {
+		
 	
-	let temp = `@DeleteMapping("/remove")
-    public String removeJob(@RequestParam String jobName, 
-                            @RequestParam String groupName) throws Exception {
-        schedulerService.removeJob(jobName, groupName);
-        return "Job removed successfully.";
-    }`;
-    
-    
-    
-    
+	}finally{
+		rend();
+	}
+
 }
 
 
@@ -26,12 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-async function getList(){
-	
-	const url =`http://localhost:8080/community/api/reservation`;
+async function getList() {
+
+	const url = `http://localhost:8080/community/api/reservation`;
 	// URL에 쿼리 파라미터 추가
-    //history.pushState(null, '', `?keyword=${keyword}&page=${requestPage}`);
-    
+	//history.pushState(null, '', `?keyword=${keyword}&page=${requestPage}`);
+
 	//showLoading(); // 데이터를 요청하기 전에 로딩 화면을 표시
 	try {
 		const response = await fetch(url); // 데이터 요청
@@ -43,17 +64,18 @@ async function getList(){
 	} finally {
 		//hideLoading(); // 데이터 요청이 끝나면 로딩 화면을 숨기기
 	}
-	
+
 }
 
-async function rend(){
+async function rend() {
 	const list = await getList();
 	
 	const tbody = document.getElementById("tbody");
-	list.forEach(function(item, index){
-		tbody.innerHTML += 
-		`<tr>
-            <td>${index+1}</td>
+	tbody.innerHTML = "";
+	list.forEach(function(item, index) {
+		tbody.innerHTML +=
+			`<tr>
+            <td>${index + 1}</td>
             <td>${item.keyword}</td>
             <td>${item.type}</td>
             <td>${item.sort}</td>
@@ -61,12 +83,12 @@ async function rend(){
             <td>${item.status}</td>
             <td>${item.createDate}</td>
             <td>
-            	<button type="btn" onclick="stop(${item.id})">중지</button>
-				<button type="btn" onclick="remove(${item.id})">삭제</button>
+            	<button type="btn" onclick="stop(${item.id}, '${item.jobname}')">중지</button>
+				<button type="btn" onclick="remove(${item.id}, '${item.jobname}')">삭제</button>
         </tr>
         `
 	});
-	
+
 }
 
 
