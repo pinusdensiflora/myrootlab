@@ -1,10 +1,75 @@
 let tbody;
 
 
-function stop(id, jobname) {
+async function pause(id, jobname) {
 	console.log(id, "- 중지");
-}
+	const Params = new URLSearchParams();
+	Params.append("jobName", jobname);
+	Params.append("id", id);
+	const url = "http://localhost:8080/community/quartz/pause"
+	
+	try {
 
+		const response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				//'Content-Type': 'application/json',
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			//body: JSON.stringify({ id: id, jobName : jobname})//DTO 안만드려고
+			body: Params.toString(),
+		});
+
+		if (!response.ok) {
+			console.log(response.status);
+        	throw new Error('Network response was not ok');
+    	}
+    	
+    	 const responseMessage = await response.text(); 
+    	 return responseMessage;
+	}
+	catch(error) {
+		
+	
+	}finally{
+		rend();
+	}
+	
+}
+async function resume(id, jobname){
+	console.log(id, "- 재가동");
+	const Params = new URLSearchParams();
+	Params.append("jobName", jobname);
+	Params.append("id", id);
+	const url = "http://localhost:8080/community/quartz/resume"
+	try {
+
+		const response = await fetch(url, {
+			method: 'POST',
+			headers: {
+				//'Content-Type': 'application/json',
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			//body: JSON.stringify({ id: id, jobName : jobname})//DTO 안만드려고
+			body: Params.toString(),
+		});
+
+		if (!response.ok) {
+			console.log(response.status);
+        	throw new Error('Network response was not ok');
+    	}
+    	
+    	 const responseMessage = await response.text(); 
+    	 return responseMessage;
+	}
+	catch(error) {
+		
+	
+	}finally{
+		rend();
+	}
+	
+}
 async function remove(id, jobname) {
 	console.log(id, "- 삭제");
 
@@ -12,6 +77,7 @@ async function remove(id, jobname) {
 	Params.append("jobName", jobname);
 	Params.append("id", id);
 	const url = "http://localhost:8080/community/quartz/remove"
+	
 	try {
 
 		const response = await fetch(url, {
@@ -73,6 +139,13 @@ async function rend() {
 	const tbody = document.getElementById("tbody");
 	tbody.innerHTML = "";
 	list.forEach(function(item, index) {
+		let customBtn;
+		if(item.status == "실행 중"){
+			customBtn = `<button type="btn" onclick="pause(${item.id}, '${item.jobname}')">중지</button>`;
+		}else{
+			customBtn = `<button type="btn" onclick="resume(${item.id}, '${item.jobname}')">재가동</button>`
+		}
+		
 		tbody.innerHTML +=
 			`<tr>
             <td>${index + 1}</td>
@@ -83,10 +156,12 @@ async function rend() {
             <td>${item.status}</td>
             <td>${item.createDate}</td>
             <td>
-            	<button type="btn" onclick="stop(${item.id}, '${item.jobname}')">중지</button>
+            	${customBtn}
 				<button type="btn" onclick="remove(${item.id}, '${item.jobname}')">삭제</button>
         </tr>
-        `
+        `;
+        
+        
 	});
 
 }

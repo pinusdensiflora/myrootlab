@@ -71,19 +71,28 @@ public class QuartzController {
     
     // 작업 일시 중지
     @PostMapping("/pause")
-    public String pauseJob(@RequestParam String jobName,
-                           @RequestParam String groupName) throws Exception {
+    public String pauseJob(@RequestParam(value = "jobName") String jobName, 
+    					   @RequestParam(value = "id") int id) throws Exception {
+    	
+    	String groupName = jobName.charAt(0)+"";
         schedulerService.pauseJob(jobName, groupName);
+        Reservation r = reservationService.selectById(id);
+        r.setStatus("중지 됨");
+        reservationService.update(r);
+        
+        
         return "Job paused successfully.";
     }
 
     // 작업 재실행
     @PostMapping("/resume")
-    public String resumeJob(@RequestParam String jobName,
-                            @RequestParam String groupName) throws Exception {
+    public String resumeJob(@RequestParam(value = "jobName") String jobName, 
+			   				@RequestParam(value = "id") int id) throws Exception {
+    	String groupName = jobName.charAt(0)+"";
         schedulerService.resumeJob(jobName, groupName);
-        Reservation r = basicSetting(jobName);
-        //r.setCron(cronExpression);
+        Reservation r = reservationService.selectById(id);
+        r.setStatus("실행 중");
+        reservationService.update(r);
         
         return "Job resumed successfully.";
     }
