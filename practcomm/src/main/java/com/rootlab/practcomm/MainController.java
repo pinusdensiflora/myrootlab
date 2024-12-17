@@ -10,6 +10,12 @@ public class MainController {
 	public String main() {
 		return "websearch";
 	}
+	
+	@GetMapping("/img")
+	public String img() {
+		return "img";
+	}
+
 
 
 }

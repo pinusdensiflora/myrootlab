@@ -69,17 +69,19 @@ public class QuartzController {
     }
     
     
-    // 작업 일시 중지
+    // 작업 일시 중지 
     @PostMapping("/pause")
     public String pauseJob(@RequestParam(value = "jobName") String jobName, 
     					   @RequestParam(value = "id") int id) throws Exception {
     	
     	String groupName = jobName.charAt(0)+"";
-        schedulerService.pauseJob(jobName, groupName);
+        //schedulerService.pauseJob(jobName, groupName); //# pause와 resume은 지난 시간에 대한 처리를 한다.
+    	schedulerService.removeJob(jobName, jobName.charAt(0)+"");//## 아예 삭제를 한다. 하지만 db에서는 중지된 것 처럼
+    	
         Reservation r = reservationService.selectById(id);
         r.setStatus("중지 됨");
         reservationService.update(r);
-        
+
         
         return "Job paused successfully.";
     }
@@ -89,10 +91,14 @@ public class QuartzController {
     public String resumeJob(@RequestParam(value = "jobName") String jobName, 
 			   				@RequestParam(value = "id") int id) throws Exception {
     	String groupName = jobName.charAt(0)+"";
-        schedulerService.resumeJob(jobName, groupName);
+        //schedulerService.resumeJob(jobName, groupName); //# pause와 resume은 지난 시간에 대한 처리를 한다.
+    	
         Reservation r = reservationService.selectById(id);
         r.setStatus("실행 중");
         reservationService.update(r);
+        
+        schedulerService.addJob(jobName, groupName, r.getCron(), 
+                () -> System.out.println("Task " + jobName + " is running.")); //## 아예 새로 만든다
         
         return "Job resumed successfully.";
     }
