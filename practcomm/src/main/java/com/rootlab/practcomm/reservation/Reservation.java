@@ -15,5 +15,6 @@ public class Reservation {
 	private String status;
 	private LocalDateTime createDate;
 	private String use_yn;
+	private String jobname;
 	
 }

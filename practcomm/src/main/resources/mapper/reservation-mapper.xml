@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rootlab.practcomm.reservation.mapper.ReservationMapper">
+
+
+
+
+	<insert id="save" parameterType="com.rootlab.practcomm.reservation.Reservation">
+		INSERT INTO reservation (keyword, type, sort, cron, status, createDate, use_yn, jobname)
+		VALUES
+		(#{keyword}, #{type}, #{sort}, #{cron}, #{status}, #{createDate}, #{use_yn}, #{jobname});
+	</insert>
+	
+	<select id="selectAll" resultType="com.rootlab.practcomm.reservation.Reservation">
+		SELECT 
+        	id,
+        	keyword,
+        	type,
+        	sort,
+        	cron,
+        	status,
+        	createDate,
+        	use_yn,
+        	jobname
+    	FROM 
+        	reservation
+	
+	</select>
+	
+	<select id="selectByFields" parameterType="com.rootlab.practcomm.reservation.Reservation" resultType="com.rootlab.practcomm.reservation.Reservation">
+    	SELECT 
+        	id,
+        	keyword,
+        	type,
+        	sort,
+        	cron,
+        	status,
+        	createDate,
+        	use_yn,
+        	jobname
+    	FROM 
+        	reservation
+    	WHERE 
+			keyword = #{keyword} AND
+        	type = #{type} AND
+        	cron = #{cron};
+        	
+	</select>
+	
+	<select id="selectById" parameterType="int" resultType="com.rootlab.practcomm.reservation.Reservation">
+    	SELECT 
+        	id,
+        	keyword,
+        	type,
+        	sort,
+        	cron,
+        	status,
+        	createDate,
+        	use_yn,
+        	jobname
+    	FROM 
+        	reservation
+    	WHERE 
+			id = #{id};
+	</select>
+	
+	<update id="update" parameterType="com.rootlab.practcomm.reservation.Reservation">
+    	UPDATE reservation
+    	SET 
+    		cron = #{cron},
+    		sort = #{sort},
+    		status = #{status},
+        	use_yn = #{use_yn}
+    	WHERE 
+        	id = #{id};
+	</update>
+	
+	<delete id="delete" parameterType="int">
+    	DELETE FROM reservation
+    	WHERE id = #{id};
+	</delete>
+
+</mapper>

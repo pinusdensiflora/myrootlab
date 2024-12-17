@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class WebDTO {
 	private int id;
-	private int reservation_id;
+	private int reservation_id; //FK
 	private String contents;
 	private LocalDateTime datetime;
 	private String title;

@@ -1,11 +1,56 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
-
+    <style>
+        table {
+            width: 70%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 <script src="js/management.js"></script>
 
 <h1>예약관리</h1>
 
-<a href = "/community/quartz"><button type="button">돌아가기</button></a>
+타임리프 확인용
+<block th:each="reservation : ${reservations}">
+	[[${reservation.keyword}]]/[[${reservation.type}]]/[[${reservation.sort}]]/[[${reservation.cron}]]/[[${reservation.status}]]/
+	[[${reservation.createDate}]]/
+	<button type="btn" th:onclick="@{|stop(${reservation.id})|}">중지</button>
+	<button type="btn" th:onclick="@{|remove(${reservation.id})|}">삭제</button>
+	<br>
+</block>
+
+<hr>
+fetch로 가져오기
+<table >
+    <thead>
+        <tr>
+            <th>번호</th>
+            <th>검색어</th>
+            <th>타입</th>
+            <th>정렬방식</th>
+            <th>예약주기</th>
+            <th>상태</th>
+            <th>최초실행날짜</th>
+            <th>관리</th>
+        </tr>
+    </thead>
+    <tbody id="tbody">
+
+    </tbody>
+</table>
+
+
+<br><a href = "/community/quartz"><button type="button" >돌아가기</button></a>
+
+
 
 </div>
 </html>
