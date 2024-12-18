@@ -1,9 +1,10 @@
 package com.rootlab.practcomm.quartz;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +39,7 @@ public class QuartzController {
     }
     
     @PostMapping("/add")
-    public String addJob(@RequestParam(value = "jobName") String jobName,
+    public ResponseEntity<String> addJob(@RequestParam(value = "jobName") String jobName,
 			@RequestParam(value = "cronExpression") String cronExpression) throws Exception {
     	
     	String groupName = jobName.charAt(0) + "";
@@ -55,7 +56,18 @@ public class QuartzController {
         r.setCron(cronExpression);
         reservationService.save(r);
         
-        return "Job added successfully.";
+        //return "Job added successfully.";
+//        if (ㅁㄴㅇㄻㄴㅇㄻㄴ) {
+//            // 이미 처리된 요청
+//            return ResponseEntity
+//                    .status(HttpStatus.BAD_REQUEST)
+//                    .body("이미 작동중인 예약입니다.");
+//        }
+
+        // 요청 수락 및 처리 진행
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                .body("예약이 생성되었습니다.");
     }
 
     @DeleteMapping("/remove")

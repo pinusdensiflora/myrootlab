@@ -69,12 +69,13 @@ async function save(jobName, timeOption) {
 		});
 
 		const result = await response;
-
+		console.log(result);
 		if (result.ok) {
 			// 응답이 성공적일 경우
-			const data = await result;//.json(); // JSON 데이터 파싱ㄴㄴㄴ
-			console.log('Success:', data);
-			alert("저장되었습니다.");
+			//const data = await result;//.json(); // JSON 데이터 파싱ㄴㄴㄴ
+			const data = await result.text(); //body에 String을 담아서 응답하였고 그것을 읽음(.text())
+			console.log('Success:',data);
+			alert(data);
 			
 			
 		} else {
