@@ -1,10 +1,59 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
 
-<script src="js/img.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 
-<h1>이미지 검색</h1>
+	<script src="js/img.js"></script>
 
+	<h1>이미지 검색</h1>
+	검색어 입력 : <input type="text" id="keywordInput">
+	<button type="button" onclick="getresult()">검색</button>
+	<select id="sort">
+		<option selected value="accuracy">정렬방식</option>
+		<option value="accuracy">정확도 순</option>
+		<option value="recency">최신 순</option>
+	</select>
+
+	<button type="button" onclick="reset()">초기화</button>
+	<button type="button" onclick="remove()">삭제</button>
+
+<div class="spinner-border" role="status" id="loading"
+		style="display: flex;"></div>
+<section id="message"></section>
+
+<section>
+<table >
+    <thead>
+        <tr>
+            <th><input type="checkbox" id="checkall" onchange="checkAll(this)"></th>
+            <th>No.</th>
+            <th>이미지 미리보기</th>
+            <th>문서 URL</th>
+            <th>이미지 크기</th>
+            <th>출처</th>
+            <th>문서작성날짜</th>
+            <th>메모</th>
+        </tr>
+    </thead>
+    <tbody id="tbody">
+
+    </tbody>
+</table>
+<button type="button" onclick="save()">전체저장</button>
+</section>
 
 </div>
 </html>

@@ -11,11 +11,7 @@ public class MainController {
 		return "websearch";
 	}
 	
-	@GetMapping("/img")
-	public String img() {
-		return "img";
-	}
-
+	
 
 
 }
