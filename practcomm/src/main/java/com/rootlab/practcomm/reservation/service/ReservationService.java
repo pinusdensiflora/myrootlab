@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.rootlab.practcomm.reservation.Reservation;
+import com.rootlab.practcomm.reservation.dto.Reservation;
 import com.rootlab.practcomm.reservation.mapper.ReservationMapper;
 
 import lombok.RequiredArgsConstructor;

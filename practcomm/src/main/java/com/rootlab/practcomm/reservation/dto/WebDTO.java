@@ -1,4 +1,4 @@
-package com.rootlab.practcomm.reservation;
+package com.rootlab.practcomm.reservation.dto;
 
 import java.time.LocalDateTime;
 

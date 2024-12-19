@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.rootlab.practcomm.reservation.Reservation;
+import com.rootlab.practcomm.reservation.dto.Reservation;
 
 @Mapper
 public interface ReservationMapper {

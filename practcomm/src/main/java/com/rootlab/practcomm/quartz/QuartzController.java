@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.rootlab.practcomm.reservation.Reservation;
+import com.rootlab.practcomm.reservation.dto.Reservation;
 import com.rootlab.practcomm.reservation.service.ReservationService;
 
 @RestController
@@ -87,8 +87,8 @@ public class QuartzController {
     					   @RequestParam(value = "id") int id) throws Exception {
     	
     	String groupName = jobName.charAt(0)+"";
-        //schedulerService.pauseJob(jobName, groupName); //# pause와 resume은 지난 시간에 대한 처리를 한다.
-    	schedulerService.removeJob(jobName, jobName.charAt(0)+"");//## 아예 삭제를 한다. 하지만 db에서는 중지된 것 처럼
+        schedulerService.pauseJob(jobName, groupName); //# pause와 resume은 지난 시간에 대한 처리를 한다.
+    	//schedulerService.removeJob(jobName, jobName.charAt(0)+"");//## 아예 삭제를 한다. 하지만 db에서는 중지된 것 처럼
     	
         Reservation r = reservationService.selectById(id);
         r.setStatus("중지 됨");
@@ -103,14 +103,14 @@ public class QuartzController {
     public String resumeJob(@RequestParam(value = "jobName") String jobName, 
 			   				@RequestParam(value = "id") int id) throws Exception {
     	String groupName = jobName.charAt(0)+"";
-        //schedulerService.resumeJob(jobName, groupName); //# pause와 resume은 지난 시간에 대한 처리를 한다.
+        schedulerService.resumeJob(jobName, groupName); //# pause와 resume은 지난 시간에 대한 처리를 한다.
     	
         Reservation r = reservationService.selectById(id);
         r.setStatus("실행 중");
         reservationService.update(r);
         
-        schedulerService.addJob(jobName, groupName, r.getCron(), 
-                () -> System.out.println("Task " + jobName + " is running.")); //## 아예 새로 만든다
+//        schedulerService.addJob(jobName, groupName, r.getCron(), 
+//                () -> System.out.println("Task " + jobName + " is running.")); //## 아예 새로 만든다
         
         return "Job resumed successfully.";
     }
