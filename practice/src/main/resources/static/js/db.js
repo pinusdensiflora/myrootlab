@@ -131,7 +131,7 @@ async function getData(callback) {//콜백으로 rend()로 연결하려고
 
 }
 function rend() {
-	console.log("현재 데이터 : ",personData);
+	//console.log("현재 데이터 : ",personData);
 	tbody.innerHTML = "";
 
 	personData.forEach(function(data){

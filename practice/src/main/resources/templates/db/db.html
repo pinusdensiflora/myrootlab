@@ -33,9 +33,9 @@ td {
 	<h1>데이터 목록 표시</h1>
 	<form id="personForm">
 	이름 :
-	<input type="text" id="name">
+	<input type="text" id="name" maxlength = "25" placeholder = "이름을 입력하세요">
 	<br /> 나이 :
-	<input type="number" id="age" min='1' max = '150'>
+	<input type="number" id="age" min='1' max = '130' placeholder = "1-130">
 	<br /> 성별 :
 	<br />
 	<input type="radio" name="gender" value="남" checked>
@@ -43,7 +43,7 @@ td {
 	<input type="radio" name="gender" value="여">
 	<label>여</label>
 	<br /> 점수 :
-	<input type="number" id="score" min='0' max = '100'>
+	<input type="number" id="score" min='0' max = '100' placeholder = "0-100">
 	<br /> 상태 :
 	<br />
 	<input type="radio" name="status" value="재직 중" checked>

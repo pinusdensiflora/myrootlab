@@ -51,11 +51,11 @@ public class SearchController {
 		System.out.println(keyword + " " + page);
 
 		String prettyJson = kakaoSearch.searchResult(keyword, page);
-		System.out.println(prettyJson);
 
-		
+
 		prettyJson = prettyJson.replaceAll("\\\\u003cb\\\\u003e", "");//<b>
 		prettyJson = prettyJson.replaceAll("\\\\u003c/b\\\\u003e", "");//</b>
+
 		
 		Map<String, Object> mapData = gson.fromJson(prettyJson, new TypeToken<Map<String, Object>>(){}.getType());
 
