@@ -13,13 +13,13 @@ public class PersonService {
 	private final PersonMapper personMapper;
 	
 	public void save(Person person) {
-		System.out.println("서비스"+person.toString());
+		//트리거가 이곳을 대체
 		personMapper.save(person);
 	}
 	public List<Person> findAllOrderByScoreAge(){
-		
 		return personMapper.findAllOrderByScoreAge();
 	}
+	
 	public List<Person> findAll(){
 		return personMapper.findAll();
 	}

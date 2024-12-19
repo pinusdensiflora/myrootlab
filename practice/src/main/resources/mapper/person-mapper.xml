@@ -15,23 +15,21 @@
 
 </resultMap> -->
 	
-<insert id="save" parameterType="com.rootlab.practice.db.Person">
-INSERT INTO person (name, age, gender, score, status)
-VALUES (#{name},#{age},#{gender},#{score},#{status});
-</insert>	
+	<insert id="save" parameterType="com.rootlab.practice.db.Person">
+		INSERT INTO person (name, age, gender, score, status)
+		VALUES (#{name},#{age},#{gender},#{score},#{status});
+	</insert>
 
-<select id="findAll" resultType="com.rootlab.practice.db.Person">
-SELECT * FROM person;
-</select>
+	<select id="findAll" resultType="com.rootlab.practice.db.Person">
+		SELECT * FROM person;
+	</select>
 
-<select id="findAllOrderByScoreAge" resultType="com.rootlab.practice.db.Person">
-SELECT * FROM person ORDER BY score, age;
-</select>
+	<select id="findAllOrderByScoreAge" resultType="com.rootlab.practice.db.Person">
+		SELECT * FROM person ORDER BY score, age;
+	</select>
 
-<select id="findById" parameterType="int" resultType="com.rootlab.practice.db.Person">
-SELECT * FROM person WHERE id = ${id}
-</select>
-
-
+	<select id="findById" parameterType="int" resultType="com.rootlab.practice.db.Person">
+		SELECT * FROM person WHERE id = ${id}
+	</select>
 
 </mapper>

@@ -29,11 +29,13 @@ public class DBController {
 	@GetMapping("/api/list")
 	@ResponseBody
 	public List<Person> getlist(){
+		
 		List<Person> list = new ArrayList<>();
-		Person p1 = Person.builder().age(10).name("우우").build();
-		Person p2 = Person.builder().age(15).name("우수").build();
-		list.add(p1);
-		list.add(p2);
+		/*
+		 * Person p1 = Person.builder().age(10).name("우우").build(); Person p2 =
+		 * Person.builder().age(15).name("우수").build(); list.add(p1); list.add(p2);
+		 */
+		
 		return personService.findAllOrderByScoreAge();
 		
 
