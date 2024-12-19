@@ -55,7 +55,7 @@ public class FilemodalController {
 		
 		while(fileMetaService.find(newFilename) != null) {
 			//비지 않았을때 index 갱신
-			System.out.print("loop ");
+			//System.out.print("loop ");
 			newFilename = filename + "(" + index + ")" + "." + fileType;
 			index ++;
 		}
