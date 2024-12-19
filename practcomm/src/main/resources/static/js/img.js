@@ -257,6 +257,11 @@ function reset() {
 
 
 async function save() {
+	if(viewnum == 0){
+		alert("저장할 데이터가 없습니다.");
+		return;
+	}
+	setMemo();
 	function matchmemo() {
 		findImg.forEach(function(item, index) {
 			if(item){

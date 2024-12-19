@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class ImgController {
 
 	private final KakaoImg kakaoImg;
+	private final ImgMetaService imgMetaService;
 	Gson gson = new Gson(); 
 	
 	@GetMapping("")
@@ -53,6 +54,7 @@ public class ImgController {
 	public ResponseEntity<String> upload(@RequestBody List<ImgMeta> map){
 		try {
 	        System.out.println("받음: "+map);
+	        imgMetaService.saveList(map);
 	        return ResponseEntity.ok("성공");
 	    } catch (Exception e) {
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("실패: " + e.getMessage());

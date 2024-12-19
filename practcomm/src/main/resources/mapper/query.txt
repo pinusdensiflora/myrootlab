@@ -19,6 +19,21 @@ CREATE TABLE videometa(
 );
 
 
+CREATE TABLE imgmeta(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+	collection VARCHAR(50), 
+	datetime DATETIME, 
+	display_sitename VARCHAR(255), 
+	doc_url LONGTEXT, 
+	height INT, 
+	image_url LONGTEXT, 
+	thumbnail_url LONGTEXT, 
+	width INT, 
+	memo VARCHAR(255)
+	
+);
+
+
 CREATE TABLE reservation(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	keyword VARCHAR(255),
