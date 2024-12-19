@@ -93,6 +93,8 @@ public class FilemodalController {
 					
 					//인코딩된 파일명(파일 찾기 시 인코딩 문제 떄문에 파일 저장은 인코딩된 이름으로 )
 					String encodeName = URLEncoder.encode(fileName, StandardCharsets.UTF_8.toString());
+					encodeName = encodeName.replace("+", "%20");//공백 + 처리 해결, ('+': %2B / ' ':%20)
+					System.out.println(encodeName);
 					
 					// 파일 내용을 바이트 배열로 읽기
 					byte[] bytes = file.getBytes();
