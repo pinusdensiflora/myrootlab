@@ -1,8 +1,42 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
+<!-- 	<style>
+        /* 여러 개 선택할 때 드롭다운 크기 조정 */
+        #year {
+            width: 200px;
+            height: 150px; /* 드롭다운 높이 조정 */
+        }
+    </style> -->
 
-<script src="js/cron-valid.js"></script>
-<script src="js/quartz.js"></script>
+   <style>
+
+        .year-list, .selected-years {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 100px;
+            height: 260px;
+            overflow-y: auto;
+        }
+        .year-list button, .selected-years button {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+            padding: 8px;
+            text-align: left;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+        }
+        .year-list button:hover, .selected-years button:hover {
+            background: #d0d0d0;
+        }
+        .warning {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+
+
 <h1>Quartz 예약</h1>
 
 	<button type="button" disabled>데이터 타입</button>
@@ -44,13 +78,34 @@
 	<div id="customTime" style = "display : none">
 	
 		<!-- 시간에(일 을 지정하면 요일에는 ?가 들어갑니다. 기본적으로 요일을 ?로)<br> -->
-		초 <input type="text" id="sec" name="textInput" placeholder="*" maxlength=15><br>
-		분 <input type="text" id="min" name="textInput" placeholder="*" maxlength=15><br>
-		시 <input type="text" id="hr" name="textInput" placeholder="*" maxlength=15><br>
-		일 <input type="text" id="day" name="textInput" placeholder="*" maxlength=15><br>
-		달 <input type="text" id="mo" name="textInput" placeholder="*" maxlength=15><br>
-		년 <input type="number" id="yr" name="textInput" placeholder = "2024(현재년도)-2099"><br>
-	
+		초: <input type="text" id="sec" name="textInput" placeholder="*" maxlength=15 value = '*'><br>
+		분: <input type="text" id="min" name="textInput" placeholder="*" maxlength=15 value = '*'><br>
+		시: <input type="text" id="hr" name="textInput" placeholder="*" maxlength=15 value = '*'><br>
+		일: <input type="text" id="day" name="textInput" placeholder="*" maxlength=15 value = '*'><br>
+		달: <input type="text" id="mo" name="textInput" placeholder="*" maxlength=15 value = '*'><br>
+		요일: <input type="text" id="week" name="textInput" placeholder="*" maxlength=15 value = '*'><br>
+		년: 설정안함 <input type="checkbox" data-dftyr = "*" checked 
+			onchange="document.getElementById('year-section').style.display = this.checked ? 'none' : 'flex';">
+		 
+		 
+		 
+		<div id="year-section" style = "display : none; gap: 20px;">
+        	<div class="year-list" id="yearList">
+            	<!-- Years will be dynamically added here -->
+        	</div>
+    
+        	<div class="selected-years" id="selectedYears">
+        	    <!-- Selected years will appear here -->
+        	</div>
+        	<p id="warning" class="warning"></p>
+    	
+		 </div>
+		 
+		 
+		 
+		 
+		 
+		 
 	</div>
 	
 	 <br><br>
@@ -63,12 +118,19 @@
 	<button type="submit" onclick = "reserve()">제출</button>
 
 
+
+
+<script src="js/selectyears.js"></script>
+
+<script src="js/cron-valid.js"></script>
+
+<script src="js/quartz.js"></script>
+
+
 <script>
 //isValidCron 작동 확인용
 console.log(isValidCron('0 0 11 * 10 ?', { seconds: true ,  allowBlankDay: true, alias: true}));
 // true
-
-
 </script>
 
 </div>

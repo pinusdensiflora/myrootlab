@@ -1,8 +1,8 @@
 package com.rootlab.practcomm.quartz;
 
-import java.util.HashMap;
 import java.util.Map;
 
+import org.quartz.CronExpression;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +21,6 @@ import com.rootlab.practcomm.reservation.service.ReservationService;
 import com.rootlab.practcomm.reservation.service.VideoDTOService;
 import com.rootlab.practcomm.reservation.service.WebDTOService;
 import com.rootlab.practcomm.searchParam.KakaoSearchParam;
-import com.rootlab.practcomm.searchParam.WebMetaService;
 import com.rootlab.practcomm.video.KakaoVideo;
 
 import lombok.RequiredArgsConstructor;
@@ -121,6 +120,23 @@ public class QuartzController {
 	public ResponseEntity<String> addJob(@RequestParam(value = "jobName") String jobName,
 			@RequestParam(value = "cronExpression") String cronExpression) throws Exception {
 
+		
+//		try {
+//            // 크론 표현식 검증
+//            if (!CronExpression.isValidExpression(cronExpression)) {
+//                throw new RuntimeException("Invalid Cron Expression: " + cronExpression);
+//            } else {
+//                System.out.println("Valid Cron Expression!");
+//            }
+//        } catch (Exception e) {
+//            System.err.println("Error: " + e.getMessage());
+//        }
+		
+		
+		if (!CronExpression.isValidExpression(cronExpression)) {
+			return ResponseEntity.status(HttpStatus.ACCEPTED).body("크론 표현식이 올바르지 않습니다.");
+		} 
+		
 		String groupName = jobName.charAt(0) + "";
 		System.out.println(jobName + cronExpression);
 
