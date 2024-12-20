@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	});
 
-	history.pushState(null, '', `?keyword=&page=`); //이거 때문에 조금 ...
+	history.pushState(null, '', `?keyword=&page=`); //이거 때문에 조금 
 	//const {keyword, page} = getQueryParams();
 
 	//뒤로가기 앞으로가기 리스너
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 	
 	//새로고침 시에 파라미터 유지2
-	getPageable(keyword);
+	getPageable(keyword);//로딩이 깜빡임
 	updateURLAndContent(keyword, page);
 
 	
