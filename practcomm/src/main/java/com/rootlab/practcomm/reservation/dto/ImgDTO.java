@@ -19,5 +19,8 @@ public class ImgDTO {
 	private String image_url;
 	private String thumbnail_url;
 	private int width;
+	
+	private LocalDateTime createtime;
+	
 
 }

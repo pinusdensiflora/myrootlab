@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.rootlab.practcomm.img.KakaoImg;
 import com.rootlab.practcomm.reservation.dto.Reservation;
+import com.rootlab.practcomm.reservation.service.ImgDTOService;
 import com.rootlab.practcomm.reservation.service.ReservationService;
 import com.rootlab.practcomm.reservation.service.VideoDTOService;
 import com.rootlab.practcomm.reservation.service.WebDTOService;
@@ -27,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/quartz")
-@RequiredArgsConstructor
+@RequiredArgsConstructor //생성자 자동생성
 public class QuartzController {
 
 	private final QuartzSchedulerService schedulerService;
@@ -36,6 +37,7 @@ public class QuartzController {
 	// private final WebMetaService webMetaService;
 	private final WebDTOService webDTOService;
 	private final VideoDTOService videoDTOService;
+	private final ImgDTOService imgDTOService;
 	
 	KakaoSearchParam kakaoSearch = new KakaoSearchParam();
 	KakaoVideo kakaoVideo = new KakaoVideo();
@@ -51,7 +53,7 @@ public class QuartzController {
 //	}
 
 	private Runnable webSchedule(String jobname, int rid) {
-		String sort = jobname.charAt(1)=='a'? "accuracy" : "recency";
+		String sort = jobname.charAt(1)=='r'? "recency" : "accuracy";
 		String keyword = jobname.substring(jobname.indexOf('|') + 1);
 		return () -> {
 			System.out.println("WEB Schedule " + jobname + " is running...");
@@ -69,7 +71,7 @@ public class QuartzController {
 	}
 	
 	private Runnable videoSchedule(String jobname, int rid) {
-		String sort = jobname.charAt(1)=='a'? "accuracy" : "recency";
+		String sort = jobname.charAt(1)=='r'? "recency" : "accuracy";
 		String keyword = jobname.substring(jobname.indexOf('|') + 1);
 		return () -> {
 			System.out.println("VIDEO Schedule " + jobname + " is running...");
@@ -82,6 +84,24 @@ public class QuartzController {
 			videoDTOService.r_saveList(mapData.get("documents"),rid);
 			
 		};
+	}
+	
+	private Runnable imgSchedule (String jobname, int rid) {
+		String sort = jobname.charAt(1)=='r'? "recency" : "accuracy";
+		String keyword = jobname.substring(jobname.indexOf('|') + 1);
+		
+		return () -> {
+			System.out.println("IMG Schedule " + jobname + " is running...");
+			String resultString = kakaoImg.imgForQuartz(keyword, "accuracy");
+			String prettyJson = gson.toJson(gson.fromJson(resultString, Object.class));
+
+			Map<String, Object> mapData = gson.fromJson(prettyJson, new TypeToken<Map<String, Object>>() {
+			}.getType());
+			
+			imgDTOService.r_saveList(mapData.get("documents"),rid);
+			
+		};
+		
 	}
 
 	// http://localhost:8080/community/quartz/add?jobName=테스트용&cronExpression=*/10 *
@@ -126,11 +146,9 @@ public class QuartzController {
 			break;
 		case "v":
 			schedulerService.addJob(jobName, groupName, cronExpression, videoSchedule(jobName, r.getId()));
-			System.out.println("비디오저장");
 			break;
 		case "i":
-			//schedulerService.addJob(jobName, groupName, cronExpression, webSchedule(jobName, r.getId()));
-			System.out.println("이미지저장");
+			schedulerService.addJob(jobName, groupName, cronExpression, imgSchedule(jobName, r.getId()));
 			break;
 		default :
 			//schedulerService.addJob(jobName, groupName, cronExpression, webSchedule(jobName, r.getId()));

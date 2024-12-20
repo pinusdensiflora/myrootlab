@@ -5,10 +5,10 @@
 		parameterType="com.rootlab.practcomm.reservation.dto.ImgDTO">
 		INSERT INTO r_img 
 		(collection, datetime, display_sitename, doc_url, 
-		height, image_url, thumbnail_url, width, reservation_id)
+		height, image_url, thumbnail_url, width, createtime, reservation_id)
 		VALUES
 		(#{collection}, #{datetime}, #{display_sitename}, #{doc_url}, 
-		#{height}, #{image_url}, #{thumbnail_url}, #{width}, reservation_id);
+		#{height}, #{image_url}, #{thumbnail_url}, #{width}, #{createtime}, #{reservation_id});
 	</insert>
 
 

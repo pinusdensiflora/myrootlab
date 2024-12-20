@@ -70,7 +70,7 @@ size	Integer	한 페이지에 보여질 문서 수, 1~30 사이의 값, 기본 �
                 			.bodyToMono(String.class)
                 			.block(); // 비동기 결과를 동기적으로 변환?
 
-		System.out.println(response);
+		//System.out.println(response);
 		
 		return response;
 		

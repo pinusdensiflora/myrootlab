@@ -12,7 +12,7 @@
 	</label> <label> <input type="radio" name="choice1" value="v">
 		비디오
 	</label> <label> <input type="radio" name="choice1" value="i"
-		disabled> 이미지
+		> 이미지
 	</label> <br> <br>
 
 	<button type="button" disabled>정렬 방식</button>
@@ -31,11 +31,11 @@
 	<label> <input type="radio" name="timeOption" value= "*/10 * * * * ? *" onchange="customOnOff(0)">
 		10초
 	</label>
-	<label> <input type="radio" name="timeOption" value= "0 0 */1 * * ?" checked onchange="customOnOff(0)">
+	<label> <input type="radio" name="timeOption" value= "0 24 */1 * * ? *" checked onchange="customOnOff(0)">
 		한 시간
 	</label> <label> <input type="radio" name="timeOption" value="0 0 0 * * ?" onchange="customOnOff(0)">
 		매일 자정
-	</label> <label> <input type="radio" name="timeOption" value="0 0 0 ? * MON" onchange="customOnOff(0)">
+	</label> <label> <input type="radio" name="timeOption" value="0 30 15 ? * FRI *" onchange="customOnOff(0)">
 		매주 월요일 자정
 	</label><br>
 	</label> <label> <input type="radio" name="timeOption" value="custom" onchange="customOnOff()">

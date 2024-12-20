@@ -24,32 +24,35 @@ public class VideoDTOService {
 	}
 	
 	public void r_saveList(Object objectData, int rid) {
-		System.out.println("서비스 진입 성공" + objectData.toString());
+		
 		
 		if (objectData instanceof List) {
             List<Map<String, Object>> list = (List<Map<String, Object>>) objectData;
 
             // for문 사용
             for (Map<String, Object> map : list) {
-            	VideoDTO videoDTO = new VideoDTO();
+            	VideoDTO v = new VideoDTO();
 
-            	videoDTO.setAuthor(map.get("author").toString());
-            	videoDTO.setTitle(map.get("title").toString());
-            	videoDTO.setPlay_time((int)map.get("play_time"));
-            	videoDTO.setUrl(map.get("url").toString());
-            	videoDTO.setThumbnail(map.get("thumbnail").toString());
+            	v.setAuthor(map.get("author").toString());
+            	v.setTitle(map.get("title").toString());
+            	//v.setPlay_time((int)(map.get("play_time")));
+            	Double d = (Double) map.get("play_time"); //Object -> Double 
+            	//System.out.println(d + " : "+ map.get("play_time").getClass());//Double 임
+            	v.setPlay_time(d.intValue());//Double -> int
+            	v.setUrl(map.get("url").toString());
+            	v.setThumbnail(map.get("thumbnail").toString());
             	
             	// Step 1: OffsetDateTime으로 파싱
                 OffsetDateTime offsetDateTime = OffsetDateTime.parse(map.get("datetime").toString());   
                 // Step 2: LocalDateTime으로 변환 (시간대 정보 제거)
                 LocalDateTime localDateTime = offsetDateTime.toLocalDateTime();
 
-                videoDTO.setDatetime(localDateTime);
-                videoDTO.setCreatetime(LocalDateTime.now());
+                v.setDatetime(localDateTime);
+                v.setCreatetime(LocalDateTime.now());
             	
-                videoDTO.setReservation_id(rid);
-            	//System.out.println("저장 webDTO:" + webDTO);
-            	videoDTOMapper.r_save(videoDTO);
+                v.setReservation_id(rid);
+                //System.out.println("비디오 확인" + v.toString());
+            	videoDTOMapper.r_save(v);
             }
         } else {
             System.out.println("Object는 List가 아닙니다.");
