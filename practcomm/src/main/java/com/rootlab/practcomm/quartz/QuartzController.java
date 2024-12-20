@@ -14,11 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.rootlab.practcomm.img.KakaoImg;
 import com.rootlab.practcomm.reservation.dto.Reservation;
 import com.rootlab.practcomm.reservation.service.ReservationService;
+import com.rootlab.practcomm.reservation.service.VideoDTOService;
 import com.rootlab.practcomm.reservation.service.WebDTOService;
 import com.rootlab.practcomm.searchParam.KakaoSearchParam;
 import com.rootlab.practcomm.searchParam.WebMetaService;
+import com.rootlab.practcomm.video.KakaoVideo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,8 +35,12 @@ public class QuartzController {
 
 	// private final WebMetaService webMetaService;
 	private final WebDTOService webDTOService;
+	private final VideoDTOService videoDTOService;
+	
 	KakaoSearchParam kakaoSearch = new KakaoSearchParam();
-
+	KakaoVideo kakaoVideo = new KakaoVideo();
+	KakaoImg kakaoImg = new KakaoImg();
+	
 	Gson gson = new Gson(); // 기본 생성
 
 //	public QuartzController(QuartzSchedulerService schedulerService, ReservationService reservationService,
@@ -45,24 +52,36 @@ public class QuartzController {
 
 	private Runnable webSchedule(String jobname, int rid) {
 		String sort = jobname.charAt(1)=='a'? "accuracy" : "recency";
-		
+		String keyword = jobname.substring(jobname.indexOf('|') + 1);
 		return () -> {
-			System.out.println("웹 검색 스케줄링 동작");
-			String resultString = kakaoSearch.SearchForQuartz("아이브", "accuracy");
+			System.out.println("WEB Schedule " + jobname + " is running...");
+			String resultString = kakaoSearch.searchForQuartz(keyword, sort);
 			String prettyJson = gson.toJson(gson.fromJson(resultString, Object.class));
 			prettyJson = prettyJson.replaceAll("\\\\u003cb\\\\u003e", "");// <b>
 			prettyJson = prettyJson.replaceAll("\\\\u003c/b\\\\u003e", "");// </b>
 
 			Map<String, Object> mapData = gson.fromJson(prettyJson, new TypeToken<Map<String, Object>>() {
 			}.getType());
-			Map<String, Object> resultMap = new HashMap<>();
-			resultMap.put("documents", mapData.get("documents"));
-			System.out.println("resultMap : " + resultMap);
 
-			// webMetaService.save(mapData.get("documents"));
 			webDTOService.r_saveList(mapData.get("documents"), rid);
 		};
 
+	}
+	
+	private Runnable videoSchedule(String jobname, int rid) {
+		String sort = jobname.charAt(1)=='a'? "accuracy" : "recency";
+		String keyword = jobname.substring(jobname.indexOf('|') + 1);
+		return () -> {
+			System.out.println("VIDEO Schedule " + jobname + " is running...");
+			String resultString = kakaoVideo.videoForQuartz(keyword, "accuracy");
+			String prettyJson = gson.toJson(gson.fromJson(resultString, Object.class));
+
+			Map<String, Object> mapData = gson.fromJson(prettyJson, new TypeToken<Map<String, Object>>() {
+			}.getType());
+			
+			videoDTOService.r_saveList(mapData.get("documents"),rid);
+			
+		};
 	}
 
 	// http://localhost:8080/community/quartz/add?jobName=테스트용&cronExpression=*/10 *
@@ -87,6 +106,14 @@ public class QuartzController {
 
 		String keyword = jobName.substring(jobName.indexOf('|') + 1);
 
+	
+//      if (ㅁㄴㅇㄻㄴㅇㄻㄴ) {
+//          // 이미 처리된 요청
+//          return ResponseEntity
+//                  .status(HttpStatus.BAD_REQUEST)
+//                  .body("이미 작동중인 예약입니다.");
+//      }
+		
 		Reservation r = basicSetting(jobName);
 		r.setCron(cronExpression);
 		reservationService.save(r);
@@ -98,12 +125,12 @@ public class QuartzController {
 			schedulerService.addJob(jobName, groupName, cronExpression, webSchedule(jobName, r.getId()));
 			break;
 		case "v":
-			//schedulerService.addJob(jobName, groupName, cronExpression, webSchedule(jobName, r.getId()));
+			schedulerService.addJob(jobName, groupName, cronExpression, videoSchedule(jobName, r.getId()));
 			System.out.println("비디오저장");
 			break;
 		case "i":
 			//schedulerService.addJob(jobName, groupName, cronExpression, webSchedule(jobName, r.getId()));
-			System.out.println("비디오저장");
+			System.out.println("이미지저장");
 			break;
 		default :
 			//schedulerService.addJob(jobName, groupName, cronExpression, webSchedule(jobName, r.getId()));
@@ -113,12 +140,6 @@ public class QuartzController {
 		
 
 		// return "Job added successfully.";
-//        if (ㅁㄴㅇㄻㄴㅇㄻㄴ) {
-//            // 이미 처리된 요청
-//            return ResponseEntity
-//                    .status(HttpStatus.BAD_REQUEST)
-//                    .body("이미 작동중인 예약입니다.");
-//        }
 
 		// 요청 수락 및 처리 진행
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body("예약이 생성되었습니다.");

@@ -3,9 +3,9 @@
 <mapper namespace="com.rootlab.practcomm.reservation.mapper.VideoDTOMapper">
 
 	<insert id="r_save" parameterType="com.rootlab.practcomm.reservation.dto.VideoDTO">
-		INSERT INTO r_video (author, datetime, play_time, thumbnail, title, url, reservation_id)
+		INSERT INTO r_video (author, datetime, play_time, thumbnail, title, url, createtime, reservation_id )
 		VALUES
-		(#{author}, #{datetime}, #{play_time}, #{thumbnail}, #{title}, #{url}, #{reservation_id});
+		(#{author}, #{datetime}, #{play_time}, #{thumbnail}, #{title}, #{url}, #{createtime}, #{reservation_id});
 	</insert>
 
 

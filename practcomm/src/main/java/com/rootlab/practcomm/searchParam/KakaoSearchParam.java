@@ -35,7 +35,7 @@ public class KakaoSearchParam {
 	}
 	
 	
-	public String SearchForQuartz(String keyword, String sort) {
+	public String searchForQuartz(String keyword, String sort) {
 		
 
 		String url = "https://dapi.kakao.com/v2/search/web" + "?query=" + keyword + "&size=3" + "&sort=" + sort;
