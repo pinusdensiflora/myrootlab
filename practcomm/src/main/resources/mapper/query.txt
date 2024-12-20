@@ -46,3 +46,21 @@ CREATE TABLE reservation(
 );
 
 
+
+
+CREATE TABLE type_table (
+    id INT PRIMARY KEY,
+    type VARCHAR(50)
+); //reservation type 필드를 type_code 로 변경, type_table id 외래키로 지정
+
+//type과 조인
+(SELECT o.id, o.keyword, t.type, o.sort, o.cron
+FROM reservation o
+JOIN type_table t ON o.type_code = t.id);
+
+
+//type, status 와 조인
+(SELECT o.id, o.keyword, t.type, o.sort, o.cron, s.status
+FROM reservation o
+JOIN type_table t ON o.type_code = t.id
+JOIN status_table s ON o.status_code = s.id);

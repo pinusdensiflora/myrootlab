@@ -1,6 +1,7 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
 
+<script src="js/cron-valid.js"></script>
 <script src="js/quartz.js"></script>
 <h1>Quartz 예약</h1>
 
@@ -22,30 +23,53 @@
 	</label> <br> <br>
 	<!-- 텍스트 입력 -->
 	<button type="button" disabled>검색어</button>
-	<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요">
+	<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력하세요" maxlength = "10">
 	<br> <br>
 
 
 	<button type="button" disabled>예약 주기</button>
-	<label> <input type="radio" name="timeOption" value= "*/10 * * * * ?">
+	<label> <input type="radio" name="timeOption" value= "*/10 * * * * ? *" onchange="customOnOff(0)">
 		10초
 	</label>
-	<label> <input type="radio" name="timeOption" value= "0 0 */1 * * ?" checked>
+	<label> <input type="radio" name="timeOption" value= "0 0 */1 * * ?" checked onchange="customOnOff(0)">
 		한 시간
-	</label> <label> <input type="radio" name="timeOption" value="0 0 0 * * ?">
+	</label> <label> <input type="radio" name="timeOption" value="0 0 0 * * ?" onchange="customOnOff(0)">
 		매일 자정
-	</label> <label> <input type="radio" name="timeOption" value="0 0 0 ? * MON">
+	</label> <label> <input type="radio" name="timeOption" value="0 0 0 ? * MON" onchange="customOnOff(0)">
 		매주 월요일 자정
 	</label><br>
-	</label> <label> <input type="radio" name="timeOption" value="custom" disabled>
+	</label> <label> <input type="radio" name="timeOption" value="custom" onchange="customOnOff()">
 		사용자 지정
-	</label> <br><br>
+	</label>
+	<div id="customTime" style = "display : none">
+	
+		시간에(일 을 지정하면 요일에는 ?가 들어갑니다. 기본적으로 요일을 ?로)<br>
+		초 <input type="text" id="sec" name="textInput" placeholder="*" maxlength=15><br>
+		분 <input type="text" id="min" name="textInput" placeholder="*" maxlength=15><br>
+		시 <input type="text" id="hr" name="textInput" placeholder="*" maxlength=15><br>
+		일 <input type="text" id="day" name="textInput" placeholder="*" maxlength=15><br>
+		달 <input type="text" id="mo" name="textInput" placeholder="*" maxlength=15><br>
+		년 <input type="number" id="yr" name="textInput" placeholder = "2024(현재년도)-2099"><br>
+	
+	</div>
+	
+	 <br><br>
+	
+	
 
 
 	<a href = "/community/management"><button type="button">관리</button></a>
 
 	<button type="submit" onclick = "reserve()">제출</button>
 
+
+<script>
+//isValidCron 작동 확인용
+console.log(isValidCron('0 0 11 * 10 ?', { seconds: true ,  allowBlankDay: true, alias: true}));
+// true
+
+
+</script>
 
 </div>
 </html>

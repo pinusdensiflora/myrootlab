@@ -9,11 +9,14 @@ public class QuartzSchedulerService {
 
     private final Scheduler scheduler;
 
+    
     public QuartzSchedulerService() throws SchedulerException {
         this.scheduler = StdSchedulerFactory.getDefaultScheduler();
         this.scheduler.start();
     }
 
+   
+    
     // 작업 추가
     public void addJob(String jobName, String groupName, String cronExpression, Runnable task) throws SchedulerException {
         JobDetail jobDetail = JobBuilder.newJob(SimpleJob.class)

@@ -95,3 +95,17 @@ async function save(jobName, timeOption) {
 
 
 }
+
+
+function customOnOff(){
+	
+	const selectedOption = document.querySelector('input[name="timeOption"]:checked').value;
+	
+	if(selectedOption == 'custom'){
+		document.getElementById("customTime").style.display = 'block';
+	}
+	else{
+		document.getElementById("customTime").style.display = 'none';
+	}
+
+}

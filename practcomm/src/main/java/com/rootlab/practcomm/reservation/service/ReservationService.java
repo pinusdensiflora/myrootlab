@@ -16,7 +16,7 @@ public class ReservationService {
 	
 	private final ReservationMapper reservationMapper;
 	
-	public void save(Reservation reservation) {
+	public void save(Reservation reservation) { //id 반환
 		reservation.setCreateDate(LocalDateTime.now());
 		reservation.setStatus("실행 중");
 		reservation.setUse_yn("y");

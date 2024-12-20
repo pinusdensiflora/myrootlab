@@ -9,10 +9,9 @@ import lombok.Data;
 @Data
 public class VideoDTO {
 	private int id;
-	private int reservation_id;
+	private int reservation_id;//FK
 	
 	private String author;
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")	
 	private LocalDateTime datetime;
 	private int play_time;
 	private String thumbnail;

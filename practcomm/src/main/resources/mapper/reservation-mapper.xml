@@ -5,27 +5,29 @@
 
 
 
-	<insert id="save" parameterType="com.rootlab.practcomm.reservation.dto.Reservation">
-		INSERT INTO reservation (keyword, type, sort, cron, status, createDate, use_yn, jobname)
+	<insert id="save" parameterType="com.rootlab.practcomm.reservation.dto.Reservation" 
+			useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO reservation (keyword, type_code, sort, cron, status_code, createDate, use_yn, jobname)
 		VALUES
-		(#{keyword}, #{type}, #{sort}, #{cron}, #{status}, #{createDate}, #{use_yn}, #{jobname});
+		(#{keyword}, #{type_code}, #{sort}, #{cron}, #{status_code}, #{createDate}, #{use_yn}, #{jobname});
 	</insert>
 	
 	<select id="selectAll" resultType="com.rootlab.practcomm.reservation.dto.Reservation">
 		SELECT 
-        	id,
-        	keyword,
-        	type,
-        	sort,
-        	cron,
-        	status,
-        	createDate,
-        	use_yn,
-        	jobname
+        	r.id,
+        	r.keyword,
+        	t.type,
+        	r.sort,
+        	r.cron,
+        	s.status,
+        	r.createDate,
+        	r.jobname
     	FROM 
-        	reservation
+        	reservation r
+        JOIN type_table t ON r.type_code = t.id
+		JOIN status_table s ON r.status_code = s.id
         WHERE 
-			use_yn = 'y';
+			r.use_yn = 'y';
 	
 	</select>
 	
@@ -33,10 +35,10 @@
     	SELECT 
         	id,
         	keyword,
-        	type,
+        	type_code,
         	sort,
         	cron,
-        	status,
+        	status_code,
         	createDate,
         	use_yn,
         	jobname
@@ -44,7 +46,7 @@
         	reservation
     	WHERE 
 			keyword = #{keyword} AND
-        	type = #{type} AND
+        	type_code = #{type_code} AND
         	cron = #{cron};
         	
 	</select>
@@ -53,10 +55,10 @@
     	SELECT 
         	id,
         	keyword,
-        	type,
+        	type_code,
         	sort,
         	cron,
-        	status,
+        	status_code,
         	createDate,
         	use_yn,
         	jobname
@@ -71,7 +73,7 @@
     	SET 
     		cron = #{cron},
     		sort = #{sort},
-    		status = #{status},
+    		status_code = #{status_code},
         	use_yn = #{use_yn}
     	WHERE 
         	id = #{id};

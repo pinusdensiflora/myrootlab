@@ -33,5 +33,27 @@ public class KakaoSearchParam {
 		return response.getBody();
 		
 	}
+	
+	
+	public String SearchForQuartz(String keyword, String sort) {
+		
+
+		String url = "https://dapi.kakao.com/v2/search/web" + "?query=" + keyword + "&size=3" + "&sort=" + sort;
+		
+		
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "KakaoAK 6607476ec564e326ed2173713fb86ab1");
+
+		
+		HttpEntity<String> entity = new HttpEntity<>(headers);
+
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+//		System.out.println(response.getBody());
+		//System.out.println("완료");
+		return response.getBody();
+	
+	}
 
 }

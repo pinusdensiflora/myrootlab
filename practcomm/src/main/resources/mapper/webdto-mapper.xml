@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.rootlab.practcomm.reservation.mapper.WebDTOMapper">
+
+	<insert id="r_save"
+		parameterType="com.rootlab.practcomm.reservation.dto.WebDTO">
+		INSERT INTO r_web (contents, datetime, title, url, createtime, reservation_id)
+		VALUES
+		(#{contents},#{datetime},#{title},#{url}, #{createtime}, #{reservation_id});
+	</insert>
+
+
+
+</mapper>

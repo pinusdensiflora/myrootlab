@@ -1,5 +1,6 @@
 package com.rootlab.practcomm.video;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +49,10 @@ public class VideoController {
 		
 		// JSON 문자열을 Map<String, Object>로 변환
 		Map<String, Object> map = gson.fromJson(response, new TypeToken<Map<String, Object>>(){}.getType());
-				
+
+		//Object documents = map.get("documents");
+		
+		
 		return map;
 	}
 	
