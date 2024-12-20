@@ -31,11 +31,11 @@
 	<label> <input type="radio" name="timeOption" value= "*/10 * * * * ? *" onchange="customOnOff(0)">
 		10초
 	</label>
-	<label> <input type="radio" name="timeOption" value= "0 24 */1 * * ? *" checked onchange="customOnOff(0)">
+	<label> <input type="radio" name="timeOption" value= "0 0 */1 * * ? *" checked onchange="customOnOff(0)">
 		한 시간
-	</label> <label> <input type="radio" name="timeOption" value="0 0 0 * * ?" onchange="customOnOff(0)">
+	</label> <label> <input type="radio" name="timeOption" value="0 0 0 * * ? *" onchange="customOnOff(0)">
 		매일 자정
-	</label> <label> <input type="radio" name="timeOption" value="0 30 15 ? * FRI *" onchange="customOnOff(0)">
+	</label> <label> <input type="radio" name="timeOption" value="0 0 0 ? * MON *" onchange="customOnOff(0)">
 		매주 월요일 자정
 	</label><br>
 	</label> <label> <input type="radio" name="timeOption" value="custom" onchange="customOnOff()">
@@ -43,7 +43,7 @@
 	</label>
 	<div id="customTime" style = "display : none">
 	
-		시간에(일 을 지정하면 요일에는 ?가 들어갑니다. 기본적으로 요일을 ?로)<br>
+		<!-- 시간에(일 을 지정하면 요일에는 ?가 들어갑니다. 기본적으로 요일을 ?로)<br> -->
 		초 <input type="text" id="sec" name="textInput" placeholder="*" maxlength=15><br>
 		분 <input type="text" id="min" name="textInput" placeholder="*" maxlength=15><br>
 		시 <input type="text" id="hr" name="textInput" placeholder="*" maxlength=15><br>
