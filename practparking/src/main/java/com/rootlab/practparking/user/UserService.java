@@ -3,13 +3,18 @@ package com.rootlab.practparking.user;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.InvalidKeyException;
 import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.LocalDateTime;
 import java.util.Base64;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 
 import org.springframework.stereotype.Service;
 
@@ -31,7 +36,6 @@ public class UserService {
         } catch (IOException e) {
         	System.out.println("키를 읽어오는 와중에 오류가 발생");
             //e.printStackTrace();
-         
         }
         System.out.println("개인키 : ");
         System.out.println(privateKeyPEM);
