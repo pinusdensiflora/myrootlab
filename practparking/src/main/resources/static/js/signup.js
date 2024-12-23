@@ -1,5 +1,22 @@
 let duplication = true;
 
+let username;
+let name;
+let password;
+let confirmpassword;
+let phone;
+let email;
+
+document.addEventListener('DOMContentLoaded', () => {
+
+	username = document.getElementById("username");
+	name = document.getElementById("name");
+	password = document.getElementById("password");
+	confirmpassword = document.getElementById("confirmPassword");
+	phone = document.getElementById("phone");
+	email = document.getElementById("email");
+
+});
 
 async function signup() {
 
@@ -44,17 +61,28 @@ async function signup() {
 
 
 async function isDuplicate() {
-
-	const username = document.getElementById('username').value;
+	const value = username.value;
+	if(value == ""){
+		alert("아이디를 입력해주세요");
+		return;
+	}
+	// 정규식 검증
+	const regex = /^[a-z0-9_]{4,15}$/;//4-15글자
+	if(!regex.test(value)){
+		alert("사용불가능한 형식의 아이디 입니다.\n알파벳 소문자와 숫자 기호(_) 로 이루어진\n4-15자리의 아이디를 입력해주세요");
+		return;
+	}
+	
+	
 	console.log(username);
 	try {
 		let response = await fetch("/parking/duplicate", {
 			method: 'POST',
-            headers: {
+			headers: {
 				'Content-Type': 'application/json' //json 보냄
 			},
 			//body: JSON.stringify({ 'username': username }) //서버에서 추가 처리 필요
-			body: JSON.stringify( username ) //단순 문자열 전송
+			body: JSON.stringify(value) //단순 문자열 전송
 		});
 
 		const result = await response;
@@ -93,4 +121,116 @@ async function encryptData(password) {
 	encrypt.setPublicKey(publicKey);
 	const encryptedData = encrypt.encrypt(password);
 	return encryptedData;
+}
+
+function valid_all(){
+	if(!valid_username()){return}
+	if(!valid_name()){return}
+	if(!valid_password()){return}
+	if(!valid_email()){return}
+}
+
+
+function valid_username() {
+	const value = username.value;
+	if(value == ""){
+		alert("아이디를 입력해주세요");
+		return false;
+	}
+	// 정규식 검증
+	const regex = /^[a-z0-9_]{4,15}$/;//4-15글자
+	if(!regex.test(value)){
+		alert("사용불가능한 형식의 아이디 입니다.\n알파벳 소문자와 숫자 기호(_) 로 이루어진\n4-15자리의 아이디를 입력해주세요");
+		return false;
+	}
+	
+	if (duplication) {
+		alert("아이디 중복체크를 시행해주세요.");
+		return false;
+	}
+	return true;
+}
+
+function valid_name() {
+	const value = name.value;
+	if(value == ""){
+		alert("이름를 입력해주세요");
+		return false;
+	}
+	// 정규식 검증
+	const regex = /^[가-힣]{2,7}$/;
+	if(!regex.test(value)){
+		alert("사용불가능한 이름입니다. 조치 필요시 문의바랍니다.");
+		return false;
+	}
+	
+	return true;
+}
+
+function valid_password(){
+	
+	const value = password.value;
+	const confirmvalue = confirmpassword.value;
+
+	if(value == ""){
+		alert("비밀번호를 입력해주세요");
+		return false;
+	}
+	
+	// 정규식 검증
+	const regex = /^(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,20}$/;
+	if(!regex.test(value)){
+		alert("8자리 이상의 비밀번호를 입력해주세요\n소문자, 숫자, 특수문자를 포함해야합니다.");
+		return false;
+	}
+	
+	if(confirmvalue == ""){
+		alert("비밀번호 확인이 필요합니다.");
+		return false;
+	}
+	
+	if(confirmvalue != value){
+		alert("비밀번호가 일치하지 않습니다.");
+		return false;
+	}
+	
+	return true;
+	
+}
+function valid_email(){
+	const value = email.value;
+
+
+	if(value == ""){
+		alert("이메일을 입력해주세요");
+		return false;
+	}
+	
+	const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+	if(!regex.test(value)){
+		alert("올바르지 않은 이메일 형식입니다.");
+		return false;
+	}
+	
+	return true;
+
+}
+
+function valid_phone(){
+	const value = phone.value;
+
+
+	if(value == ""){
+		alert("전화번호를 입력해주세요");
+		return false;
+	}
+	
+	const regex = /^[0-9]{10,12}$/;
+	if(!regex.test(value)){
+		alert("올바르지 않은 이메일 형식입니다.");
+		return false;
+	}
+	
+	return true;
+
 }

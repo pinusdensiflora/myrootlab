@@ -27,8 +27,8 @@ public class SecurityConfig {
 		    		 .ignoringRequestMatchers(new AntPathRequestMatcher("/**")))
 		     		//.requireCsrfProtectionMatcher(new AntPathRequestMatcher("/**")))
 	         .formLogin((formLogin) -> formLogin
-	                    .loginPage("/signin")
-	                    .defaultSuccessUrl("/"))
+	                    .loginPage("/parking/signin")
+	                    .defaultSuccessUrl("/parking/signup"))
 	         .logout((logout) -> logout
 	                    .logoutRequestMatcher(new AntPathRequestMatcher("/signout"))
 	                    .logoutSuccessUrl("/")

@@ -1,9 +1,15 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
+<style>
+	.mini-input{
+		width:50px;
+	}
 
+</style>
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.0.0/jsencrypt.min.js"></script>
 	<script src="js/signup.js"></script>
+
 
 	<div class="container">
 		<h2>회원가입</h2>
@@ -14,23 +20,42 @@
 			<table class="table table-bordered">
 				<tr>
 					<td>아이디</td>
-					<td><input type="text" id="username" name="username" required onchange="duplication = true;">
-						<button type="button" onclick = "isDuplicate()">중복확인</button></td>
+					<td><input type="text" id="username" name="username" required
+						onchange="duplication = true;" maxlength="15">
+						<button type="button" onclick="isDuplicate()">중복확인</button></td>
 					<td>이름</td>
-					<td><input type="text" id="name" name="name" required></td>
+					<td><input type="text" id="name" name="name" required maxlength="7"></td>
 				</tr>
 				<tr>
 					<td>비밀번호</td>
 					<td><input type="password" id="password" name="password"
-						required></td>
+						required maxlength="20"></td>
 					<td>비밀번호 확인</td>
 					<td><input type="password" id="confirmPassword"
-						name="confirmPassword" required></td>
+						name="confirmPassword" required maxlength="20"></td>
 				</tr>
 				<tr>
 					<td>휴대폰 번호</td>
-					<td><input type="tel" id="phone" name="phone" required
-						placeholder="010-xxxx-xxxx"></td>
+					<td>
+					<input type="tel" id="phone" name="phone" required
+						placeholder="010-xxxx-xxxx"> 
+						<div class="phoneSection">
+							<!--전화번호 앞자리 -->
+							<select id="phonePrefix" name="phonePrefix" required>
+								<option value="010">010</option>
+								<option value="011">011</option>
+								<option value="016">016</option>
+								<option value="019">019</option>
+							</select>
+
+							<!--중간 번호 (3-4자리 숫자) -->
+							<input class="mini-input" type="text" id="middleNumber" name="middleNumber"
+								maxlength="4" pattern="\d{3,4}" required />
+
+							<!--(4자리 숫자) -->
+							<input class="mini-input" type="text" id="lastNumber" name="lastNumber"
+								maxlength="4" pattern="\d{4}" required />
+						</div></td>
 					<td>이메일</td>
 					<td><input type="email" id="email" name="email" required></td>
 				</tr>
@@ -38,6 +63,7 @@
 
 			<button type="button" onclick="signup()">가입</button>
 		</form>
+		<button type="button" onclick="valid_all()">검증</button>
 	</div>
 
 
