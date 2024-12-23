@@ -1,10 +1,10 @@
 package com.rootlab.practparking.user;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
@@ -30,30 +30,24 @@ public class UserService {
 		
 		String encryptPassword = u.getPassword();
 		String privateKeyPEM = null;
-		String decryptPassword = "";
-		
-//        try {
-//           privateKeyPEM = new String(Files.readAllBytes(Paths.get("private_key.pem")));
-//          
-//           
-//           decryptPassword = decrypt(decryptPassword, privateKeyPEM);
-//           System.out.println(encryptPassword + "\n" + privateKeyPEM + "\n"+ decryptPassword);
-//        } catch (IOException e) {
-//        	System.out.println("키를 읽어오는 와중에 오류가 발생");
-//            //e.printStackTrace();
-//        } catch (Exception e) {
-//        	
-//        	
-//        }
-		decrypt(encryptPassword);
+		String decryptPassword = decrypt(encryptPassword);//복호화
+
+		// SHA-256 해시 생성
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hashBytes = digest.digest(decryptPassword.getBytes());
         
-		//복호화 후 해싱
+        // 해시를 16진수 문자열로 변환
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : hashBytes) {
+            hexString.append(String.format("%02x", b));
+        }
+        
+        System.out.println("SHA-256 hashed password: " + hexString.toString());
 		
 		u.setEnabled(true);
 		u.setRole_code(100);
 		u.setCreatetime(LocalDateTime.now());
-		
-
+		u.setPassword(hexString.toString());
 		userMapper.save(u);
 	}
 	
@@ -63,32 +57,14 @@ public class UserService {
 	
 	
 	
-	public String decrypt(String encryptedData) throws Exception {
+	
+	private String decrypt(String encryptedData) throws Exception {
 		try {
-//            // 1. 개인 키를 Base64 디코딩하고 PrivateKey 객체 생성
-//            byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyStr);
-//            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
-//            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-//            PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
-//
-//            // 2. 암호화된 데이터를 Base64 디코딩
-//            byte[] encryptedBytes = Base64.getDecoder().decode(encryptedData);
-//
-//            // 3. RSA 복호화 수행
-////            Cipher cipher = Cipher.getInstance("RSA");
-//            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding"); // 패딩 설정
-//            cipher.init(Cipher.DECRYPT_MODE, privateKey);
-//            byte[] decryptedBytes = cipher.doFinal(encryptedBytes); // 복호화
-//            
-//            // 4. 복호화된 문자열 반환
-//            return new String(decryptedBytes, "UTF-8");
-			
-			
-			
+	
 			// 개인키 파일을 읽어서 PrivateKey 객체 생성
 	        String privateKeyPEM = new String(Files.readAllBytes(Paths.get("private_key.pem")));
-	        privateKeyPEM = privateKeyPEM.replace("-----BEGIN PRIVATE KEY-----\n", "")
-	                .replace("-----END PRIVATE KEY-----", "");
+//	        privateKeyPEM = privateKeyPEM.replace("-----BEGIN PRIVATE KEY-----\n", "")
+//	                .replace("\n-----END PRIVATE KEY-----", "");
 	        byte[] privateKeyBytes = Base64.getDecoder().decode(privateKeyPEM);
 	        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyBytes);
 	        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
@@ -105,7 +81,7 @@ public class UserService {
 	        // 복호화된 데이터 출력
 	        String decryptedData = new String(decryptedBytes, "UTF-8");
 	        System.out.println("복호화된 데이터: " + decryptedData);
-	        
+	        return decryptedData;
 	        
 
         } catch (NoSuchAlgorithmException e) {
@@ -116,7 +92,7 @@ public class UserService {
         } catch (InvalidKeyException e) {
             System.err.println("유효하지 않은 키입니다: " + e.getMessage());
         } catch (BadPaddingException e) {
-        	e.printStackTrace();
+        	//e.printStackTrace();
             System.err.println("패딩 오류: 암호화 데이터가 손상되었거나 패딩이 맞지 않습니다: " + e.getMessage());
         } catch (IllegalBlockSizeException e) {
             System.err.println("잘못된 블록 크기입니다: 암호화된 데이터의 크기가 올바르지 않습니다: " + e.getMessage());
@@ -124,9 +100,12 @@ public class UserService {
             System.err.println("알 수 없는 오류가 발생했습니다: " + e.getMessage());
         }
 
-        // 예외 발생 시 빈 문자열 반환 또는 적절한 기본값 반환
         return "";
         
+	}
+	
+	private String hash() {
+		return "";
 	}
 	
 	

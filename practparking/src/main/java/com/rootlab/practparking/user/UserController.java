@@ -27,13 +27,17 @@ public class UserController {
 	}
 	
 	
-	@GetMapping("/duplicate")
-	public boolean duplicate(@RequestBody String username) {
+	@PostMapping("/duplicate")
+	public ResponseEntity<Boolean> duplicate(@RequestBody String username) {
+		username = username.replace("\"", "");
+		//User u = userService.findByUsername(username);
+		//System.out.println(u.toString());
 		if(userService.findByUsername(username) != null) {
-			return true;
+			return ResponseEntity.ok(true);
 		}else {
-			return false;
+			return ResponseEntity.ok(false);
 		}
+	
 	}
 	
 	
