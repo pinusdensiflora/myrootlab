@@ -259,3 +259,11 @@ function nextPage(keyword, page){
 	}
 	updateURLAndContent(keyword, parseInt(Params['page']) + 1);
 }
+
+
+
+function reset(){
+	
+	updateURLAndContent("","");
+	document.getElementById('keyword').focus();
+}

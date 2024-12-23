@@ -136,7 +136,7 @@ async function rend(result) {
 }
 
 function nothing(message) {
-	document.getElementById("titlecontainer").style.display = "flex";
+	document.getElementById("titlecontainer").style.display = "block";
 	const section = document.getElementById("section");
 	section.innerHTML = message;
 }
@@ -250,4 +250,11 @@ function clearCheck() {
 }
 
 
-
+function reset(){
+	const inputField = document.getElementById('keywordInput');
+	inputField.value = "";
+	checkMap = new Map();
+	rendList(checkMap);
+	nothing("데이터가 없습니다.");
+	inputField.focus();
+}
