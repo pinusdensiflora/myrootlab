@@ -16,7 +16,7 @@ public class UserController {
 	
 	
 	@PostMapping("/signup")
-	public String signup(User u) {
+	public String signup(User u) throws Exception {
 		System.out.println(u);
 		
 		userService.save(u);

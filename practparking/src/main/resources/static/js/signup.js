@@ -57,7 +57,7 @@ async function getPublicKey() {
 
 async function encryptData(password) {
     const publicKey = await getPublicKey();
-    const encrypt = new JSEncrypt();
+    const encrypt = new JSEncrypt(); //PKCS#1 v1.5 패딩
     encrypt.setPublicKey(publicKey);
     const encryptedData = encrypt.encrypt(password);
     return encryptedData;
