@@ -8,9 +8,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+//@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 	
 	@Bean
@@ -18,9 +21,11 @@ public class SecurityConfig {
 		
 		 http.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
              .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()) //로그인하지 않어도 들어올 수 있게 함
-		     .csrf((csrf) -> csrf //개발시에는 기능을 꺼둠
+		     //.requestMatchers("/signin").permitAll() // 로그인 페이지 접근 허용
+	         //.anyRequest().authenticated()) // 나머지 요청은 인증 필요
+		 	 .csrf((csrf) -> csrf //개발시에는 기능을 꺼둠
 		    		 .ignoringRequestMatchers(new AntPathRequestMatcher("/**")))
-		     
+		     		//.requireCsrfProtectionMatcher(new AntPathRequestMatcher("/**")))
 	         .formLogin((formLogin) -> formLogin
 	                    .loginPage("/signin")
 	                    .defaultSuccessUrl("/"))
@@ -28,6 +33,8 @@ public class SecurityConfig {
 	                    .logoutRequestMatcher(new AntPathRequestMatcher("/signout"))
 	                    .logoutSuccessUrl("/")
 	                    .invalidateHttpSession(true))
+	         //.requiresChannel(channel -> channel
+	         //.anyRequest().requiresSecure()); // HTTPS를 강제화
 	         ;
 		 
 		 return http.build();
