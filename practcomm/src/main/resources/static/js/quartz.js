@@ -14,7 +14,7 @@ function reserve() {
 	const sort = document.querySelector('input[name="choice2"]:checked').value;
 	const keyword = document.querySelector('input[name="keyword"]').value;
 	let timeOption = document.querySelector('input[name="timeOption"]:checked').value;
-	
+
 	//timeOption 이 커스텀일때
 	//const form = document.getElementById('customTimeForm');
 	//const formData = new FormData(form);
@@ -33,28 +33,38 @@ function reserve() {
 		const day = document.getElementById("day").value == '' ? '*' : document.getElementById("day").value;
 		const mo = document.getElementById("mo").value == '' ? '*' : document.getElementById("mo").value;
 		const week = document.getElementById("week").value == '' ? '*' : document.getElementById("week").value;
+		const yr = document.getElementById("yr").checked;
 
 		// 값을 공백으로 이어붙이기
 		let result = `${sec} ${min} ${hr} ${day} ${mo} ${week} `;
-		
-		console.log("크론식확인",result, cronValid(result), selectedYearSet);
+
+		console.log("크론식확인", result, cronValid(result), selectedYearSet);
 		if (!cronValid(result)) {
 			alert("올바르지 않은 크론식 입니다. 다시 확인해 주세요");
 			return;
 		}
-		if(selectedYearSet.size != 0){
-			for (let v of selectedYearSet) {
-   				result+=v+',';
-			}
-			result = result.slice(0, -1);//마지막 쉼표 자르기
-			
-		}else{
+		if (yr) {
 			result += '*';
-			
+
 		}
-		console.log("최종",result);
+		else {
+			//년도 직접설정
+			if (selectedYearSet.size != 0) {
+				for (let v of selectedYearSet) {
+					result += v + ',';
+				}
+				result = result.slice(0, -1);//마지막 쉼표 자르기
+
+			} else {
+				//직접설정했으나 미선택
+				result += '*';
+
+			}
+		}
+
+		console.log("최종", result);
 		timeOption = result;
-		
+
 		const jobName = type + sort + timeOption + "|" + keyword;
 
 		console.log(jobName);
