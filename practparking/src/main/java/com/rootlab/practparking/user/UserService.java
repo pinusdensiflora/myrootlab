@@ -11,47 +11,70 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.Collections;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService{
 
 	private final UserMapper userMapper;
+	private final PasswordEncoder passwordEncoder;
 	
-	public void save(User u) throws Exception {
+	
+	//implements UserDetailsService : 스프링시큐리티에서 로그인 검증을 위해 제공하는 인터페이스
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		// return null;
+		
+		UserEntity userEntity = userMapper.findByUsername(username);
+		
+        if (userEntity == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+
+        return new User(userEntity.getUsername(), userEntity.getPassword(), Collections.emptyList());
+	}
+	
+	
+	
+	public void save(UserEntity u) throws Exception {
 		
 		String encryptPassword = u.getPassword();
 		String privateKeyPEM = null;
 		String decryptPassword = decrypt(encryptPassword);//복호화
 
-		// SHA-256 해시 생성
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hashBytes = digest.digest(decryptPassword.getBytes());
-        
-        // 해시를 16진수 문자열로 변환
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hashBytes) {
-            hexString.append(String.format("%02x", b));
-        }
-        
-        System.out.println("SHA-256 hashed password: " + hexString.toString());
+		
+		//sha 256 을 이용한 암호화후 저장
+		//String hashPassword = sha256(decryptPassword);
+		//u.setPassword(hashPassword);
+		
+		//Bcrypt 사용(스프링 시큐리티)
+		String finalpassword = passwordEncoder.encode(decryptPassword);
+		u.setPassword(finalpassword);
+		
 		
 		u.setEnabled(true);
 		u.setRole_code(100);
 		u.setCreatetime(LocalDateTime.now());
-		u.setPassword(hexString.toString());
+		
 		userMapper.save(u);
 	}
 	
-	public User findByUsername(String username) {
+	public UserEntity findByUsername(String username) {
 		return userMapper.findByUsername(username);
 	}
 	
@@ -104,9 +127,26 @@ public class UserService {
         
 	}
 	
-	private String hash() {
-		return "";
+	private String sha256(String decryptPassword) throws NoSuchAlgorithmException {
+		
+		// SHA-256 해시 생성
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hashBytes = digest.digest(decryptPassword.getBytes());
+        
+        // 해시를 16진수 문자열로 변환
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : hashBytes) {
+            hexString.append(String.format("%02x", b));
+        }
+        System.out.println("SHA-256 hashed password: " + hexString.toString());
+        
+		return hexString.toString();
 	}
+
+	
+	
+	
+	
 	
 	
 }

@@ -39,7 +39,7 @@ async function signup() {
 	formData.set('password', encryptedData); // 암호화된 데이터로 대체
 
 	try {
-		let response = await fetch("/parking/signup", {
+		let response = await fetch("/api/signup", {
 			method: 'POST',
 			body: formData
 		});
@@ -76,7 +76,7 @@ async function isDuplicate() {
 	
 	console.log(username);
 	try {
-		let response = await fetch("/parking/duplicate", {
+		let response = await fetch("/api/duplicate", {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json' //json 보냄
@@ -109,7 +109,7 @@ async function isDuplicate() {
 
 
 async function getPublicKey() {
-	const response = await fetch('/parking/public-key');
+	const response = await fetch('/api/public-key');
 	const publicKey = await response.text();
 	return publicKey;
 }

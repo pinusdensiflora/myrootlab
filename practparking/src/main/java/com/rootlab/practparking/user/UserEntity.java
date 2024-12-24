@@ -4,8 +4,10 @@ import java.time.LocalDateTime;
 
 import lombok.Data;
 
+
+//import org.springframework.security.core.userdetails.User; 와 이름이 겹치지 않게 UserEntity 사용
 @Data
-public class User {
+public class UserEntity {
 
 	private int id;
 

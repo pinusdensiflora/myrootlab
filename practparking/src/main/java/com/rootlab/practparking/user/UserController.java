@@ -15,8 +15,8 @@ public class UserController {
 	private final UserService userService;
 	
 	
-	@PostMapping("/signup")
-	public String signup(User u) throws Exception {
+	@PostMapping("/api/signup")
+	public String signup(UserEntity u) throws Exception {
 		System.out.println(u);
 		
 		userService.save(u);
@@ -27,7 +27,7 @@ public class UserController {
 	}
 	
 	
-	@PostMapping("/duplicate")
+	@PostMapping("/api/duplicate")
 	public ResponseEntity<Boolean> duplicate(@RequestBody String username) {
 		username = username.replace("\"", "");
 		//User u = userService.findByUsername(username);

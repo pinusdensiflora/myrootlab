@@ -1,4 +1,4 @@
-package com.rootlab.practparking.key;
+package com.rootlab.practparking.security.key;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class KeyController {
 	
-	@GetMapping("/public-key")
+	@GetMapping("/api/public-key")
 	@ResponseBody
     public String getPublicKey() {
         try {

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.rootlab.practparking.user.UserMapper">
 
-	<insert id="save" parameterType="com.rootlab.practparking.user.User">
+	<insert id="save" parameterType="com.rootlab.practparking.user.UserEntity">
 		INSERT INTO 
 		user (username, password, enabled, role_code, name, tel, email, createtime)
 		VALUES
