@@ -185,7 +185,7 @@ public class QuartzController {
 
 		schedulerService.removeJob(jobName, jobName.charAt(0) + "");
 		Reservation r = reservationService.selectById(id);
-		r.setStatus_code(200);// 중지 됨
+		r.setStatus_code(201);// 삭제 됨 (중지 됨 200)
 		r.setUse_yn("n");
 		reservationService.update(r);
 		return "Job removed successfully.";
